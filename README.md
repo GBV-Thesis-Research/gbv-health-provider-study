@@ -1,2 +1,2 @@
-# gbv-health-provider-study
+# Gender-based Violence Health Provider Study
 This is a repository for a thesis! 
