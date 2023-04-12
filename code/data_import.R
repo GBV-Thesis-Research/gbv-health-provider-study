@@ -17,6 +17,7 @@ if(endsWith(current_wd, "gbv-health-provider-study")){
 }
 
 source(paste(gbv_project_wd, "/keys.R", sep = ""))
+source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
 
 import_redcap_data <- function(token_str){
   redcap_read(redcap_uri='https://redcap.iths.org/api/',
