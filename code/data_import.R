@@ -33,7 +33,9 @@ if(data_exists){
 } else {
   raw_gbv_survey_data = import_redcap_data(token_str = API_KEY)
   path_to_write = paste(gbv_project_wd, "/data/gbv_data_raw.csv", sep = "")
+  path_to_rds = paste(gbv_project_wd, "/data/gbv_data_raw.RDS", sep = "")
   write.csv(raw_gbv_survey_data, path_to_write)
+  saveRDS(raw_gbv_survey_data, file = path_to_rds)
 }
 
 
