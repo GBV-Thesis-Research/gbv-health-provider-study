@@ -16,6 +16,4 @@ Linting refers to the process of analyzing source code to detect potential error
 In this repo, we're using Styler, which is an R package that provides a consistent and flexible way to automatically format R code according to the tidyverse style guide.
 
 To run `stylr`: 
-
-- source `dependencies.R`
-- `style_dir("~/Repositories/gbv-health-provider-study/")`
+- `source("~/Repositories/gbv-health-provider-study/format.R")`
