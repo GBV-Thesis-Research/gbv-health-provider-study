@@ -23,18 +23,19 @@ import_redcap_data <- function(token_str) {
   redcap_read(
     redcap_uri = "https://redcap.iths.org/api/",
     token = token_str,
-    raw_or_label = "label",
+    raw_or_label = "raw",
     export_checkbox_label = TRUE
   )$data
 }
 
 data_exists <- file.exists(paste(gbv_project_wd, "/data/gbv_data_raw.csv", sep = ""))
 if (data_exists) {
-  raw_gbv_survey_data <- read.csv(paste(gbv_project_wd, "/data/gbv_data_raw.csv", sep = ""))
+  csv_file_path <- file.path(gbv_project_wd, "data", "gbv_data_raw.csv")
+  raw_gbv_survey_data <- read.csv(file = csv_file_path)
 } else {
   raw_gbv_survey_data <- import_redcap_data(token_str = API_KEY)
   path_to_write <- paste(gbv_project_wd, "/data/gbv_data_raw.csv", sep = "")
   path_to_rds <- paste(gbv_project_wd, "/data/gbv_data_raw.RDS", sep = "")
-  write.csv(raw_gbv_survey_data, path_to_write)
+  write.csv(raw_gbv_survey_data, file = path_to_write)
   saveRDS(raw_gbv_survey_data, file = path_to_rds)
 }
