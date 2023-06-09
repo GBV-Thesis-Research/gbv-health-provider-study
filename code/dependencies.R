@@ -1,4 +1,4 @@
-packages <- c("redcapAPI", "REDCapR", "lintr", "styler")
+packages <- c("redcapAPI", "REDCapR", "lintr", "styler", "tidyverse")
 
 new.packages <- packages[!(packages %in% installed.packages()[, "Package"])]
 if (length(new.packages)) install.packages(new.packages)
