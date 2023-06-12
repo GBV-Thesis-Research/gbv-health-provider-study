@@ -24,10 +24,6 @@ clean_file_path <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep =
 clean_data <- readRDS(clean_file_path)
 
 # Create table
-demographic_vars <- c(
-  "time_point", "participant_id", "municipality",
-  "facilitator", "date", "facility", "sex_factored", "age_groups", "position_groups", "position_years_clean",
-  "previous_training_factored", "avg_weekly_pt_volume"
-)
+
 filtered_data <- clean_data %>% filter(time_point == 1)
 demographic_table <- table1(~ sex_factored + age_groups + position_groups, data = filtered_data)
