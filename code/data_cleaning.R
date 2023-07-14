@@ -27,7 +27,7 @@ key <- raw_gbv_survey_data %>%
   select(everything())
 
 # Drop participants that have not consented to have their data used for research
-# Drops from 972 to 929 (43 observations)
+# Drops from 972 to 934 (38 observations)
 data <- raw_gbv_survey_data %>%
   filter(consent == 1) %>%
   filter(!date %in% c("2021-06-18", "2021-06-14")) %>%
@@ -43,10 +43,10 @@ data <- data %>%
 
 # Filter out identical records which were accidentally imported into RedCap twice
 # by the HAMNASA data collection team
-# Drops from 929 to 416 (513 observations)
+# Drops from 934 to 421 (513 observations)
 
 data <- data %>%
-  select(c(-X, -record_id)) %>%
+  select(c(-record_id)) %>%
   distinct()
 
 # Fix dates that are empty
