@@ -17,9 +17,10 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
-style_file(paste(gbv_project_wd, "/code/score.R", sep = ""))
-
 source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
+
+style_file(paste(gbv_project_wd, "/code/score.R", sep = ""))
 
 clean_data <- readRDS(path_to_clean_rds)
 
