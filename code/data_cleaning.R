@@ -27,9 +27,9 @@ key <- raw_gbv_survey_data %>%
   select(everything())
 
 # Drop participants that have not consented to have their data used for research
-# Drops from 972 to 929 (43 observations)
+# Drops from 972 to 929 (removes 43 rows)
 data <- raw_gbv_survey_data %>%
-  filter(consent == "Sin") %>%
+  filter(consent == 1) %>%
   filter(!date %in% c("2021-06-18", "2021-06-14")) %>%
   filter(municipality != "Dili") %>%
   filter(participant_id != "KEY")
@@ -43,9 +43,16 @@ data <- data %>%
 
 # Filter out identical records which were accidentally imported into RedCap twice
 # by the HAMNASA data collection team
-# Drops from 929 to 416 (513 observations)
+# Drops from 929 to 416 (removes 513 rows)
+columns_to_not_select <- ("record_id")
+all_columns <- colnames(data)
+# There are times when the X does not exist in the data. This is to handle that
+# case.
+if ("X" %in% all_columns) {
+  columns_to_not_select <- c(columns_to_not_select, "X")
+}
 data <- data %>%
-  select(c(-X, -record_id)) %>%
+  select(-all_of(columns_to_not_select)) %>%
   distinct()
 
 # Fix dates that are empty
@@ -130,7 +137,7 @@ data[participant_id2 %in% c("xxx", "xg"), participant_id2 := "xx_bazartete2"]
 # rename
 setnames(data, c("participant_id2", "participant_id"), c("participant_id", "participant_id_original"))
 
-# remove participants without matches from dataset (from 415 to 389 observations)
+# remove participants without matches from dataset (from 414 to 388 observations) removes 26 rows
 data <- data %>%
   group_by(participant_id) %>%
   filter(n() >= 2) %>%
@@ -162,20 +169,8 @@ data <- data %>%
   mutate(position_years_clean = ifelse(position_years > 99, 2021 - position_years, position_years)) %>%
   select(-matches("fup"))
 
-# clean up id issues for participant 66 (which there are 6 observations for)
-data <- data.table(data)
-
-data[participant_id_original == "JS200921" & position == "Mediku", participant_id := "js1_Mediku"]
-data[participant_id_original == "JS240921" & position == "Mediku", participant_id := "js1_Mediku"]
-
-data[participant_id_original == "JS240921" & position == "Parteira", participant_id_original := "JS_Hatulia"]
-data[participant_id_original == "JS200921" & position == "Parteira", participant_id_original := "JS_Hatulia"]
-
-# drop participant 11 (389 to 387 observations)
+# drop participant 11 (388 to 386 rows) removes 2 rows
 data <- data[data$participant_id != 11, ]
-
-sum(clean_data$time_point == "Pre")
-sum(clean_data$time_point == "Post")
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
