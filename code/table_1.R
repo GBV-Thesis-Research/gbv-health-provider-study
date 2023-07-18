@@ -25,5 +25,6 @@ clean_data <- readRDS(clean_file_path)
 
 # Create table
 
-filtered_data <- clean_data %>% filter(time_point == 1)
+filtered_data <- clean_data %>% filter(time_point == "Pre")
 demographic_table <- table1(~ sex_factored + age_groups + position_groups, data = filtered_data)
+demographic_table
