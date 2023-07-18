@@ -1,7 +1,7 @@
 ##################################################
 ## Project:
 ## Script purpose:
-## Date: 
+## Date:
 ## Author: Jessica Dyer
 ##################################################
 
@@ -16,8 +16,11 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
+source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
+source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+
 #### Lint current file ####
-style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+style_file(paste(gbv_project_wd, "/code/table_1.R", sep = ""))
 
 # Load cleaned data
 clean_data <- readRDS(path_to_clean_rds)

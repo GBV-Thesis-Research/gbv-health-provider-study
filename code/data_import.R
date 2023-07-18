@@ -20,12 +20,12 @@ source(paste(gbv_project_wd, "/keys.R", sep = ""))
 source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
 
 #### Lint current file ####
-style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+style_file(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
 
 #### GENERATE DATE CLOSEST FRIDAY (IF TODAY IS FRIDAY, IT WILL RETURN TODAY'S DATE) ####
 last_friday <- Sys.Date() - wday(Sys.Date() + 1)
 
-if((Sys.Date()-last_friday)>=7){
+if ((Sys.Date() - last_friday) >= 7) {
   last_friday <- Sys.Date()
 }
 
@@ -41,7 +41,7 @@ import_redcap_data <- function(token_str) {
 raw_data_rds_path <- paste(gbv_project_wd, "/data/raw/gbv_data_raw_", last_friday, ".RDS", sep = "")
 raw_data_csv_path <- paste(gbv_project_wd, "/data/raw/gbv_data_raw_", last_friday, ".csv", sep = "")
 
-if(!file.exists(raw_data_csv_path)){
+if (!file.exists(raw_data_csv_path)) {
   raw_gbv_survey_data <- import_redcap_data(token_str = API_KEY)
   write.csv(raw_gbv_survey_data, file = raw_data_csv_path)
   saveRDS(raw_gbv_survey_data, file = raw_data_rds_path)
