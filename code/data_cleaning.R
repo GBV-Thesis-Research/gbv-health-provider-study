@@ -46,7 +46,7 @@ data <- data %>%
 # Drops from 929 to 416 (removes 513 rows)
 columns_to_not_select <- ("record_id")
 all_columns <- colnames(data)
-# When the data is first imported, X does not exist in the data. However, it 
+# When the data is first imported, X does not exist in the data. However, it
 # exists later. This is to handle that case.
 if ("X" %in% all_columns) {
   columns_to_not_select <- c(columns_to_not_select, "X")
