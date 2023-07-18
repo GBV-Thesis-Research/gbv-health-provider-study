@@ -30,15 +30,37 @@ answers <- clean_data %>%
 key_only <- key %>%
   select(matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
 
-# Add in here the recoding that Cory did for each of the scales and document
-# well.
-# Knowledge I think is fine to not recode, because the scoring here should be
-# correct. But spot check that they were scored correctly.
-# Then do attitudes, looks like the scale was reversed for the key? But not for attitudes12?
-# Figure out what is being done there and let's do it better!
-# Just start with knowledge and we'll go from there. Maybe we just make a new
-# key that makes sense.
+#' Attitudes
+#' Modify data based on key values
+#'
+#' This code modifies data based on key values for each variable in attitude vars.
+#' If the key value is 5, the variable is scaled down by 1 (0-4). If the key value is 1,
+#' the variable is reversed coded.
 
+# Get column names matching 'attitudes'
+att_vars <- names(data)[str_detect(names(data), "attitudes")]
+
+# Get column names matching 'attitudes_12' from att_vars
+att12_vars <- att_vars[str_detect(att_vars, "attitudes_12")]
+
+# Remove 'attitudes_12' column names from att_vars
+att_vars <- att_vars[!str_detect(att_vars, "attitudes_12")]
+
+clean_data <- clean_data %>%
+  mutate(across(all_of(att_vars), ~ case_when(
+    key_only[[cur_column()]] == 5 ~ . - 1,
+    key_only[[cur_column()]] == 1 ~ abs(. + 3 - 8),
+    TRUE ~ .
+  )))
+
+# Reassigns the value 3 to 1 for each column in att12_vars.
+clean_data <- clean_data %>%
+  mutate(
+    across(all_of(att12_vars), ~ . - 1),
+    across(all_of(att12_vars), ~ ifelse(. == 3, 1, .))
+  )
+
+# Scoring (might only want to include knowledge here?)
 key_vector <- as.vector(unlist(t(key_only)))
 participant_ids <- answers[, 1]
 
