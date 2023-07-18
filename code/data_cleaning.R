@@ -172,6 +172,20 @@ data <- data %>%
 # drop participant 11 (388 to 386 rows) removes 2 rows
 data <- data[data$participant_id != 11, ]
 
+# create an actual date column
+data$date_as_date_format <- ifelse(is.na(data$date), NA,
+  format(as.Date(data$date, format = "%Y-%m-%d"), "%Y-%m-%d")
+)
+
+data <- data %>%
+  mutate(
+    year_diff = ifelse(nchar(position_years) == 4,
+      as.numeric(year(date_as_date_format) - position_years),
+      NA
+    ),
+    position_years_clean = ifelse(!is.na(year_diff), year_diff, position_years)
+  )
+
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 saveRDS(data, file = path_to_clean_rds)

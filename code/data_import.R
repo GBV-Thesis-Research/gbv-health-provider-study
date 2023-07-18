@@ -19,6 +19,16 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 source(paste(gbv_project_wd, "/keys.R", sep = ""))
 source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
 
+#### Lint current file ####
+style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+
+#### GENERATE DATE CLOSEST FRIDAY (IF TODAY IS FRIDAY, IT WILL RETURN TODAY'S DATE) ####
+last_friday <- Sys.Date() - wday(Sys.Date() + 1)
+
+if((Sys.Date()-last_friday)>=7){
+  last_friday <- Sys.Date()
+}
+
 import_redcap_data <- function(token_str) {
   redcap_read(
     redcap_uri = "https://redcap.iths.org/api/",
@@ -28,14 +38,13 @@ import_redcap_data <- function(token_str) {
   )$data
 }
 
-data_exists <- file.exists(paste(gbv_project_wd, "/data/raw/gbv_data_raw.csv", sep = ""))
-if (data_exists) {
-  csv_file_path <- file.path(gbv_project_wd, "data/raw", "gbv_data_raw.csv")
-  raw_gbv_survey_data <- read.csv(file = csv_file_path)
-} else {
+raw_data_rds_path <- paste(gbv_project_wd, "/data/raw/gbv_data_raw_", last_friday, ".RDS", sep = "")
+raw_data_csv_path <- paste(gbv_project_wd, "/data/raw/gbv_data_raw_", last_friday, ".csv", sep = "")
+
+if(!file.exists(raw_data_csv_path)){
   raw_gbv_survey_data <- import_redcap_data(token_str = API_KEY)
-  path_to_write <- paste(gbv_project_wd, "/data/raw/gbv_data_raw.csv", sep = "")
-  path_to_rds <- paste(gbv_project_wd, "/data/raw/gbv_data_raw.RDS", sep = "")
-  write.csv(raw_gbv_survey_data, file = path_to_write)
-  saveRDS(raw_gbv_survey_data, file = path_to_rds)
+  write.csv(raw_gbv_survey_data, file = raw_data_csv_path)
+  saveRDS(raw_gbv_survey_data, file = raw_data_rds_path)
+} else {
+  raw_gbv_survey_data <- read.csv(raw_data_csv_path)
 }
