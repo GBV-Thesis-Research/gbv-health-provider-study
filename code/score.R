@@ -60,9 +60,13 @@ clean_data <- clean_data %>%
     across(all_of(att12_vars), ~ ifelse(. == 3, 1, .))
   )
 
-# Scoring (might only want to include knowledge here?)
-key_vector <- as.vector(unlist(t(key_only)))
-participant_ids <- answers[, 1]
+# Scoring (might only want to include knowledge & system support here?)
+knowledge_sys_support_key <- key %>%
+  select(matches("knowledge|system_support"))
+knowledge_sys_support_answers <- clean_data %>%
+  select(participant_id, time_point, matches("knowledge|system_support"))
+key_vector <- as.vector(unlist(t(knowledge_sys_support_key)))
+participant_ids <- knowledge_sys_support_answers[, 1:2]
 
-scores <- psych::score.multiple.choice(key = key_vector, data = answers[, -1], score = FALSE, missing = TRUE, short = FALSE)
+scores <- psych::score.multiple.choice(key = key_vector, data = knowledge_sys_support_answers[, -(1:2)], score = FALSE, missing = FALSE, short = TRUE)
 scores <- cbind(participant_ids, scores)
