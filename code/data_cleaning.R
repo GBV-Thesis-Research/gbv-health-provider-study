@@ -64,8 +64,9 @@ data <- data %>%
     TRUE ~ date
   ))
 
-# Clean participant IDs
 data <- data.table(data)
+
+# Clean participant IDs
 data[participant_id == "QB", participant_id := "Q.B"]
 data[, participant_id2 := tolower(gsub("[[:digit:]]", "", participant_id))]
 data[, participant_id2 := trimws(participant_id2)]
@@ -143,6 +144,19 @@ data <- data %>%
   filter(n() >= 2) %>%
   ungroup()
 
+data <- data %>%
+  mutate(training_group = case_when(
+    date %in% c("2021-07-12", "2021-07-16") ~ "Liquica R1 and R2",
+    date %in% c("2021-08-17", "2021-08-16", "2021-08-20") ~ "Bazartete R1 and R2",
+    date %in% c("2021-09-20", "2021-09-24") & municipality == "Liquica" ~ "Maubara R1",
+    date %in% c("2021-10-15", "2021-10-11") ~ "Maubara R2",
+    date %in% c("2021-07-19", "2021-07-23") ~ "Ermera combined R1",
+    date %in% c("2021-10-18", "2021-10-22") ~ "Ermera combined R2",
+    date %in% c("2021-09-13", "2021-09-17") ~ "Atsabe",
+    date %in% c("2021-10-26", "2021-10-30") ~ "Letefoho",
+    date %in% c("2021-09-20", "2021-09-24") & municipality == "Ermera" ~ "Hatolia",
+  ))
+
 # replace ids with numbers
 ids <- data %>%
   distinct(participant_id) %>%
@@ -185,19 +199,6 @@ data <- data %>%
     ),
     position_years_clean = ifelse(!is.na(year_diff), year_diff, position_years)
   )
-
-# Create training groups column -- Jessica, I cannot get this to work ("error: object training_group not found") and ChatGPT isn't helping.
-# This is replicating Cory's lines 251-260 in her data prep script. Commenting out so I can source script without it.
-# data <- data %>% mutate(training_group = NA)
-# data[date_as_date_format %in% c("2021-07-12", "2021-07-16"), training_group := "Liquica R1 and R2"]
-# data[date_as_date_format %in% c("2021-08-17", "2021-08-16", "2021-08-20"), training_group := "Bazartete R1 and R2"]
-# data[date_as_date_format %in% c("2021-09-20", "2021-09-24") & municipality == "Liquica", training_group := "Maubara R1"]
-# data[date_as_date_format %in% c("2021-10-15", "2021-10-11"), training_group := "Maubara R2"]
-# data[date_as_date_format %in% c("2021-07-19", "2021-07-23"), training_group := "Ermera combined R1"]
-# data[date_as_date_format %in% c("2021-10-18", "2021-10-22"), training_group := "Ermera combined R2"]
-# data[date_as_date_format %in% c("2021-09-13", "2021-09-17"), training_group := "Atsabe"]
-# data[date_as_date_format %in% c("2021-10-26", "2021-10-30"), training_group := "Letefoho"]
-# data[date_as_date_format %in% c("2021-09-20", "2021-09-24") & municipality == "Ermera", training_group := "Hatolia"]
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
