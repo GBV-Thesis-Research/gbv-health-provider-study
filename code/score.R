@@ -31,15 +31,11 @@ key_only <- key %>%
   select(matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
 
 #' ATTITUDES
-#' Modify data based on key values
 #'
-#' This code modifies data based on key values for each variable in attitude vars. The
-#' questions were phrased in such a way that the desired response was either 1 or 5,
-#' depending on the question. Given that higher scores indicate the desired attitudes
-#' toward GBV, we wanted all desired answers to be scored as t he highest possible score (4).
-#' If the key value is 5, the variable is scaled down by 1 (0-4). If the key value is 1,
-#' the variable is reversed coded. After subtracting 1 from all scores, score 3 (response "I don't know")
-#' was re-scored to a 1 (the same score as "sometimes acceptable")
+#' This function is designed to modify attitude variable scores related to Gender-Based Violence (GBV)
+#' based on a provided key. The key indicates whether a positive answer is represented by 1 or 5
+#' for each question in the "attitude vars" set. The function standardizes the scores to ensure higher
+#' values consistently indicate more positive attitudes towards GBV.
 
 # Get column names matching 'attitudes'
 att_vars <- names(data)[str_detect(names(data), "attitudes")]
@@ -47,9 +43,9 @@ att_vars <- names(data)[str_detect(names(data), "attitudes")]
 # Get column names matching 'attitudes_12' from att_vars
 att12_vars <- att_vars[str_detect(att_vars, "attitudes_12")]
 
-# Remove 'attitudes_12' column names from att_vars.
-# Question 12 was removed from att_vars as it only had 4 possible answers, compared to
-# 5 in the rest of the attitude domain questions. Question 12 will be evaluated separately.
+#' Remove the 'attitudes_12' column from the provided data frame, att_vars,
+#' as it has 4 possible answers compared to 5 in the other attitude domain questions,
+#' necessitating a separate evaluation for Question 12.
 att_vars <- att_vars[!str_detect(att_vars, "attitudes_12")]
 
 clean_data <- clean_data %>%
@@ -83,12 +79,10 @@ clean_data <- clean_data %>% mutate(across(all_of(conf_vars), ~ . - 1))
 #' EMPATHY
 #' Modify data based on key values
 #'
-#' This code modifies data based on key values for each variable in empathy vars. The
-#' questions were phrased in such a way that the desired response was either 1 or 5,
-#' depending on the question. Given that higher scores indicate the desired empathy,
-#' we wanted all desired answers to be scored as the highest possible score (4).
-#' If the key value is 5, the variable is scaled down by 1 (0-4). If the key value is 1,
-#' the variable is reversed coded.
+#' Modify empathy variable scores related to Gender-Based Violence (GBV)
+#' based on a provided key. The key indicates whether a positive answer is represented by 1 or 5
+#' for each question in the "empathy vars" set. The function standardizes the scores to ensure higher
+#' values consistently indicate more empathy towards those effected by GBV.
 
 #' Get column names matching 'empathy'
 emp_vars <- names(data)[str_detect(names(data), "empathy")]
@@ -104,11 +98,11 @@ clean_data <- clean_data %>%
 #' PRACTICES
 #' Clean up data
 #'
-#' This code modifies data for each variable in practices vars. Question 18 used skip logic,
-#' where those who answered "no" or "NA" to question 18 should not have answered question 19.
-#' However, most people who answered "no" or "NA" on question 18 still answered question 19.
-#' The code below cleans up the data, assigning "NAs" to all variables in question 19 for those
-#' who answered "no" or "NA" in question 18.
+#' The code below addresses a skip logic issue between questions 18 and 19. In the survey,
+#' respondents who answered "no" or "NA" to question 18 were not supposed to answer question 19.
+#' However, due to inconsistencies, many respondents who answered "no" or "NA" on question 18
+#' still answered question 19. To resolve this, the code assigns "NAs" to all variables in
+#' question 19 for respondents who answered "no" or "NA" in question 18, thereby cleaning up the data.
 
 # Get column names matching 'practices'
 pract_vars <- names(data)[str_detect(names(data), "practices")]
@@ -137,12 +131,12 @@ clean_data <- clean_data %>%
     TRUE ~ .
   )))
 
-# Recode question 19 vars to be 1 = correct answer and 0 = incorrect answer. 
+# Recode question 19 vars to be 1 = correct answer and 0 = incorrect answer.
 clean_data <- clean_data %>%
   mutate(across(starts_with("practices_19"), ~ case_when(. != 1 ~ 0, TRUE ~ .)))
 
 #' SUM SCORES FOR EACH DOMAIN
-#' Using the key, automatically score knowledge and system support variables.
+#' Using the key, score knowledge and system support variables.
 knowledge_sys_support_key <- key %>%
   select(matches("knowledge|system_support"))
 knowledge_sys_support_answers <- clean_data %>%
@@ -150,30 +144,27 @@ knowledge_sys_support_answers <- clean_data %>%
 key_vector <- as.vector(unlist(t(knowledge_sys_support_key)))
 participant_ids <- knowledge_sys_support_answers[, 1:2]
 
-knowledge_sys_support_scores <- psych::score.multiple.choice(key = key_vector, data = knowledge_sys_support_answers[, -(1:2)], score = FALSE, missing = FALSE, short = TRUE)
-knowledge_sys_support_scores <- cbind(participant_ids, scores)
+knowledge_sys_support_scores_scored <- psych::score.multiple.choice(key = key_vector, data = knowledge_sys_support_answers[, -(1:2)], score = FALSE, missing = FALSE, short = TRUE)
+knowledge_sys_support_scores_raw <- cbind(participant_ids, knowledge_sys_support_scores_scored)
+
+knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
+  mutate(
+    knowledge_score = rowSums(select(., all_of(matches("knowledge"))), na.rm = TRUE),
+    system_support_score = rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE)
+  ) %>%
+  select(participant_id, time_point, knowledge_score, system_support_score)
 
 #' Sum attitudes scores and bind participant IDs and timepoint
 attitudes_to_sum <- c(att_vars, att12_vars)
-attitude_scores <- rowSums(clean_data[, attitudes_to_sum])
-attitude_scores_df <- data.frame(rowSums = attitude_scores)
-attitude_scores_df <- cbind(clean_data$participant_id, clean_data$time_point, attitude_scores_df)
-attitude_scores_df
 
-#' Sum empathy scores
-empathy_scores <- rowSums(clean_data[, emp_vars])
-empathy_scores_df <- data.frame(rowsums = empathy_scores)
-empathy_scores_df <- cbind(clean_data$participant_id, clean_data$time_point, empathy_scores_df)
-empathy_scores_df
+# Calculate attitude scores by summing up attitude variables for each row
+scores <- clean_data %>%
+  mutate(
+    attitude_score = rowSums(select(., all_of(attitudes_to_sum)), na.rm = TRUE),
+    empathy_score = rowSums(select(., all_of(emp_vars)), na.rm = TRUE),
+    confidence_score = rowSums(select(., all_of(conf_vars)), na.rm = TRUE),
+    practice_score = rowSums(select(., all_of(pract_vars)), na.rm = TRUE)
+  ) %>%
+  select(participant_id, time_point, attitude_score, empathy_score, confidence_score, practice_score)
 
-#' Sum confidence scores
-confidence_scores <- rowSums(clean_data[, conf_vars])
-confidence_scores_df <- data.frame(rowsums = confidence_scores)
-confidence_scores_df <- cbind(clean_data$participant_id, clean_data$time_point, confidence_scores_df)
-confidence_scores_df
-
-#' Sum practices scores - only summing question 19, not question 18.
-practice_scores <- rowSums(clean_data[, pract_vars19])
-practice_scores_df <- data.frame(rowSums = practice_scores)
-practice_scores_df <- cbind(clean_data$participant_id, clean_data$time_point, practice_scores_df)
-practice_scores_df
+merged_scores <- inner_join(knowledge_sys_support_scores, scores, by = c("participant_id", "time_point"))
