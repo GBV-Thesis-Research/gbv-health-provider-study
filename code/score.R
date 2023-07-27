@@ -87,7 +87,7 @@ clean_data <- clean_data %>% mutate(across(all_of(conf_vars), ~ . - 1))
 #' Get column names matching 'empathy'
 emp_vars <- names(data)[str_detect(names(data), "empathy")]
 
-# Reassigns the value 3 to 1 for each column in att12_vars.
+# Reassigns the value 3 to 1 for each column in emp_vars
 clean_data <- clean_data %>%
   mutate(across(all_of(emp_vars), ~ case_when(
     key_only[[cur_column()]] == 5 ~ . - 1,
