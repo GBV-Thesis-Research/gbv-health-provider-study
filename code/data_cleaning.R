@@ -67,6 +67,11 @@ data <- data %>%
     TRUE ~ date
   ))
 
+# Standardize municipality
+data <- data %>%
+  mutate(municipality = str_to_title(municipality))
+
+
 data <- data.table(data)
 
 # Clean participant IDs

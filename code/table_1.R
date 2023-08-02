@@ -26,6 +26,25 @@ style_file(paste(gbv_project_wd, "/code/table_1.R", sep = ""))
 clean_data <- readRDS(path_to_clean_rds)
 
 # Create table
+labels <- list(
+  variables = list(
+    sex_factored = "Sex",
+    age_groups = "Age (years)",
+    position_groups = "Position",
+    position_years_clean = "Years of practice"
+  )
+)
 filtered_data <- clean_data %>% filter(time_point == 1)
-demographic_table <- table1(~ sex_factored + age_groups + position_groups, data = filtered_data)
+
+demographic_table <- filtered_data %>%
+  select(c("sex_factored", "age_groups", "position_groups", "position_years_clean", "municipality")) %>%
+  tbl_summary(by = municipality, label = list(
+    sex_factored ~ "Sex",
+    age_groups ~ "Age (years)",
+    position_groups ~ "Position",
+    position_years_clean ~ "Years of practice"
+  )) %>%
+  add_overall() %>%
+  add_n()
+
 demographic_table
