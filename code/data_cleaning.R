@@ -289,4 +289,3 @@ data <- data %>%
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 saveRDS(data, file = path_to_clean_rds)
-02
