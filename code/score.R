@@ -203,3 +203,7 @@ scores <- clean_data %>%
 merged_scores <- inner_join(knowledge_sys_support_scores, scores, by = c(
   "participant_id", "time_point"
 ))
+
+# Write score data to folder
+path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
+saveRDS(merged_scores, file = path_to_clean_rds_scores)
