@@ -31,12 +31,19 @@ answers <- clean_data %>%
 key_only <- key %>%
   select(matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
 
-# ATTITUDES --------------------------------------------------------------------
-#' This function is designed to modify attitude variable scores related to
-#' Gender-Based Violence (GBV) based on a provided key. The key indicates whether
-#' a positive answer is represented by 1 or 5 for each question in the "attitude vars"
-#' set. The function standardizes the scores to ensure higher values consistently
-#' indicate more positive attitudes towards GBV.
+recode_likert_according_to_key <- function(variable_names_to_recode) {
+  #' This function is designed to modify attitude variable scores related to Gender-Based Violence (GBV)
+  #' based on a provided key. The key indicates whether a positive answer is represented by 1 or 5
+  #' for each question in the "attitude vars" set. The function standardizes the scores to ensure higher
+  #' values consistently indicate more positive attitudes towards GBV.
+  clean_data <- clean_data %>%
+    mutate(across(all_of(variable_names_to_recode), ~ case_when(
+      key_only[[cur_column()]] == 5 ~ . - 1,
+      key_only[[cur_column()]] == 1 ~ abs(. + 3 - 8),
+      TRUE ~ .
+    )))
+  return(clean_data)
+}
 
 # Get column names matching 'attitudes'
 att_vars <- names(data)[str_detect(names(data), "attitudes")]
@@ -52,12 +59,7 @@ att_vars <- att_vars[!str_detect(att_vars, "attitudes_12")]
 # Based on the key, readjust values based on desired answer (1 or 5), but
 # subtracting 1 when the desired answer is 5. When the desired answer is 1, add 3
 # to the value and then subtract 8 so that desired behavior gets the higher score.
-clean_data <- clean_data %>%
-  mutate(across(all_of(att_vars), ~ case_when(
-    key_only[[cur_column()]] == 5 ~ . - 1,
-    key_only[[cur_column()]] == 1 ~ abs(. + 3 - 8),
-    TRUE ~ .
-  )))
+clean_data <- recode_likert_according_to_key(att_vars)
 
 # Subtract 1 from each answer for att12_vars, then reassigns the value 3 ("I don't know")
 # to 1 ("sometimes it is acceptable") for each column in att12_vars.
@@ -92,16 +94,7 @@ clean_data <- clean_data %>%
 
 #' Get column names matching 'empathy'
 empathy_vars <- names(data)[str_detect(names(data), "empathy")]
-
-# Based on the key, readjust values based on desired answer (1 or 5), but
-# subtracting 1 when the desired answer is 5. When the desired answer is 1, add 3
-# to the value and then subtract 8 so that desired behavior gets the higher score.
-clean_data <- clean_data %>%
-  mutate(across(all_of(empathy_vars), ~ case_when(
-    key_only[[cur_column()]] == 5 ~ . - 1,
-    key_only[[cur_column()]] == 1 ~ abs(. + 3 - 8),
-    TRUE ~ .
-  )))
+clean_data <- recode_likert_according_to_key(empathy_vars)
 
 # PRACTICES --------------------------------------------------------------------
 #' Clean up data
