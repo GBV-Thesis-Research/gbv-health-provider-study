@@ -121,6 +121,10 @@ pract_vars <- names(data)[str_detect(names(data), "practices")]
 table(clean_data$practices_18, data$practices_19a)
 sum(is.na(data$practices_19a))
 
+clean_data <- clean_data %>%
+  mutate(practices_19a_clean = ifelse(practices_18 == 1, practices_19a, NA)) %>%
+  mutate(practices_19b_clean = ifelse(practices_18 == 1, practices_19b, NA))
+
 # Recode question 18 to be 1 = yes, they had identified a woman suffering domestic violence
 # in the past month, 0 = no
 clean_data <- clean_data %>%

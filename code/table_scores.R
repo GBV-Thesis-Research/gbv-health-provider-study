@@ -48,5 +48,6 @@ scores_summary_table <- clean_scores %>%
     ),
     digits = all_continuous() ~ 2
   ) %>%
-  add_p()
+  add_p() %>%
+  add_n
 scores_summary_table
