@@ -113,22 +113,22 @@ clean_data <- clean_data %>%
     TRUE ~ practices_18
   ))
 
-# Create new variables "practices_19x_clean". If providers had identified a woman 
+# Create new variables "practices_19x_clean". If providers had identified a woman
 # suffering domestic violence in the past month, then include their answers to question
 # 19. If they had not identified a woman suffering DV in the past month, code as NA.
 clean_data <- clean_data %>%
-  mutate(practices_19a_clean = ifelse(practices_18 == 1, practices_19a, NA)) %>%
-  mutate(practices_19b_clean = ifelse(practices_18 == 1, practices_19b, NA)) %>%
-  mutate(practices_19c_clean = ifelse(practices_18 == 1, practices_19c, NA)) %>%
-  mutate(practices_19d_clean = ifelse(practices_18 == 1, practices_19d, NA)) %>%
-  mutate(practices_19e_clean = ifelse(practices_18 == 1, practices_19e, NA)) %>%
-  mutate(practices_19f_clean = ifelse(practices_18 == 1, practices_19f, NA)) %>%
-  mutate(practices_19g_clean = ifelse(practices_18 == 1, practices_19g, NA)) %>%
-  mutate(practices_19h_clean = ifelse(practices_18 == 1, practices_19h, NA)) %>%
-  mutate(practices_19i_clean = ifelse(practices_18 == 1, practices_19i, NA))
+  mutate(practices_clean_19a = ifelse(practices_18 == 1, practices_19a, NA)) %>%
+  mutate(practices_clean_19b = ifelse(practices_18 == 1, practices_19b, NA)) %>%
+  mutate(practices_clean_19c = ifelse(practices_18 == 1, practices_19c, NA)) %>%
+  mutate(practices_clean_19d = ifelse(practices_18 == 1, practices_19d, NA)) %>%
+  mutate(practices_clean_19e = ifelse(practices_18 == 1, practices_19e, NA)) %>%
+  mutate(practices_clean_19f = ifelse(practices_18 == 1, practices_19f, NA)) %>%
+  mutate(practices_clean_19g = ifelse(practices_18 == 1, practices_19g, NA)) %>%
+  mutate(practices_clean_19h = ifelse(practices_18 == 1, practices_19h, NA)) %>%
+  mutate(practices_clean_19i = ifelse(practices_18 == 1, practices_19i, NA))
 
-# Create new vector for only question 19 
-pract19_vars <- pract_vars[str_detect(pract_vars, "practices_19")]
+# Get column names matching practices_clean_19
+pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
 
 #' SUM SCORES FOR EACH DOMAIN
 #' Using the key, score knowledge and system support variables
