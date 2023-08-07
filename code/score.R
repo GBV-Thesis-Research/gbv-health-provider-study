@@ -106,14 +106,6 @@ clean_data <- recode_likert_according_to_key(empathy_vars)
 #' this, the code assigns "NAs" to all variables in question 19 for respondents
 #' who answered "no" or "NA" in question 18, thereby cleaning up the data.
 
-# Get column names matching 'practices'
-pract_vars <- names(data)[str_detect(names(data), "practices")]
-
-# Look for 'bad' data (i.e. responding to q19 when q18 is not answered as 'yes'
-# (as it uses skip logic))
-table(clean_data$practices_18, data$practices_19a)
-sum(is.na(data$practices_19a))
-
 # Recode question 18 to be 1 = yes, 0 = no.
 clean_data <- clean_data %>%
   mutate(practices_18 = case_when(
@@ -135,8 +127,7 @@ clean_data <- clean_data %>%
   mutate(practices_19h_clean = ifelse(practices_18 == 1, practices_19h, NA)) %>%
   mutate(practices_19i_clean = ifelse(practices_18 == 1, practices_19i, NA))
 
-# Create new variable for only question 19 (since 18 is not practice-oriented,
-# it just identified who has identified a patient facing GBV in the past month)
+# Create new vector for only question 19 
 pract19_vars <- pract_vars[str_detect(pract_vars, "practices_19")]
 
 #' SUM SCORES FOR EACH DOMAIN
