@@ -167,7 +167,7 @@ scores <- clean_data %>%
     attitude_score = rowSums(select(., all_of(attitudes_sum)), na.rm = TRUE),
     empathy_score = rowSums(select(., all_of(empathy_vars)), na.rm = TRUE),
     confidence_score = rowSums(select(., all_of(conf_vars)), na.rm = TRUE),
-    practice_score = rowSums(select(., all_of(pract19_vars)), na.rm = FALSE)
+    practice_score = rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE)
   ) %>%
   select(
     participant_id, time_point, attitude_score, empathy_score,
