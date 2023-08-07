@@ -106,7 +106,8 @@ clean_data <- recode_likert_according_to_key(empathy_vars)
 #' this, the code assigns "NAs" to all variables in question 19 for respondents
 #' who answered "no" or "NA" in question 18, thereby cleaning up the data.
 
-# Recode question 18 to be 1 = yes, 0 = no.
+# Recode question 18 to be 1 = yes, 0 = no for providers having identified a woman
+# suffering DV in the past month.
 clean_data <- clean_data %>%
   mutate(practices_18 = case_when(
     practices_18 %in% c(2, 3) ~ 0,
