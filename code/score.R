@@ -106,51 +106,30 @@ clean_data <- recode_likert_according_to_key(empathy_vars)
 #' this, the code assigns "NAs" to all variables in question 19 for respondents
 #' who answered "no" or "NA" in question 18, thereby cleaning up the data.
 
-# Get column names matching 'practices'
-pract_vars <- names(data)[str_detect(names(data), "practices")]
-
-# Look for 'bad' data (i.e. responding to q19 when q18 is not answered as 'yes'
-# (as it uses skip logic))
-table(clean_data$practices_18, data$practices_19a)
-sum(is.na(data$practices_19a))
-
-clean_data <- clean_data %>%
-  mutate(practices_19a_clean = ifelse(practices_18 == 1, practices_19a, NA)) %>%
-  mutate(practices_19b_clean = ifelse(practices_18 == 1, practices_19b, NA))
-
-# Recode question 18 to be 1 = yes, they had identified a woman suffering domestic violence
-# in the past month, 0 = no
+# Recode question 18 to be 1 = yes, 0 = no for providers having identified a woman
+# suffering DV in the past month.
 clean_data <- clean_data %>%
   mutate(practices_18 = case_when(
     practices_18 %in% c(2, 3) ~ 0,
     TRUE ~ practices_18
   ))
 
-# Recode question 19 to be NA for those who had not identified a woman suffering domestic
-# violence in the past month in question 18
+# Create new variables "practices_19x_clean". If providers had identified a woman
+# suffering domestic violence in the past month, then include their answers to question
+# 19. If they had not identified a woman suffering DV in the past month, code as NA.
 clean_data <- clean_data %>%
-  mutate(across(starts_with("practices_19"), ~ case_when(
-    practices_18 != 1 ~ NA,
-    TRUE ~ .
-  )))
+  mutate(practices_clean_19a = ifelse(practices_18 == 1, practices_19a, NA)) %>%
+  mutate(practices_clean_19b = ifelse(practices_18 == 1, practices_19b, NA)) %>%
+  mutate(practices_clean_19c = ifelse(practices_18 == 1, practices_19c, NA)) %>%
+  mutate(practices_clean_19d = ifelse(practices_18 == 1, practices_19d, NA)) %>%
+  mutate(practices_clean_19e = ifelse(practices_18 == 1, practices_19e, NA)) %>%
+  mutate(practices_clean_19f = ifelse(practices_18 == 1, practices_19f, NA)) %>%
+  mutate(practices_clean_19g = ifelse(practices_18 == 1, practices_19g, NA)) %>%
+  mutate(practices_clean_19h = ifelse(practices_18 == 1, practices_19h, NA)) %>%
+  mutate(practices_clean_19i = ifelse(practices_18 == 1, practices_19i, NA))
 
-# Recode question 19 to be NA for those who had not answered question 18 (where 18 = NA)
-clean_data <- clean_data %>%
-  mutate(across(starts_with("practices_19"), ~ case_when(
-    is.na(practices_18) ~ NA,
-    TRUE ~ .
-  )))
-
-# Recode question 19 vars to be 1 = correct answer and 0 = incorrect answer
-clean_data <- clean_data %>%
-  mutate(across(starts_with("practices_19"), ~ case_when(
-    . != 1 ~ 0,
-    TRUE ~ .
-  )))
-
-# Create new variable for only question 19 (since 18 is not practice-oriented,
-# it just identified who has identified a patient facing GBV in the past month)
-pract19_vars <- pract_vars[str_detect(pract_vars, "practices_19")]
+# Get column names matching practices_clean_19
+pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
 
 #' SUM SCORES FOR EACH DOMAIN
 #' Using the key, score knowledge and system support variables
@@ -189,7 +168,7 @@ scores <- clean_data %>%
     attitude_score = rowSums(select(., all_of(attitudes_sum)), na.rm = TRUE),
     empathy_score = rowSums(select(., all_of(empathy_vars)), na.rm = TRUE),
     confidence_score = rowSums(select(., all_of(conf_vars)), na.rm = TRUE),
-    practice_score = rowSums(select(., all_of(pract19_vars)), na.rm = FALSE)
+    practice_score = rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE)
   ) %>%
   select(
     participant_id, time_point, attitude_score, empathy_score,
