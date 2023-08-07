@@ -114,39 +114,26 @@ pract_vars <- names(data)[str_detect(names(data), "practices")]
 table(clean_data$practices_18, data$practices_19a)
 sum(is.na(data$practices_19a))
 
-clean_data <- clean_data %>%
-  mutate(practices_19a_clean = ifelse(practices_18 == 1, practices_19a, NA)) %>%
-  mutate(practices_19b_clean = ifelse(practices_18 == 1, practices_19b, NA))
-
-# Recode question 18 to be 1 = yes, they had identified a woman suffering domestic violence
-# in the past month, 0 = no
+# Recode question 18 to be 1 = yes, 0 = no.
 clean_data <- clean_data %>%
   mutate(practices_18 = case_when(
     practices_18 %in% c(2, 3) ~ 0,
     TRUE ~ practices_18
   ))
 
-# Recode question 19 to be NA for those who had not identified a woman suffering domestic
-# violence in the past month in question 18
+# Create new variables "practices_19x_clean". If providers had identified a woman 
+# suffering domestic violence in the past month, then include their answers to question
+# 19. If they had not identified a woman suffering DV in the past month, code as NA.
 clean_data <- clean_data %>%
-  mutate(across(starts_with("practices_19"), ~ case_when(
-    practices_18 != 1 ~ NA,
-    TRUE ~ .
-  )))
-
-# Recode question 19 to be NA for those who had not answered question 18 (where 18 = NA)
-clean_data <- clean_data %>%
-  mutate(across(starts_with("practices_19"), ~ case_when(
-    is.na(practices_18) ~ NA,
-    TRUE ~ .
-  )))
-
-# Recode question 19 vars to be 1 = correct answer and 0 = incorrect answer
-clean_data <- clean_data %>%
-  mutate(across(starts_with("practices_19"), ~ case_when(
-    . != 1 ~ 0,
-    TRUE ~ .
-  )))
+  mutate(practices_19a_clean = ifelse(practices_18 == 1, practices_19a, NA)) %>%
+  mutate(practices_19b_clean = ifelse(practices_18 == 1, practices_19b, NA)) %>%
+  mutate(practices_19c_clean = ifelse(practices_18 == 1, practices_19c, NA)) %>%
+  mutate(practices_19d_clean = ifelse(practices_18 == 1, practices_19d, NA)) %>%
+  mutate(practices_19e_clean = ifelse(practices_18 == 1, practices_19e, NA)) %>%
+  mutate(practices_19f_clean = ifelse(practices_18 == 1, practices_19f, NA)) %>%
+  mutate(practices_19g_clean = ifelse(practices_18 == 1, practices_19g, NA)) %>%
+  mutate(practices_19h_clean = ifelse(practices_18 == 1, practices_19h, NA)) %>%
+  mutate(practices_19i_clean = ifelse(practices_18 == 1, practices_19i, NA))
 
 # Create new variable for only question 19 (since 18 is not practice-oriented,
 # it just identified who has identified a patient facing GBV in the past month)
