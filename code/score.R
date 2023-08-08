@@ -31,6 +31,7 @@ answers <- clean_data %>%
 key_only <- key %>%
   select(matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
 
+# ATTITUDES  -------------------------------------------------------------------
 recode_likert_according_to_key <- function(variable_names_to_recode) {
   #' This function is designed to modify attitude variable scores related to Gender-Based Violence (GBV)
   #' based on a provided key. The key indicates whether a positive answer is represented by 1 or 5

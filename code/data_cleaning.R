@@ -291,6 +291,13 @@ data <- data %>%
     position_years_clean = ifelse(!is.na(year_diff), year_diff, position_years)
   )
 
+# change missing responses for knowledge questions from "NA" to 99
+data <- data %>%
+  mutate(across(
+    .cols = contains("knowledge"),
+    .fns = ~ replace_na(., 99)
+  ))
+
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 saveRDS(data, file = path_to_clean_rds)
