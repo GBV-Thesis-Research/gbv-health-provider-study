@@ -1,0 +1,41 @@
+---
+title: "MacArthur Competence Assessment Tool for Clinical Research (MacCAT-CR) DiSC Supplement Analysis"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+   bookdown::word_document2:
+      fig_caption: yes
+      toc: true
+      toc_depth: 2
+      reference_docx: "../template/template.docx"
+---
+
+```{r, setup, include=FALSE, warning = FALSE, message=FALSE}
+library(stringr)
+library(officedown)
+library(officer) 
+library(knitr)
+current_wd <- getwd()
+
+if(endsWith(current_wd, "maccatcr")){
+  disc_project_wd <- current_wd
+} else if (endsWith(current_wd, "/paper")) {
+  disc_project_wd <- str_remove(current_wd, "/paper")   
+} else {
+  print("Got a WD that's not handled in the If-else ladder yet")
+}
+
+knitr::opts_chunk$set(fig.align = 'center',
+                      echo = FALSE,
+                      warning = FALSE, 
+                      message = FALSE,
+                      dpi = 300)
+
+## SOURCE DATA
+#source(paste(disc_project_wd, "/code/data_import.R", sep = ""))
+
+## SOURCE FIGURES AND TABLES
+source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
+source(paste(disc_project_wd, "/code/icc.R", sep = ""))
+source(paste(disc_project_wd, "/code/results.R", sep = ""))
+
+```
