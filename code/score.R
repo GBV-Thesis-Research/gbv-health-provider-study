@@ -98,41 +98,11 @@ empathy_vars <- names(data)[str_detect(names(data), "empathy")]
 clean_data <- recode_likert_according_to_key(empathy_vars)
 
 # PRACTICES --------------------------------------------------------------------
-#' Clean up data
-#'
-#' The code below addresses a skip logic issue between questions 18 and 19.
-#' In the survey, respondents who answered "no" or "NA" to question 18 were not
-#' supposed to answer question 19. However, due to inconsistencies, many respondents
-#' who answered "no" or "NA" on question 18 still answered question 19. To resolve
-#' this, the code assigns "NAs" to all variables in question 19 for respondents
-#' who answered "no" or "NA" in question 18, thereby cleaning up the data.
-
-# Recode question 18 to be 1 = yes, 0 = no for providers having identified a woman
-# suffering DV in the past month.
-clean_data <- clean_data %>%
-  mutate(practices_18 = case_when(
-    practices_18 %in% c(2, 3) ~ 0,
-    TRUE ~ practices_18
-  ))
-
-# Create new variables "practices_19x_clean". If providers had identified a woman
-# suffering domestic violence in the past month, then include their answers to question
-# 19. If they had not identified a woman suffering DV in the past month, code as NA.
-clean_data <- clean_data %>%
-  mutate(practices_clean_19a = ifelse(practices_18 == 1, practices_19a, NA)) %>%
-  mutate(practices_clean_19b = ifelse(practices_18 == 1, practices_19b, NA)) %>%
-  mutate(practices_clean_19c = ifelse(practices_18 == 1, practices_19c, NA)) %>%
-  mutate(practices_clean_19d = ifelse(practices_18 == 1, practices_19d, NA)) %>%
-  mutate(practices_clean_19e = ifelse(practices_18 == 1, practices_19e, NA)) %>%
-  mutate(practices_clean_19f = ifelse(practices_18 == 1, practices_19f, NA)) %>%
-  mutate(practices_clean_19g = ifelse(practices_18 == 1, practices_19g, NA)) %>%
-  mutate(practices_clean_19h = ifelse(practices_18 == 1, practices_19h, NA)) %>%
-  mutate(practices_clean_19i = ifelse(practices_18 == 1, practices_19i, NA))
 
 # Get column names matching practices_clean_19
 pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
 
-#' SUM SCORES FOR EACH DOMAIN
+#' SUM SCORES FOR EACH DOMAIN -------------------------------------------------
 #' Using the key, score knowledge and system support variables
 knowledge_sys_support_key <- key %>%
   select(matches("knowledge|system_support"))
