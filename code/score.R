@@ -93,7 +93,7 @@ clean_data <- clean_data %>%
 #' for each question in the "empathy vars" set. The function standardizes the scores to ensure higher
 #' values consistently indicate more empathy towards those effected by GBV.
 
-#' Get column names matching 'empathy'
+# Get column names matching 'empathy'
 empathy_vars <- names(data)[str_detect(names(data), "empathy")]
 clean_data <- recode_likert_according_to_key(empathy_vars)
 
