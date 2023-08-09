@@ -28,9 +28,12 @@ key <- raw_gbv_survey_data %>%
   filter(participant_id == "KEY") %>%
   select(everything())
 
+data <- raw_gbv_survey_data %>%
+  mutate(time_point = if_else(date %in% c("2003-07-03", "2003-07-10", "2017-07-10", "2023-07-03", "2023-07-10"), 3, time_point))
+
 # Drop participants that have not consented to have their data used for research
 # Drops from 972 to 929 (removes 43 rows)
-data <- raw_gbv_survey_data %>%
+data <- data %>%
   filter(consent == 1) %>%
   filter(!date %in% c("2021-06-18", "2021-06-14")) %>%
   filter(municipality != "Dili") %>%
@@ -290,6 +293,47 @@ data <- data %>%
     ),
     position_years_clean = ifelse(!is.na(year_diff), year_diff, position_years)
   )
+
+# change missing responses for knowledge questions from "NA" to 99
+data <- data %>%
+  mutate(across(
+    .cols = contains("knowledge"),
+    .fns = ~ replace_na(., 99)
+  ))
+
+#' The code below addresses a skip logic issue between questions 18 and 19.
+#' In the survey, respondents who answered "no" or "NA" to question 18 were not
+#' supposed to answer question 19. However, due to inconsistencies, many respondents
+#' who answered "no" or "NA" on question 18 still answered question 19. To resolve
+#' this, the code creates a new variable "practices_clean_19x" and assigns "NAs"
+#' to all variables in question 19 for respondents who answered "no" or "NA" in
+#' question 18, thereby cleaning up the data.
+
+# Recode question 18 to be 1 = yes, 0 = no for providers having identified a woman
+# suffering DV in the past month.
+data <- data %>%
+  mutate(practices_18 = case_when(
+    practices_18 %in% c(2, 3) ~ 0,
+    TRUE ~ practices_18
+  ))
+
+# Create new variables "practices_clean_19x". If providers had identified a woman
+# suffering domestic violence in the past month, then include their answers to question
+# 19. If they had not identified a woman suffering DV in the past month, code as NA.
+data <- data %>%
+  mutate(practices_clean_19a = ifelse(practices_18 == 1, practices_19a, NA)) %>%
+  mutate(practices_clean_19b = ifelse(practices_18 == 1, practices_19b, NA)) %>%
+  mutate(practices_clean_19c = ifelse(practices_18 == 1, practices_19c, NA)) %>%
+  mutate(practices_clean_19d = ifelse(practices_18 == 1, practices_19d, NA)) %>%
+  mutate(practices_clean_19e = ifelse(practices_18 == 1, practices_19e, NA)) %>%
+  mutate(practices_clean_19f = ifelse(practices_18 == 1, practices_19f, NA)) %>%
+  mutate(practices_clean_19g = ifelse(practices_18 == 1, practices_19g, NA)) %>%
+  mutate(practices_clean_19h = ifelse(practices_18 == 1, practices_19h, NA)) %>%
+  mutate(practices_clean_19i = ifelse(practices_18 == 1, practices_19i, NA))
+
+# Drop original question 19 from data
+data <- data %>%
+  select(-starts_with("practices_19"))
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
