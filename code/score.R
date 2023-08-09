@@ -133,19 +133,23 @@ clean_data <- clean_data %>%
 pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
 
 # CREATE SUB-DOMAINS ---------------------------------------------------------------
-# The pre/post test had 5 main domains, with knowledge and attitudes having sub-domains. 
+# The pre/post test had 5 main domains, with knowledge and attitudes having sub-domains.
 # The code below creates those sub-domains for scoring purposes.
 
 # Create knowledge sub-domains (4): general knowledge, warning signs, appropriate ways
 # to ask about GBV, and helpful responses to support a woman subjected to GBV
-
-f
+know_vars_general <- names(clean_data)[str_detect(names(data), "knowledge_7")]
+know_vars_warning <- names(clean_data)[str_detect(names(data), "knowledge_8")]
+know_vars_appropriate <- names(clean_data)[str_detect(names(data), "knowledge_9")]
+know_vars_helpful <- names(clean_data)[str_detect(names(data), "knowledge_10")]
 
 # Create attitudes sub-domains (4): general attitudes towards GBV and the health provider role,
-# acceptability for a man to hit his partner, attitudes towards gender roles, 
+# acceptability for a man to hit his partner, attitudes towards gender roles,
 # attitudes towards professional roles
-
-
+att_vars_general <- names(clean_data)[str_detect(names(data), "attitudes_11")]
+att_vars_acceptability <- names(clean_data)[str_detect(names(data), "attitudes_12")]
+att_vars_genderroles <- names(clean_data)[str_detect(names(data), "attitudes_13")]
+att_vars_profroles <- names(clean_data)[str_detect(names(data), "attitudes_14")]
 
 # SUM SCORES FOR EACH DOMAIN--------------------------------------------------
 # Using the key, score knowledge and system support variables
