@@ -31,6 +31,7 @@ answers <- clean_data %>%
 key_only <- key %>%
   select(matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
 
+# ATTITUDES -------------------------------------------------------------------
 recode_likert_according_to_key <- function(variable_names_to_recode) {
   #' This function is designed to modify attitude variable scores related to Gender-Based Violence (GBV)
   #' based on a provided key. The key indicates whether a positive answer is represented by 1 or 5
@@ -131,8 +132,23 @@ clean_data <- clean_data %>%
 # Get column names matching practices_clean_19
 pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
 
-#' SUM SCORES FOR EACH DOMAIN
-#' Using the key, score knowledge and system support variables
+# CREATE SUB-DOMAINS ---------------------------------------------------------------
+# The pre/post test had 5 main domains, with knowledge and attitudes having sub-domains. 
+# The code below creates those sub-domains for scoring purposes.
+
+# Create knowledge sub-domains (4): general knowledge, warning signs, appropriate ways
+# to ask about GBV, and helpful responses to support a woman subjected to GBV
+
+f
+
+# Create attitudes sub-domains (4): general attitudes towards GBV and the health provider role,
+# acceptability for a man to hit his partner, attitudes towards gender roles, 
+# attitudes towards professional roles
+
+
+
+# SUM SCORES FOR EACH DOMAIN--------------------------------------------------
+# Using the key, score knowledge and system support variables
 knowledge_sys_support_key <- key %>%
   select(matches("knowledge|system_support"))
 
