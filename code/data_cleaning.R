@@ -20,7 +20,7 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 source(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
 source(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
-data <- readRDS(path_to_data_rds)
+path_to_data_clean_pid_rds <- paste(gbv_project_wd, "/data/gbv_data_clean_participant_ids.RDS", sep = "")
 
 # Lint current file
 style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
