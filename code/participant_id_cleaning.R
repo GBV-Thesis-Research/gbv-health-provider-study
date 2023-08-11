@@ -43,8 +43,8 @@ data <- data %>%
 # Standardize municipality names
 data <- data %>%
   mutate(municipality = if_else(municipality %in% c("LIQUICA", "Liquisa", "LIQUISA", "Liqujca"),
-                                "Liquica",
-                                municipality
+    "Liquica",
+    municipality
   ))
 
 # Filter out identical records which were accidentally imported into RedCap twice
@@ -232,5 +232,4 @@ data <- data %>%
 columns_to_move <- c("participant_id", "participant_id_original", "time_point")
 
 # Write data to folder
-path_to_data_rds <- paste(gbv_project_wd, "/data/gbv_data_clean.RDS", sep = "")
 saveRDS(data, file = path_to_data_rds)
