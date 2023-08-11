@@ -230,6 +230,3 @@ data <- data %>%
   rename(participant_id = data_id)
 
 columns_to_move <- c("participant_id", "participant_id_original", "time_point")
-
-# Write data to folder
-saveRDS(data, file = path_to_data_rds)
