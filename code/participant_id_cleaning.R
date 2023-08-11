@@ -20,7 +20,7 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 source(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
 
 # Lint current file
-style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+style_file(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
 # DATA MANAGEMENT --------------------------------------------------------------
 # Separate out key from data (key is the redcap entry form containing correct answers)
