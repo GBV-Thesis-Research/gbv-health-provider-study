@@ -17,6 +17,9 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
+# Lint current file
+style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+
 source(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
 
 # DATA MANAGEMENT --------------------------------------------------------------
@@ -74,11 +77,6 @@ data <- data %>%
 
 ## Clean all the PIDs
 source(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
-
-# Lint current file
-style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
-
-# DATA MANAGEMENT --------------------------------------------------------------
 
 # Clean up demographic data
 data <- data %>%
