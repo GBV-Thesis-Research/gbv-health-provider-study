@@ -174,6 +174,19 @@ data <- data %>%
   mutate(practices_clean_19h = ifelse(practices_18 == 1, practices_19h, NA)) %>%
   mutate(practices_clean_19i = ifelse(practices_18 == 1, practices_19i, NA))
 
+data <- data %>%
+  mutate(training_group = case_when(
+    date %in% c("2021-07-12", "2021-07-16") ~ "Liquica R1 and R2",
+    date %in% c("2021-08-17", "2021-08-16", "2021-08-20") ~ "Bazartete R1 and R2",
+    date %in% c("2021-09-20", "2021-09-24") & municipality == "Liquica" ~ "Maubara R1",
+    date %in% c("2021-10-15", "2021-10-11") ~ "Maubara R2",
+    date %in% c("2021-07-19", "2021-07-23") ~ "Ermera combined R1",
+    date %in% c("2021-10-18", "2021-10-22") ~ "Ermera combined R2",
+    date %in% c("2021-09-13", "2021-09-17") ~ "Atsabe",
+    date %in% c("2021-10-26", "2021-10-30") ~ "Letefoho",
+    date %in% c("2021-09-20", "2021-09-24") & municipality == "Ermera" ~ "Hatolia",
+  ))
+
 # Drop original question 19 from data
 data <- data %>%
   select(-starts_with("practices_19"))
