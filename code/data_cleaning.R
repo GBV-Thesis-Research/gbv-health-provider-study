@@ -18,17 +18,67 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 }
 
 source(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
-source(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
-path_to_data_clean_pid_rds <- paste(gbv_project_wd, "/data/gbv_data_clean_participant_ids.RDS", sep = "")
+# DATA MANAGEMENT --------------------------------------------------------------
+# Separate out key from data (key is the redcap entry form containing correct answers)
+key <- raw_gbv_survey_data %>%
+  filter(participant_id == "KEY") %>%
+  select(everything())
+
+data <- raw_gbv_survey_data %>%
+  mutate(time_point = if_else(date %in% c("2003-07-03", "2003-07-10", "2017-07-10", "2023-07-03", "2023-07-10"), 3, time_point)) %>%
+  filter(time_point != 3)
+
+# Drop participants that have not consented to have their data used for research
+# Drops from 972 to 929 (removes 43 rows)
+data <- data %>%
+  filter(consent == 1) %>%
+  filter(!date %in% c("2021-06-18", "2021-06-14")) %>%
+  filter(municipality != "Dili") %>%
+  filter(participant_id != "KEY")
+
+# Standardize municipality names
+data <- data %>%
+  mutate(municipality = if_else(municipality %in% c("LIQUICA", "Liquisa", "LIQUISA", "Liqujca"),
+    "Liquica",
+    municipality
+  ))
+
+# Filter out identical records which were accidentally imported into RedCap twice
+# by the HAMNASA data collection team
+# Drops from 929 to 416 (removes 513 rows)
+columns_to_not_select <- ("record_id")
+all_columns <- colnames(data)
+
+# When the data is first imported, X does not exist in the data. However, it
+# exists later. This is to handle that case.
+if ("X" %in% all_columns) {
+  columns_to_not_select <- c(columns_to_not_select, "X")
+}
+data <- data %>%
+  select(-all_of(columns_to_not_select)) %>%
+  distinct()
+
+# Fix dates that are empty
+data <- data %>%
+  mutate(date = case_when(
+    date == "" & facility %in% c("hatulia", "Hatulia") & time_point == 2 ~ "2021-09-24",
+    date == "" & facility == "Maubara" & time_point == 1 ~ "2021-10-11",
+    date == "" & facility == "Maubara" & time_point == 2 ~ "2021-10-15",
+    TRUE ~ date
+  ))
+
+# Standardize municipality
+data <- data %>%
+  mutate(municipality = str_to_title(municipality))
+
+## Clean all the PIDs
+source(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
 # Lint current file
 style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
 
 # DATA MANAGEMENT --------------------------------------------------------------
-# Rearrange columns
-data <- data %>%
-  select(all_of(columns_to_move), everything())
 
 # Clean up demographic data
 data <- data %>%
