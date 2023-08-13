@@ -36,9 +36,15 @@ scores_summary_table <- clean_scores %>%
     by = time_point,
     type = c(system_support_score, practice_score) ~ "continuous",
     label = list(
-      knowledge_score ~ "Knowledge",
+      knowledge_general_score ~ "General knowledge",
+      knowledge_warning_score ~ "Warning signs",
+      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV",
+      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV",
       system_support_score ~ "System support",
-      attitude_score ~ "Attitude",
+      attitude_general_score ~ "General attitudes towards GBV and the health provider role",
+      attitude_acceptability_score ~ "Acceptability for a man to hit his partner",
+      attitude_genderroles_score ~ "Attitudes towards gender roles",
+      attitude_profroles_score ~ "Attitudes towards professional roles",
       empathy_score ~ "Empathy",
       confidence_score ~ "Confidence",
       practice_score ~ "Practice"
