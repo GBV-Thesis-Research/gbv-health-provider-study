@@ -156,9 +156,6 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
     knowledge_appropriate_score, knowledge_helpful_score, system_support_score
   )
 
-#' Sum attitudes scores and bind participant IDs and timepoint
-attitudes_sum <- c(att_vars, att12_vars)
-
 # Calculate scores by summing up variables for each row and bind participant IDs and timepoint
 scores <- clean_data %>%
   mutate(
