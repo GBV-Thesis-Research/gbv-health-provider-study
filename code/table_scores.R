@@ -48,7 +48,7 @@ scores_summary_table <- clean_scores %>%
       attitude_profroles_score ~ "Attitudes towards professional roles (21)",
       empathy_score ~ "Empathy (16)",
       confidence_score ~ "Confidence (10)",
-      practice_score ~ "Practice"
+      practice_score ~ "Practice (9)"
     ),
     statistic = list(
       all_continuous() ~ "{mean} ({sd})"
