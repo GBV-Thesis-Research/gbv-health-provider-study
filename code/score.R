@@ -145,24 +145,31 @@ knowledge_sys_support_scores_raw <- cbind(participant_ids, knowledge_sys_support
 
 knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
   mutate(
-    knowledge_score = rowSums(select(., all_of(matches("knowledge"))), na.rm = TRUE),
-    system_support_score = rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE)
+    knowledge_general_score = rowSums(select(., all_of(matches("knowledge_7"))), na.rm = TRUE),
+    knowledge_warning_score = rowSums(select(., all_of(matches("knowledge_8"))), na.rm = TRUE),
+    knowledge_appropriate_score = rowSums(select(., all_of(matches("knowledge_9"))), na.rm = TRUE),
+    knowledge_helpful_score = rowSums(select(., all_of(matches("knowledge_10"))), na.rm = TRUE),
+    system_support_score = rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE),
   ) %>%
-  select(participant_id, time_point, knowledge_score, system_support_score)
+  select(
+    participant_id, time_point, knowledge_general_score, knowledge_warning_score,
+    knowledge_appropriate_score, knowledge_helpful_score, system_support_score
+  )
 
-#' Sum attitudes scores and bind participant IDs and timepoint
-attitudes_sum <- c(att_vars, att12_vars)
-
-# Calculate scores by summing up variables for each row
+# Calculate scores by summing up variables for each row and bind participant IDs and timepoint
 scores <- clean_data %>%
   mutate(
-    attitude_score = rowSums(select(., all_of(attitudes_sum)), na.rm = TRUE),
+    attitude_general_score = rowSums(select(., all_of(matches("attitudes_11"))), na.rm = TRUE),
+    attitude_acceptability_score = rowSums(select(., all_of(matches("attitudes_12"))), na.rm = TRUE),
+    attitude_genderroles_score = rowSums(select(., all_of(matches("attitudes_13"))), na.rm = TRUE),
+    attitude_profroles_score = rowSums(select(., all_of(matches("attitudes_14"))), na.rm = TRUE),
     empathy_score = rowSums(select(., all_of(empathy_vars)), na.rm = TRUE),
     confidence_score = rowSums(select(., all_of(conf_vars)), na.rm = TRUE),
     practice_score = rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE)
   ) %>%
   select(
-    participant_id, time_point, attitude_score, empathy_score,
+    participant_id, time_point, attitude_general_score, attitude_acceptability_score,
+    attitude_genderroles_score, attitude_profroles_score, empathy_score,
     confidence_score, practice_score
   )
 

@@ -34,14 +34,21 @@ scores_summary_table <- clean_scores %>%
   select(-participant_id) %>%
   tbl_summary(
     by = time_point,
-    type = c(system_support_score, practice_score) ~ "continuous",
+    type = c(system_support_score, practice_score, knowledge_warning_score, 
+             knowledge_appropriate_score) ~ "continuous",
     label = list(
-      knowledge_score ~ "Knowledge",
-      system_support_score ~ "System support",
-      attitude_score ~ "Attitude",
-      empathy_score ~ "Empathy",
-      confidence_score ~ "Confidence",
-      practice_score ~ "Practice"
+      knowledge_general_score ~ "General knowledge (44)",
+      knowledge_warning_score ~ "Warning signs (21)",
+      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV (12)",
+      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV (23)",
+      system_support_score ~ "System support (6)",
+      attitude_general_score ~ "General attitudes towards GBV and the health provider role (34)",
+      attitude_acceptability_score ~ "Acceptability for a man to hit his partner (24)",
+      attitude_genderroles_score ~ "Attitudes towards gender roles (21)",
+      attitude_profroles_score ~ "Attitudes towards professional roles (21)",
+      empathy_score ~ "Empathy (16)",
+      confidence_score ~ "Confidence (10)",
+      practice_score ~ "Practice (9)"
     ),
     statistic = list(
       all_continuous() ~ "{mean} ({sd})"

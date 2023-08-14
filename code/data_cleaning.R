@@ -17,10 +17,10 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
+source(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
+
 # Lint current file
 style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
-
-source(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
 
 # DATA MANAGEMENT --------------------------------------------------------------
 # Separate out key from data (key is the redcap entry form containing correct answers)
