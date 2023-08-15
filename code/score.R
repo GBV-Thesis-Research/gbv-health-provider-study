@@ -18,15 +18,15 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
-source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
-source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
-
 style_file(paste(gbv_project_wd, "/code/score.R", sep = ""))
 
+source(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
+path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 clean_data <- readRDS(path_to_clean_rds)
 
 answers <- clean_data %>%
   select(participant_id, matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
+
 
 key_only <- key %>%
   select(matches("knowledge|attitudes|system_support|confidence|empathy|practices"))

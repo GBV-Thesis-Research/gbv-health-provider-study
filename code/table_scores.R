@@ -34,8 +34,10 @@ scores_summary_table <- clean_scores %>%
   select(-participant_id) %>%
   tbl_summary(
     by = time_point,
-    type = c(system_support_score, practice_score, knowledge_warning_score, 
-             knowledge_appropriate_score) ~ "continuous",
+    type = c(
+      system_support_score, practice_score, knowledge_warning_score,
+      knowledge_appropriate_score
+    ) ~ "continuous",
     label = list(
       knowledge_general_score ~ "General knowledge (44)",
       knowledge_warning_score ~ "Warning signs (21)",
