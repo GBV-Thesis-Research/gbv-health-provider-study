@@ -198,25 +198,27 @@ new_strings <- unique(sort(unlist(lapply(cleaned_facility_names, drop_letters_be
 
 
 data <- data %>%
-  mutate(facility = ifelse(facility %in% c("POSTO SAUDE", "POSTU DA SAUDE"), "DELETE", facility)) %>%
+  mutate(facility = ifelse(facility %in% c("POSTO SAUDE", "POSTU DA SAUDE", "JS200921", "CHC Centru Saude", "SSAM / DHS",
+                                           "HP", "Cgc"), "DELETE", facility)) %>%
   mutate(facility = ifelse(facility %in% c("PS ASULAU SARE", "CHC Asulau Sare"), "ASULAU", facility)) %>%
   mutate(facility = ifelse(facility %in% c("HP Hatulia B"), "HATULIA", facility)) %>%
-  mutate(facility = ifelse(facility %in% c("JS200921"), "DELETE", facility)) %>%
-  mutate(facility = ifelse(facility %in% c("HP Açumanu"), "ACUMANO", facility))
+  mutate(facility = ifelse(facility %in% c("HP Açumanu"), "ACUMANO", facility)) %>%
+  mutate(facility = ifelse(facility %in% c("CHC Raila o"), "RAILA", facility)) %>%
+  mutate(facility = ifelse(facility %in% c("PS VATUNAU EDIR"), "VATUNAU", facility))
 
 standard_facility_names <- c(
   "ACUMANO", "AIMETA", "ASULAU", "ASUMANU", "ATSABE", "BAKHITA", "BAURA",
-  "BAZARTETE", "CAICASSA", "GUISADURU", "DARULETE", "DEHO",
-  "EBENU", "EDIRI", "EKAPU", "ERMERA", "ESTADO", "FAHILEBU",
+  "BAZARTETE", "BUISADURO",  "CAICASSA", "GUISADURU", "DARULETE", "DEHO", "DELECO", 
+  "EBENU", "EDIRI", "EKAPU", "ERMERA", "ESTADO", "FAHILEBU", "FATUBESSI", 
   "FATUQUERO", "GLENO", "GOULOLO", "GUICU", "GUISARUDO",
-  "HATOLIA", "HATUGAU", "HATUHEI", "HATUQUESI",
-  "INTERNAMENTU", "KRAIK", "LADODO", "LAUHATA", "LEBUTELU", "LEIMEA",
-  "LEOTELA", "LETEFOHO", "LETEN", "LEUBASA", "LICAPAT",
-  "LIQUICA", "LISSA", "LODUDO", "LOIDAHAR", "MANULETE",
-  "MANUSAE", "MATATA", "MAUBARA", "MAUMETAK", "MOTAULUN",
-  "RAEGOA", "RAEMETA", "RAENABA", "RAERAGA", "RAILACO", "RAIMETA",
+  "HATULIA", "HATULAILETE", "HATUGAU", "HATUHEI", "HATUQUESI",
+  "INTERNAMENTU", "LEIMEA KRAIK", "LADODO", "LAUHATA", "LEBUTELU", "LEIMEA",
+  "LEOTELA", "LETEFOHO", "LEMEA LETEN", "LEUBASA", "LICAPAT", "LISAIKO",
+  "LIQUICA", "LEQUISALA", "LISSA", "LODUDO", "LOIDAHAR", "MANULETE", "PARAMI", "PONILALA", 
+  "MANUSAE", "MATATA", "MAUBARA", "MUBARA LISA","MAUMETAK", "MOTAULUN", "METAGOU", 
+  "RAILA", "RAEGOA", "RAEMETA", "RAENABA", "RAERAGA", "RAILAKO LETEN", "RAIMETA", "VATUBORO",
   "SIAMODO", "TATSABE", "TIBAR", "ULMERA",
-  "VATUNAU"
+  "VATUNAU", "ULUANA"
 )
 
 data_standardized <- data %>%
@@ -229,7 +231,8 @@ data_standardized <- data %>%
     })
   ) %>%
   select(facility, standardized_facility) %>%
-  arrange(standardized_facility)
+  arrange(standardized_facility) %>%
+  mutate(standardized_facility = ifelse(facility == 'DELETE', NULL, facility))
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
