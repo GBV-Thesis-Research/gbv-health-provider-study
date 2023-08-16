@@ -102,6 +102,12 @@ clean_data <- recode_likert_according_to_key(empathy_vars)
 # Get column names matching practices_clean_19
 pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
 
+# Recode practices as 0/1 (no/yes)
+clean_data <- clean_data %>%
+  mutate(
+    across(all_of(pract19_clean_vars), ~ ifelse(. == 2, 0, .))
+  )
+
 # CREATE SUB-DOMAINS ---------------------------------------------------------------
 # The pre/post test had 5 main domains, with knowledge and attitudes having sub-domains.
 # The code below creates those sub-domains for scoring purposes.
@@ -165,7 +171,7 @@ scores <- clean_data %>%
     attitude_profroles_score = (rowSums(select(., all_of(matches("attitudes_14"))), na.rm = TRUE) / 24) * 100,
     empathy_score = (rowSums(select(., all_of(empathy_vars)), na.rm = TRUE) / 64) * 100,
     confidence_score = (rowSums(select(., all_of(conf_vars)), na.rm = TRUE) / 40) * 100,
-    practice_score = (rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE))
+    practice_score = (rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE) / 9) * 100,
   ) %>%
   select(
     participant_id, time_point, attitude_general_score, attitude_acceptability_score,
