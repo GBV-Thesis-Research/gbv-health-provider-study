@@ -145,11 +145,11 @@ knowledge_sys_support_scores_raw <- cbind(participant_ids, knowledge_sys_support
 
 knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
   mutate(
-    knowledge_general_score = rowSums(select(., all_of(matches("knowledge_7"))), na.rm = TRUE),
-    knowledge_warning_score = rowSums(select(., all_of(matches("knowledge_8"))), na.rm = TRUE),
-    knowledge_appropriate_score = rowSums(select(., all_of(matches("knowledge_9"))), na.rm = TRUE),
-    knowledge_helpful_score = rowSums(select(., all_of(matches("knowledge_10"))), na.rm = TRUE),
-    system_support_score = rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE),
+    knowledge_general_score = (rowSums(select(., all_of(matches("knowledge_7"))), na.rm = TRUE) / 19) * 100,
+    knowledge_warning_score = (rowSums(select(., all_of(matches("knowledge_8"))), na.rm = TRUE) / 9) * 100,
+    knowledge_appropriate_score = (rowSums(select(., all_of(matches("knowledge_9"))), na.rm = TRUE) / 5) * 100,
+    knowledge_helpful_score = (rowSums(select(., all_of(matches("knowledge_10"))), na.rm = TRUE) / 10) * 100,
+    system_support_score = (rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE) / 6) * 100,
   ) %>%
   select(
     participant_id, time_point, knowledge_general_score, knowledge_warning_score,
