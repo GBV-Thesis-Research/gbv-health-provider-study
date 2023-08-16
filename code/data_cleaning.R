@@ -75,9 +75,6 @@ data <- data %>%
 data <- data %>%
   mutate(municipality = str_to_title(municipality))
 
-## Clean all the PIDs
-source(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
-
 # Clean up demographic data
 data <- data %>%
   mutate(sex_factored = factor(sex,
@@ -118,10 +115,6 @@ data <- data %>%
     position_years > 99, 2021 - position_years, position_years
   )) %>%
   select(-matches("fup"))
-
-# drop participant 11 due to having only post tests
-# (388 to 386 rows) removes 2 rows
-data <- data[data$participant_id != 11, ]
 
 # create an actual date column
 data$date_as_date_format <- ifelse(is.na(data$date), NA,
@@ -192,5 +185,5 @@ data <- data %>%
   select(-starts_with("practices_19"))
 
 # Write data to folder
-path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
+path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
 saveRDS(data, file = path_to_clean_rds)

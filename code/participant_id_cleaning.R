@@ -17,6 +17,11 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
+source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+
+path_to_imterim_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
+data <- readRDS(path_to_imterim_clean_rds)
+
 # Lint current file
 style_file(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
@@ -161,8 +166,16 @@ data <- data %>%
   select(-participant_id) %>%
   rename(participant_id = data_id)
 
+# drop participant 11 due to having only post tests
+# (388 to 386 rows) removes 2 rows
+data <- data[data$participant_id != 11, ]
+
 columns_to_move <- c("participant_id", "participant_id_original", "time_point")
 
 # Rearrange columns
 data <- data %>%
   select(all_of(columns_to_move), everything())
+
+# Write data to folder
+path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
+saveRDS(data, file = path_to_clean_rds)
