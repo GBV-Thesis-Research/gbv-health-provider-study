@@ -28,13 +28,13 @@ key <- raw_gbv_survey_data %>%
   filter(participant_id == "KEY") %>%
   select(everything())
 
-data <- raw_gbv_survey_data %>%
-  mutate(time_point = if_else(date %in% c("2003-07-03", "2003-07-10", "2017-07-10", "2023-07-03", "2023-07-10"), 3, time_point)) %>%
-  filter(time_point != 3)
+# data <- raw_gbv_survey_data %>%
+#   mutate(time_point = if_else(date %in% c("2003-07-03", "2003-07-10", "2017-07-10", "2023-07-03", "2023-07-10"), 3, time_point)) %>%
+#   filter(time_point != 3)
 
 # Drop participants that have not consented to have their data used for research
 # Drops from 972 to 929 (removes 43 rows)
-data <- data %>%
+data <- raw_gbv_survey_data %>%
   filter(consent == 1) %>%
   filter(!date %in% c("2021-06-18", "2021-06-14")) %>%
   filter(municipality != "Dili") %>%
@@ -183,6 +183,53 @@ data <- data %>%
 # Drop original question 19 from data
 data <- data %>%
   select(-starts_with("practices_19"))
+
+# Standardize facility name
+drop_letters_before_longer_part <- function(string) {
+  longest_part <- gsub("^.* ", "", string) # Extract the longer part
+  return(toupper(longest_part))
+}
+
+# This is just hacking to try to get a standard list of facilities
+unique_facility_names <- unique(data$facility)
+cleaned_facility_names <- sort(toupper(unique_facility_names))
+# Apply the function to the vector of strings and convert to a vector
+new_strings <- unique(sort(unlist(lapply(cleaned_facility_names, drop_letters_before_longer_part))))
+
+
+data <- data %>%
+  mutate(facility = ifelse(facility %in% c("POSTO SAUDE", "POSTU DA SAUDE"), "DELETE", facility)) %>%
+  mutate(facility = ifelse(facility %in% c("PS ASULAU SARE", "CHC Asulau Sare"), "ASULAU", facility)) %>%
+  mutate(facility = ifelse(facility %in% c("HP Hatulia B"), "HATULIA", facility)) %>%
+  mutate(facility = ifelse(facility %in% c("JS200921"), "DELETE", facility)) %>%
+  mutate(facility = ifelse(facility %in% c("HP Açumanu"), "ACUMANO", facility))
+
+standard_facility_names <- c(
+  "ACUMANO", "AIMETA", "ASULAU", "ASUMANU", "ATSABE", "BAKHITA", "BAURA",
+  "BAZARTETE", "CAICASSA", "GUISADURU", "DARULETE", "DEHO",
+  "EBENU", "EDIRI", "EKAPU", "ERMERA", "ESTADO", "FAHILEBU",
+  "FATUQUERO", "GLENO", "GOULOLO", "GUICU", "GUISARUDO",
+  "HATOLIA", "HATUGAU", "HATUHEI", "HATUQUESI",
+  "INTERNAMENTU", "KRAIK", "LADODO", "LAUHATA", "LEBUTELU", "LEIMEA",
+  "LEOTELA", "LETEFOHO", "LETEN", "LEUBASA", "LICAPAT",
+  "LIQUICA", "LISSA", "LODUDO", "LOIDAHAR", "MANULETE",
+  "MANUSAE", "MATATA", "MAUBARA", "MAUMETAK", "MOTAULUN",
+  "RAEGOA", "RAEMETA", "RAENABA", "RAERAGA", "RAILACO", "RAIMETA",
+  "SIAMODO", "TATSABE", "TIBAR", "ULMERA",
+  "VATUNAU"
+)
+
+data_standardized <- data %>%
+  mutate(facility_names_no_beginning = lapply(facility, drop_letters_before_longer_part)) %>%
+  mutate(
+    standardized_facility = map_chr(facility_names_no_beginning, function(fac) {
+      dist_matrix <- stringdist::stringdistmatrix(fac, standard_facility_names)
+      closest_standard <- standard_facility_names[which.min(dist_matrix)]
+      return(closest_standard)
+    })
+  ) %>%
+  select(facility, standardized_facility) %>%
+  arrange(standardized_facility)
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
