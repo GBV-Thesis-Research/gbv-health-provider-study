@@ -198,8 +198,10 @@ new_strings <- unique(sort(unlist(lapply(cleaned_facility_names, drop_letters_be
 
 
 data <- data %>%
-  mutate(facility = ifelse(facility %in% c("POSTO SAUDE", "POSTU DA SAUDE", "JS200921", "CHC Centru Saude", "SSAM / DHS",
-                                           "HP", "Cgc"), "DELETE", facility)) %>%
+  mutate(facility = ifelse(facility %in% c(
+    "POSTO SAUDE", "POSTU DA SAUDE", "JS200921", "CHC Centru Saude", "SSAM / DHS",
+    "HP", "Cgc"
+  ), "DELETE", facility)) %>%
   mutate(facility = ifelse(facility %in% c("PS ASULAU SARE", "CHC Asulau Sare"), "ASULAU", facility)) %>%
   mutate(facility = ifelse(facility %in% c("HP Hatulia B"), "HATULIA", facility)) %>%
   mutate(facility = ifelse(facility %in% c("HP Açumanu"), "ACUMANO", facility)) %>%
@@ -208,20 +210,20 @@ data <- data %>%
 
 standard_facility_names <- c(
   "ACUMANO", "AIMETA", "ASULAU", "ASUMANU", "ATSABE", "BAKHITA", "BAURA",
-  "BAZARTETE", "BUISADURO",  "CAICASSA", "GUISADURU", "DARULETE", "DEHO", "DELECO", 
-  "EBENU", "EDIRI", "EKAPU", "ERMERA", "ESTADO", "FAHILEBU", "FATUBESSI", 
+  "BAZARTETE", "BUISADURO", "CAICASSA", "GUISADURU", "DARULETE", "DEHO", "DELECO",
+  "EBENU", "EDIRI", "EKAPU", "ERMERA", "ESTADO", "FAHILEBU", "FATUBESSI",
   "FATUQUERO", "GLENO", "GOULOLO", "GUICU", "GUISARUDO",
   "HATULIA", "HATULAILETE", "HATUGAU", "HATUHEI", "HATUQUESI",
   "INTERNAMENTU", "LEIMEA KRAIK", "LADODO", "LAUHATA", "LEBUTELU", "LEIMEA",
   "LEOTELA", "LETEFOHO", "LEMEA LETEN", "LEUBASA", "LICAPAT", "LISAIKO",
-  "LIQUICA", "LEQUISALA", "LISSA", "LODUDO", "LOIDAHAR", "MANULETE", "PARAMI", "PONILALA", 
-  "MANUSAE", "MATATA", "MAUBARA", "MUBARA LISA","MAUMETAK", "MOTAULUN", "METAGOU", 
+  "LIQUICA", "LEQUISALA", "LISSA", "LODUDO", "LOIDAHAR", "MANULETE", "PARAMI", "PONILALA",
+  "MANUSAE", "MATATA", "MAUBARA", "MUBARA LISA", "MAUMETAK", "MOTAULUN", "METAGOU",
   "RAILA", "RAEGOA", "RAEMETA", "RAENABA", "RAERAGA", "RAILAKO LETEN", "RAIMETA", "VATUBORO",
   "SIAMODO", "TATSABE", "TIBAR", "ULMERA",
   "VATUNAU", "ULUANA"
 )
 
-data_standardized <- data %>%
+data <- data %>%
   mutate(facility_names_no_beginning = lapply(facility, drop_letters_before_longer_part)) %>%
   mutate(
     standardized_facility = map_chr(facility_names_no_beginning, function(fac) {
@@ -230,9 +232,9 @@ data_standardized <- data %>%
       return(closest_standard)
     })
   ) %>%
-  select(facility, standardized_facility) %>%
+  # select(facility, standardized_facility) %>%
   arrange(standardized_facility) %>%
-  mutate(standardized_facility = ifelse(facility == 'DELETE', NULL, facility))
+  mutate(standardized_facility = ifelse(standardized_facility %in% c("DELETE"), NULL, standardized_facility))
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
