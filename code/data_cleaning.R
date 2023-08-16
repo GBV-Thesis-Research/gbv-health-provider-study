@@ -190,13 +190,6 @@ drop_letters_before_longer_part <- function(string) {
   return(toupper(longest_part))
 }
 
-# This is just hacking to try to get a standard list of facilities
-unique_facility_names <- unique(data$facility)
-cleaned_facility_names <- sort(toupper(unique_facility_names))
-# Apply the function to the vector of strings and convert to a vector
-new_strings <- unique(sort(unlist(lapply(cleaned_facility_names, drop_letters_before_longer_part))))
-
-
 data <- data %>%
   mutate(facility = ifelse(facility %in% c(
     "POSTO SAUDE", "POSTU DA SAUDE", "JS200921", "CHC Centru Saude", "SSAM / DHS",
