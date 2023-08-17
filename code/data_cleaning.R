@@ -208,7 +208,9 @@ data <- data %>%
     })
   ) %>%
   mutate(standardized_facility = ifelse(facility_name_title_case %in% c(
-    "Ssam / Dhs", "Ps Estado", "Postu Da Saude", "Chc Centru Saude", "Js200921", "Hp", "Posto Saude", "Cgc"
+    "Ssam / Dhs", "Centru Saude Deho", "Ps Estado", "Postu Da Saude",
+    "Chc Centru Saude", "Js200921", "Hp", "Hp Deleco", "Hp Ekapu", "Ps Fatuquero",
+    "Ps Vatunau", "Hp Lebutelo", "Posto Saude", "Cs Internamentu"
   ), NA, standardized_facility)) %>%
   relocate(standardized_facility, .after = facility)
 # Write data to folder
