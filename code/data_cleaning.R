@@ -23,7 +23,7 @@ source(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
 style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
 
 # DATA MANAGEMENT --------------------------------------------------------------
-path_to_facility_file <- paste(gbv_project_wd, "/data/extra_data/facility_names.xlsx", sep = "")
+path_to_facility_file <- paste(gbv_project_wd, "/extra_data/facility_names.xlsx", sep = "")
 
 standard_facility_names <- read_excel(path_to_facility_file, sheet = "facilities")
 standard_facility_names <- standard_facility_names %>% mutate(full_name = paste(type, name, sep = " "))
