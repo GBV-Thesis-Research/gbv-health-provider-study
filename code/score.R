@@ -102,6 +102,12 @@ clean_data <- recode_likert_according_to_key(empathy_vars)
 # Get column names matching practices_clean_19
 pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
 
+# Recode practices as 0/1 (no/yes)
+clean_data <- clean_data %>%
+  mutate(
+    across(all_of(pract19_clean_vars), ~ ifelse(. == 2, 0, .))
+  )
+
 # CREATE SUB-DOMAINS ---------------------------------------------------------------
 # The pre/post test had 5 main domains, with knowledge and attitudes having sub-domains.
 # The code below creates those sub-domains for scoring purposes.
@@ -145,11 +151,11 @@ knowledge_sys_support_scores_raw <- cbind(participant_ids, knowledge_sys_support
 
 knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
   mutate(
-    knowledge_general_score = rowSums(select(., all_of(matches("knowledge_7"))), na.rm = TRUE),
-    knowledge_warning_score = rowSums(select(., all_of(matches("knowledge_8"))), na.rm = TRUE),
-    knowledge_appropriate_score = rowSums(select(., all_of(matches("knowledge_9"))), na.rm = TRUE),
-    knowledge_helpful_score = rowSums(select(., all_of(matches("knowledge_10"))), na.rm = TRUE),
-    system_support_score = rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE),
+    knowledge_general_score = (rowSums(select(., all_of(matches("knowledge_7"))), na.rm = TRUE) / 19) * 100,
+    knowledge_warning_score = (rowSums(select(., all_of(matches("knowledge_8"))), na.rm = TRUE) / 9) * 100,
+    knowledge_appropriate_score = (rowSums(select(., all_of(matches("knowledge_9"))), na.rm = TRUE) / 5) * 100,
+    knowledge_helpful_score = (rowSums(select(., all_of(matches("knowledge_10"))), na.rm = TRUE) / 10) * 100,
+    system_support_score = (rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE) / 6) * 100,
   ) %>%
   select(
     participant_id, time_point, knowledge_general_score, knowledge_warning_score,
@@ -159,13 +165,13 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
 # Calculate scores by summing up variables for each row and bind participant IDs and timepoint
 scores <- clean_data %>%
   mutate(
-    attitude_general_score = rowSums(select(., all_of(matches("attitudes_11"))), na.rm = TRUE),
-    attitude_acceptability_score = rowSums(select(., all_of(matches("attitudes_12"))), na.rm = TRUE),
-    attitude_genderroles_score = rowSums(select(., all_of(matches("attitudes_13"))), na.rm = TRUE),
-    attitude_profroles_score = rowSums(select(., all_of(matches("attitudes_14"))), na.rm = TRUE),
-    empathy_score = rowSums(select(., all_of(empathy_vars)), na.rm = TRUE),
-    confidence_score = rowSums(select(., all_of(conf_vars)), na.rm = TRUE),
-    practice_score = rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE)
+    attitude_general_score = (rowSums(select(., all_of(matches("attitudes_11"))), na.rm = TRUE) / 40) * 100,
+    attitude_acceptability_score = (rowSums(select(., all_of(matches("attitudes_12"))), na.rm = TRUE) / 14) * 100,
+    attitude_genderroles_score = (rowSums(select(., all_of(matches("attitudes_13"))), na.rm = TRUE) / 24) * 100,
+    attitude_profroles_score = (rowSums(select(., all_of(matches("attitudes_14"))), na.rm = TRUE) / 24) * 100,
+    empathy_score = (rowSums(select(., all_of(empathy_vars)), na.rm = TRUE) / 64) * 100,
+    confidence_score = (rowSums(select(., all_of(conf_vars)), na.rm = TRUE) / 40) * 100,
+    practice_score = (rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE) / 9) * 100,
   ) %>%
   select(
     participant_id, time_point, attitude_general_score, attitude_acceptability_score,
