@@ -190,25 +190,24 @@ data <- data %>%
   select(-starts_with("practices_19"))
 
 data <- data %>%
-  mutate(facility_names_no_beginning = map(facility, str_to_title)) %>%
-  mutate(facility = ifelse(facility_names_no_beginning %in% c("Ps Asulau"), "Asulau Sare", facility)) %>%
-  mutate(facility = ifelse(facility_names_no_beginning %in% c("Ps Vatunau Ediri"), "Ediri", facility)) %>%
-  mutate(facility = ifelse(facility_names_no_beginning %in% c("Postu Saude Leotela"), "Leotala", facility)) %>%
-  mutate(facility = ifelse(facility_names_no_beginning %in% c("Chcguisaduru"), "Guissarudo", facility)) %>%
-  mutate(facility = ifelse(facility_names_no_beginning %in% c("Ps Bakhita"), "Bakita Eraulo", facility)) %>%
-  mutate(facility = ifelse(facility_names_no_beginning %in% c("Hp Leofela"), "Leotala", facility)) %>%
-  mutate(facility = ifelse(facility_names_no_beginning %in% c("Ps Falihbo"), "Fahilebu", facility))
+  mutate(facility_name_title_case = map(facility, str_to_title)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Asulau"), "Asulau Sare", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Vatunau Ediri"), "Ediri", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Postu Saude Leotela"), "Leotala", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Chcguisaduru"), "Guissarudo", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Bakhita"), "Bakita Eraulo", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Hp Leofela"), "Leotala", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Falihbo"), "Fahilebu", facility_name_title_case))
 
 data <- data %>%
   mutate(
-    standardized_facility = map_chr(facility_names_no_beginning, function(fac) {
+    standardized_facility = map_chr(facility_name_title_case, function(fac) {
       dist_matrix <- stringdist::stringdistmatrix(fac, standard_facility_names$full_name)
       closest_standard <- standard_facility_names$full_name[which.min(dist_matrix)]
       return(closest_standard)
     })
   ) %>%
-  # select(facility, facility_names_no_beginning, standardized_facility) %>%
-  mutate(standardized_facility = ifelse(facility_names_no_beginning %in% c(
+  mutate(standardized_facility = ifelse(facility_name_title_case %in% c(
     "Ssam / Dhs", "Ps Estado", "Postu Da Saude", "Chc Centru Saude", "Js200921", "Hp", "Posto Saude", "Cgc"
   ), NA, standardized_facility)) %>%
   relocate(standardized_facility, .after = facility)
