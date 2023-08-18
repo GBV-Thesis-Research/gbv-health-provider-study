@@ -106,6 +106,17 @@ participant_id_table <-
     label = list(status ~ "Exclusive timepoint status", inclusive_status ~ "Inclusive timepoint status")
   )
 
+# Check for mismatched demographic data from pre, post-intensive, and follow-up tests
+dem_info <- clean_data %>%
+  select("participant_id_3", "time_point", "sex", "age", "position", "position_years_clean")
+
+dem_pre <- dem_info %>% filter(time_point == 1)
+dem_mid <- dem_info %>% filter(time_point == 2)
+dem_post <- dem_info %>% filter(time_point == 3)
+
+names(dem_pre) <- paste0("pre_", names(dem_pre))
+names(dem_mid) <- paste0("mid_", names(dem_mid))
+names(dem_post) <- paste0("post_", names(dem_post))
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
