@@ -5,6 +5,8 @@
 ## Author: Jessica Dyer
 ##################################################
 
+# NOTE: https://www.danieldsjoberg.com/gtsummary/articles/gallery.html#paired-test
+
 #### WD SETUP ####
 current_wd <- getwd()
 
@@ -31,9 +33,11 @@ path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.R
 clean_scores <- readRDS(path_to_clean_rds_scores)
 
 scores_summary_table <- clean_scores %>%
-  select(-participant_id) %>%
+  # filter(status == "All three") %>%
+  filter(time_point != 1) %>%
   tbl_summary(
-    by = time_point,
+    include = -c(participant_id_3, inclusive_status, region, status),
+    by = c(time_point),
     type = c(
       system_support_score, practice_score, knowledge_warning_score,
       knowledge_appropriate_score
@@ -58,5 +62,6 @@ scores_summary_table <- clean_scores %>%
     digits = all_continuous() ~ 2
   ) %>%
   add_p() %>%
-  add_n()
+  add_n() %>%
+  bold_p()
 scores_summary_table
