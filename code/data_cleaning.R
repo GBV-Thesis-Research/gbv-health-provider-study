@@ -33,13 +33,9 @@ key <- raw_gbv_survey_data %>%
   filter(participant_id == "KEY") %>%
   select(everything())
 
-data <- raw_gbv_survey_data %>%
-  mutate(time_point = if_else(date %in% c("2003-07-03", "2003-07-10", "2017-07-10", "2023-07-03", "2023-07-10"), 3, time_point))
-# filter(time_point != 3)
-
 # Drop participants that have not consented to have their data used for research
 # Drops from 972 to 929 (removes 43 rows)
-data <- data %>%
+data <- raw_gbv_survey_data %>%
   filter(consent == 1) %>%
   filter(!date %in% c("2021-06-18", "2021-06-14")) %>%
   filter(municipality != "Dili") %>%

@@ -174,7 +174,7 @@ scores <- clean_data %>%
     practice_score = (rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE) / 9) * 100,
   ) %>%
   select(
-    participant_id_3, status, region, time_point, attitude_general_score, attitude_acceptability_score,
+    participant_id_3, status, inclusive_status, region, time_point, attitude_general_score, attitude_acceptability_score,
     attitude_genderroles_score, attitude_profroles_score, empathy_score,
     confidence_score, practice_score
   )
