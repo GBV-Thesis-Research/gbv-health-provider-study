@@ -23,6 +23,11 @@ source(paste(gbv_project_wd, "/code/data_import.R", sep = ""))
 style_file(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
 
 # DATA MANAGEMENT --------------------------------------------------------------
+path_to_facility_file <- paste(gbv_project_wd, "/extra_data/facility_names.xlsx", sep = "")
+
+standard_facility_names <- read_excel(path_to_facility_file, sheet = "facilities")
+standard_facility_names <- standard_facility_names %>% mutate(full_name = paste(type, name, sep = " "))
+
 # Separate out key from data (key is the redcap entry form containing correct answers)
 key <- raw_gbv_survey_data %>%
   filter(participant_id == "KEY") %>%
@@ -184,6 +189,30 @@ data <- data %>%
 data <- data %>%
   select(-starts_with("practices_19"))
 
+data <- data %>%
+  mutate(facility_name_title_case = map(facility, str_to_title)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Asulau"), "Asulau Sare", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Vatunau Ediri"), "Ediri", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Postu Saude Leotela"), "Leotala", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Chcguisaduru"), "Guissarudo", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Bakhita"), "Bakita Eraulo", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Hp Leofela"), "Leotala", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Falihbo"), "Fahilebu", facility_name_title_case))
+
+data <- data %>%
+  mutate(
+    standardized_facility = map_chr(facility_name_title_case, function(fac) {
+      dist_matrix <- stringdist::stringdistmatrix(fac, standard_facility_names$full_name)
+      closest_standard <- standard_facility_names$full_name[which.min(dist_matrix)]
+      return(closest_standard)
+    })
+  ) %>%
+  mutate(standardized_facility = ifelse(facility_name_title_case %in% c(
+    "Ssam / Dhs", "Centru Saude Deho", "Ps Estado", "Postu Da Saude",
+    "Chc Centru Saude", "Js200921", "Hp", "Hp Deleco", "Hp Ekapu", "Ps Fatuquero",
+    "Ps Vatunau", "Hp Lebutelo", "Posto Saude", "Cs Internamentu"
+  ), NA, standardized_facility)) %>%
+  relocate(standardized_facility, .after = facility)
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
 saveRDS(data, file = path_to_clean_rds)
