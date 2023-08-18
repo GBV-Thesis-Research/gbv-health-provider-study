@@ -212,7 +212,10 @@ data <- data %>%
     "Chc Centru Saude", "Js200921", "Hp", "Hp Deleco", "Hp Ekapu", "Ps Fatuquero",
     "Ps Vatunau", "Hp Lebutelo", "Posto Saude", "Cs Internamentu"
   ), NA, standardized_facility)) %>%
-  relocate(standardized_facility, .after = facility)
+  relocate(standardized_facility, .after = facility) %>%
+  left_join(standard_facility_names, by = c("standardized_facility" = "full_name"))
+
+
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
 saveRDS(data, file = path_to_clean_rds)

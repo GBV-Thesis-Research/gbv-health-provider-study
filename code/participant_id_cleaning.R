@@ -18,6 +18,8 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 }
 
 source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+# Lint current file
+style_file(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
 path_to_imterim_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
 path_to_link_log <- paste(gbv_project_wd, "/extra_data/link_log.xls", sep = "")
@@ -25,10 +27,6 @@ data <- readRDS(path_to_imterim_clean_rds)
 link_log <- read_excel(path_to_link_log) %>%
   select(participant_id_2, participant_id_3) %>%
   distinct(participant_id_2, .keep_all = TRUE)
-
-
-# Lint current file
-style_file(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
 data <- data %>%
   mutate(
@@ -45,12 +43,15 @@ data <- data %>%
     entries_3 = sum(time_point == 3)
   ) %>%
   mutate(status = ifelse(entries_1 == 1 & entries_2 == 1 & entries_3 == 1, "All three", NA)) %>%
-  mutate(status = ifelse(entries_1 == 1 & entries_2 == 1 & entries_3 == 0, "One and two", status)) %>%
-  mutate(status = ifelse(entries_1 == 1 & entries_2 == 0 & entries_3 == 1, "One and three", status)) %>%
-  mutate(status = ifelse(entries_1 == 0 & entries_2 == 1 & entries_3 == 1, "Two and three", status)) %>%
+  mutate(inclusive_status = ifelse(entries_1 == 1 & entries_2 == 1 & (entries_3 == 1 | entries_3 == 0), "One & two inclusive", NA)) %>%
+  mutate(status = ifelse(entries_1 == 1 & entries_2 == 1 & entries_3 == 0, "One & two only", status)) %>%
+  mutate(status = ifelse(entries_1 == 1 & entries_2 == 0 & entries_3 == 1, "One & three only", status)) %>%
+  mutate(status = ifelse(entries_1 == 0 & entries_2 == 1 & entries_3 == 1, "Two & three only", status)) %>%
   mutate(status = ifelse(entries_1 == 1 & entries_2 == 0 & entries_3 == 0, "One only", status)) %>%
   mutate(status = ifelse(entries_1 == 0 & entries_2 == 1 & entries_3 == 0, "Two only", status)) %>%
   mutate(status = ifelse(entries_1 == 0 & entries_2 == 0 & entries_3 == 1, "Three only", status)) %>%
+  mutate(status = ifelse(is.na(status), "Other", status)) %>%
+  filter(status != "Other") %>%
   ungroup() %>%
   relocate(c(status, participant_id_3), .after = time_point)
 
@@ -77,8 +78,36 @@ data_clustered <- data_clustered %>%
   ungroup() %>%
   select(participant_id, participant_id_2, time_point, standardized_facility, time_point, cluster, flag, entries_1, entries_2, entries_3)
 
+data_with_three_time_points <- data %>%
+  filter(status == "All three") %>%
+  select(-all_of(c(
+    "participant_id", "entries_1", "entries_2", "entries_3", "facility_name_title_case",
+    "participant_id_2", "facility", "date"
+  )))
 
+clean_data <- data %>%
+  select(-all_of(c(
+    "participant_id", "entries_1", "entries_2", "entries_3", "facility_name_title_case",
+    "participant_id_2", "facility", "date"
+  )))
+
+participant_id_table_data <- clean_data %>%
+  select(participant_id_3, status, inclusive_status, standardized_facility) %>%
+  distinct(participant_id_3, status, standardized_facility, inclusive_status) %>%
+  mutate(status = factor(status, levels = c(
+    "All three", "One & two only",
+    "One & three only", "Two & three only",
+    "One only", "Two only", "Three only"
+  )))
+participant_id_table <-
+  participant_id_table_data %>%
+  select(status, inclusive_status) %>%
+  tbl_summary(
+    label = list(status ~ "Exclusive timepoint status", inclusive_status ~ "Inclusive timepoint status")
+  )
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
-saveRDS(data, file = path_to_clean_rds)
+path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
+saveRDS(clean_data, file = path_to_clean_rds)
+saveRDS(data_with_three_time_points, file = path_to_clean_three_timepoints)

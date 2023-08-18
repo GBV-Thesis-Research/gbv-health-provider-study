@@ -25,7 +25,7 @@ path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep
 clean_data <- readRDS(path_to_clean_rds)
 
 answers <- clean_data %>%
-  select(participant_id, matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
+  select(participant_id_3, matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
 
 
 key_only <- key %>%
@@ -134,7 +134,7 @@ knowledge_sys_support_key <- key %>%
   select(matches("knowledge|system_support"))
 
 knowledge_sys_support_answers <- clean_data %>%
-  select(participant_id, time_point, matches("knowledge|system_support"))
+  select(participant_id_3, time_point, matches("knowledge|system_support"))
 
 key_vector <- as.vector(unlist(t(knowledge_sys_support_key)))
 
@@ -158,7 +158,7 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
     system_support_score = (rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE) / 6) * 100,
   ) %>%
   select(
-    participant_id, time_point, knowledge_general_score, knowledge_warning_score,
+    participant_id_3, time_point, knowledge_general_score, knowledge_warning_score,
     knowledge_appropriate_score, knowledge_helpful_score, system_support_score
   )
 
@@ -174,14 +174,14 @@ scores <- clean_data %>%
     practice_score = (rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE) / 9) * 100,
   ) %>%
   select(
-    participant_id, time_point, attitude_general_score, attitude_acceptability_score,
+    participant_id_3, status, region, time_point, attitude_general_score, attitude_acceptability_score,
     attitude_genderroles_score, attitude_profroles_score, empathy_score,
     confidence_score, practice_score
   )
 
 # Merge all scores into one data frame
 merged_scores <- inner_join(knowledge_sys_support_scores, scores, by = c(
-  "participant_id", "time_point"
+  "participant_id_3", "time_point"
 ))
 
 # Write score data to folder
