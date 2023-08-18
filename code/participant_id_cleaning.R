@@ -118,6 +118,12 @@ names(dem_pre) <- paste0("pre_", names(dem_pre))
 names(dem_mid) <- paste0("mid_", names(dem_mid))
 names(dem_post) <- paste0("post_", names(dem_post))
 
+# Merge dem_pre and dem_mid, then add in dem_post
+merged_pre_mid <- merge(dem_pre, dem_mid, by.x = "pre_participant_id_3", by.y = "mid_participant_id_3")
+dem_all <- merge(merged_pre_mid, dem_post, by.x = "pre_participant_id_3", by.y = "post_participant_id_3")
+
+
+
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
