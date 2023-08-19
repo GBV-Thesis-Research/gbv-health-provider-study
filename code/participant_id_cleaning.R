@@ -122,7 +122,24 @@ names(dem_post) <- paste0("post_", names(dem_post))
 merged_pre_mid <- merge(dem_pre, dem_mid, by.x = "pre_participant_id_3", by.y = "mid_participant_id_3")
 dem_all <- merge(merged_pre_mid, dem_post, by.x = "pre_participant_id_3", by.y = "post_participant_id_3")
 
+# Create 'mismatched' column to identify mismatched data between timepoints 1, 2, and 3
+dem_all <- dem_all %>%
+  mutate(
+    mismatched_sex =
+      ifelse(pre_sex != mid_sex | mid_sex != post_sex, 1, 0)
+  )
 
+dem_all <- dem_all %>%
+  mutate(
+    mismatched_position =
+      ifelse(pre_position != mid_position | mid_position != post_position, 1, 0),
+  )
+
+dem_all <- dem_all %>%
+  mutate(
+    mismatched_agegrp =
+      ifelse(pre_age != mid_age | mid_age != post_age, 1, 0),
+  )
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
