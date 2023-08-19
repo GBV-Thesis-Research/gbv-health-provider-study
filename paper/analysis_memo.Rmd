@@ -54,6 +54,7 @@ Aim 2: To assess change in advancing individual health providers’ knowledge, a
 **Sample size:** Timepoints 1-3 had 216, 208, and 252 respondents who consented to research respectively. Across all three timepoints, we were able to match 57 participants. 
 
 ## Outcome
+- Scores in six domains: 1) knowledge, 2) attitudes, 3) system support, 4) confidence, 5) empathy and 6) practices. The domains of knowledge and attitudes had four sub-domains each. Knowledge was broken up into: 1) general knowledge of GBV, 2) warning signs of GBV, 3) appropriate ways to ask about GBV and 4) helpful responses to support a woman subjected to GBV. Attitudes was broken up into: 1) general attitudes towards GBV and the health provider role, 2) acceptability for a man to his his partner, 3) attitudes towards gender roles, and 4) attitudes towards professional roles.
 
 ## Study procedures
 
