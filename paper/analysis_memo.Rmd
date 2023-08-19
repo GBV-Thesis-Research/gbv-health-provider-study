@@ -41,6 +41,11 @@ source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 
 ## Aims
 
+Aim 1: To assess change in individual health provider knowledge, attitudes, empathy, and confidence in responding to gender-based violence (GBV) before and after participation in the 'Responding to GBV' curriculum in the intervention municipalities in Timor-Leste.
+  Sub-aim 1.1: To assess change in self-reported provider practices in identifying and responding to gender based violence in the past    month.
+
+Aim 2: To assess change in advancing individual health providers’ knowledge, attitudes, and empathy related to GBV after the 14-month Learning Lab curriculum when compared to the 5-day intensive training, using baseline, post-intensive, and endline data.
+
 ## Study details
 
 ## Outcome
