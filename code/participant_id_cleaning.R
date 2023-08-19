@@ -41,7 +41,7 @@ data <- data %>%
   mutate(participant_id_2 = ifelse(row_number > 1, paste0(participant_id_2, "_", row_number), participant_id_2)) %>%
   select(-row_number) %>%
   ungroup() %>%
-  full_join(link_log, by = "participant_id_2") %>%
+  left_join(link_log, by = "participant_id_2") %>%
   group_by(participant_id_3) %>%
   mutate(
     entries_1 = sum(time_point == 1),
@@ -80,6 +80,7 @@ data_clustered <- data_clustered %>%
   mutate(flag = ifelse(entries_1 == 1 & entries_2 == 1 & entries_3 == 1, "Three timepoints", NA)) %>%
   mutate(flag = ifelse(is.na(flag) & entries_1 == 1 & entries_2 == 1 & entries_3 == 0, "Two timepoints", flag)) %>%
   mutate(flag = ifelse(is.na(flag) & entries_1 == 1 & entries_2 == 1 & entries_3 > 0, "Maybe matches", flag)) %>%
+  select(participant_id, participant_id_2, time_point, standardized_facility, time_point, cluster, flag, entries_1, entries_2, entries_3) %>%
   ungroup()
 
 data_with_three_time_points <- data %>%
