@@ -57,7 +57,6 @@ data <- data %>%
   mutate(status = ifelse(entries_1 == 0 & entries_2 == 1 & entries_3 == 0, "Two only", status)) %>%
   mutate(status = ifelse(entries_1 == 0 & entries_2 == 0 & entries_3 == 1, "Three only", status)) %>%
   mutate(status = ifelse(is.na(status), "Other", status)) %>%
-  # filter(status != "Other") %>%
   ungroup() %>%
   relocate(c(status, participant_id_3), .after = time_point)
 
