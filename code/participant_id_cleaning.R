@@ -122,7 +122,7 @@ names(dem_post) <- paste0("post_", names(dem_post))
 merged_pre_mid <- merge(dem_pre, dem_mid, by.x = "pre_participant_id_3", by.y = "mid_participant_id_3")
 dem_all <- merge(merged_pre_mid, dem_post, by.x = "pre_participant_id_3", by.y = "post_participant_id_3")
 
-# Create 'mismatched' column to identify mismatched data between timepoints 1, 2, and 3
+# Create 'mismatched' column in dem_all dataframe to identify mismatched data between timepoints 1, 2, and 3
 dem_all <- dem_all %>%
   mutate(
     mismatched_sex =
