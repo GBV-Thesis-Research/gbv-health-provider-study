@@ -111,7 +111,6 @@ participant_id_table <-
     label = list(status ~ "Exclusive timepoint status", inclusive_status ~ "Inclusive timepoint status")
   )
 
-
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
