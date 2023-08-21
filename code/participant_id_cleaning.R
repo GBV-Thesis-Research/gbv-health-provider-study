@@ -111,44 +111,23 @@ participant_id_table <-
     label = list(status ~ "Exclusive timepoint status", inclusive_status ~ "Inclusive timepoint status")
   )
 
-<<<<<<< HEAD
-# Check for mismatched demographic data from pre, post-intensive, and follow-up tests
+# Create dataframe for mismatched demographic data from pre, post-intensive, and follow-up tests
 dem_info <- clean_data %>%
-  select("participant_id_3", "time_point", "sex", "age", "position", "position_years_clean")
-
-dem_pre <- dem_info %>% filter(time_point == 1)
-dem_mid <- dem_info %>% filter(time_point == 2)
-dem_post <- dem_info %>% filter(time_point == 3)
-
-names(dem_pre) <- paste0("pre_", names(dem_pre))
-names(dem_mid) <- paste0("mid_", names(dem_mid))
-names(dem_post) <- paste0("post_", names(dem_post))
-
-# Merge dem_pre and dem_mid, then add in dem_post
-merged_pre_mid <- merge(dem_pre, dem_mid, by.x = "pre_participant_id_3", by.y = "mid_participant_id_3")
-dem_all <- merge(merged_pre_mid, dem_post, by.x = "pre_participant_id_3", by.y = "post_participant_id_3")
-
-# Create 'mismatched' column in dem_all dataframe to identify mismatched data between timepoints 1, 2, and 3
-dem_all <- dem_all %>%
-  mutate(
-    mismatched_sex =
-      ifelse(pre_sex != mid_sex | mid_sex != post_sex, 1, 0)
+  group_by(participant_id_3) %>%
+  summarize(
+    num_timepoints = n_distinct(time_point),
+    same_sex_all = n_distinct(sex) == 1,
+    same_age_all = n_distinct(age) == 1,
+    same_position_all = n_distinct(position) == 1
   )
 
-dem_all <- dem_all %>%
-  mutate(
-    mismatched_position =
-      ifelse(pre_position != mid_position | mid_position != post_position, 1, 0),
-  )
+# Identify which participants have mismatched demographic data across timepoints
+pids_to_check <- dem_info %>%
+  group_by(participant_id_3) %>%
+  filter(any(!same_sex_all) | any(!same_age_all) | any(!same_position_all)) %>%
+  distinct(participant_id_3) %>%
+  select(participant_id_3)
 
-dem_all <- dem_all %>%
-  mutate(
-    mismatched_agegrp =
-      ifelse(pre_age != mid_age | mid_age != post_age, 1, 0),
-  )
-
-=======
->>>>>>> main
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
