@@ -22,8 +22,9 @@ source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
 style_file(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
 path_to_imterim_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
-path_to_link_log <- paste(gbv_project_wd, "/extra_data/link_log.xls", sep = "")
+path_to_link_log <- paste(gbv_project_wd, "/extra_data/link_log.xlsx", sep = "")
 data <- readRDS(path_to_imterim_clean_rds)
+
 link_log <- read_excel(path_to_link_log) %>%
   select(participant_id_2, participant_id_3) %>%
   distinct(participant_id_2, .keep_all = TRUE)
@@ -35,6 +36,11 @@ data <- data %>%
   ) %>%
   mutate(participant_id_2 = ifelse(participant_id_2 == "", participant_id, participant_id_2)) %>%
   mutate(participant_id_2 = paste(participant_id_2, tolower(str_replace_all(standardized_facility, " ", "_")), sep = "_")) %>%
+  group_by(participant_id_2, time_point) %>%
+  mutate(row_number = row_number()) %>%
+  mutate(participant_id_2 = ifelse(row_number > 1, paste0(participant_id_2, "_", row_number), participant_id_2)) %>%
+  select(-row_number) %>%
+  ungroup() %>%
   left_join(link_log, by = "participant_id_2") %>%
   group_by(participant_id_3) %>%
   mutate(
@@ -51,7 +57,6 @@ data <- data %>%
   mutate(status = ifelse(entries_1 == 0 & entries_2 == 1 & entries_3 == 0, "Two only", status)) %>%
   mutate(status = ifelse(entries_1 == 0 & entries_2 == 0 & entries_3 == 1, "Three only", status)) %>%
   mutate(status = ifelse(is.na(status), "Other", status)) %>%
-  filter(status != "Other") %>%
   ungroup() %>%
   relocate(c(status, participant_id_3), .after = time_point)
 
@@ -106,6 +111,7 @@ participant_id_table <-
     label = list(status ~ "Exclusive timepoint status", inclusive_status ~ "Inclusive timepoint status")
   )
 
+<<<<<<< HEAD
 # Check for mismatched demographic data from pre, post-intensive, and follow-up tests
 dem_info <- clean_data %>%
   select("participant_id_3", "time_point", "sex", "age", "position", "position_years_clean")
@@ -141,6 +147,8 @@ dem_all <- dem_all %>%
       ifelse(pre_age != mid_age | mid_age != post_age, 1, 0),
   )
 
+=======
+>>>>>>> main
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
