@@ -32,7 +32,7 @@ knitr::opts_chunk$set(fig.align = 'center',
 
 ## SOURCE FIGURES AND TABLES
 source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
-
+source(paste(disc_project_wd, "/code/table_scores.R", sep = ""))
 ```
 
 # Analysis plan
@@ -44,7 +44,7 @@ Gender-based violence (GBV) is a pervasive issue in Southeast Asia that has sign
 ## Aims
 
 Aim 1: To assess change in individual health provider knowledge, attitudes, empathy, and confidence in responding to gender-based violence (GBV) before and after participation in the 'Responding to GBV' curriculum in the intervention municipalities in Timor-Leste.
-  Sub-aim 1.1: To assess change in self-reported provider practices in identifying and responding to gender based violence in the past    month.
+  Sub-aim 1.1: To assess change in self-reported provider practices in identifying and responding to gender based violence in the past month.
 
 Aim 2: To assess change in advancing individual health providers’ knowledge, attitudes, and empathy related to GBV after the 14-month Learning Lab curriculum when compared to the 5-day intensive training, using baseline, post-intensive, and endline data.
 
@@ -75,5 +75,24 @@ demographic_table %>%
 ```
 
 ## Scores
+```{r}
+scores_matched_3timepoints %>%
+  modify_caption("**Table 2. Individually Matched Scores Across 3 Timepoints**")
+
+scores_matched_time1and3 %>%
+  modify_caption("**Table 3. Matched Scores - Timepoints 1 and 3**")
+
+scores_matched_2timepoints %>%
+  modify_caption("**Table 4. Individually Matched Scores Across Timepoints 2 and 3**")
+
+scores_unmatched_3timepoints %>%
+  modify_caption("**Table 5. Unmatched Scores Across 3 Timepoints**")
+
+scores_unmatched_time1and3 %>%
+  modify_caption("**Table 6. Unmatched Scores - Timepoints 1 and 3**")
+
+scores_unmatched_2timepoints %>%
+  modify_caption("**Table 7. Unmatched Scores Across Timepoints 2 and 3**")
+```
 
 ## Regression results

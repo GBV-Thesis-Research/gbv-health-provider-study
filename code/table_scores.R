@@ -32,8 +32,44 @@ style_file(paste(gbv_project_wd, "/code/table_scores.R", sep = ""))
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
 clean_scores <- readRDS(path_to_clean_rds_scores)
 
-scores_summary_table <- clean_scores %>%
-  # filter(status == "All three") %>%
+# Scores individually matched across 3 timepoints
+scores_matched_3timepoints <- clean_scores %>%
+  filter(status == "All three") %>%
+  # filter(time_point != 1) %>%
+  tbl_summary(
+    include = -c(participant_id_3, inclusive_status, region, status),
+    by = c(time_point),
+    type = c(
+      system_support_score, practice_score, knowledge_warning_score,
+      knowledge_appropriate_score
+    ) ~ "continuous",
+    label = list(
+      knowledge_general_score ~ "General knowledge",
+      knowledge_warning_score ~ "Warning signs",
+      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV",
+      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV",
+      system_support_score ~ "System support",
+      attitude_general_score ~ "General attitudes towards GBV and the health provider role",
+      attitude_acceptability_score ~ "Acceptability for a man to hit his partner",
+      attitude_genderroles_score ~ "Attitudes towards gender roles",
+      attitude_profroles_score ~ "Attitudes towards professional roles",
+      empathy_score ~ "Empathy",
+      confidence_score ~ "Confidence",
+      practice_score ~ "Practices"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})"
+    ),
+    digits = all_continuous() ~ 2
+  ) %>%
+  add_p() %>%
+  add_n() %>%
+  bold_p()
+scores_matched_3timepoints
+
+# Scores individually matched across timepoints 2 & 3
+scores_matched_2timepoints <- clean_scores %>%
+  filter(status == "All three") %>%
   filter(time_point != 1) %>%
   tbl_summary(
     include = -c(participant_id_3, inclusive_status, region, status),
@@ -54,7 +90,7 @@ scores_summary_table <- clean_scores %>%
       attitude_profroles_score ~ "Attitudes towards professional roles",
       empathy_score ~ "Empathy",
       confidence_score ~ "Confidence",
-      practice_score ~ "Practice"
+      practice_score ~ "Practices"
     ),
     statistic = list(
       all_continuous() ~ "{mean} ({sd})"
@@ -64,4 +100,140 @@ scores_summary_table <- clean_scores %>%
   add_p() %>%
   add_n() %>%
   bold_p()
-scores_summary_table
+scores_matched_2timepoints
+
+# Scores unmatched across all timepoints
+scores_unmatched_3timepoints <- clean_scores %>%
+  filter(time_point != 1) %>%
+  tbl_summary(
+    include = -c(participant_id_3, inclusive_status, region, status),
+    by = c(time_point),
+    type = c(
+      system_support_score, practice_score, knowledge_warning_score,
+      knowledge_appropriate_score
+    ) ~ "continuous",
+    label = list(
+      knowledge_general_score ~ "General knowledge",
+      knowledge_warning_score ~ "Warning signs",
+      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV",
+      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV",
+      system_support_score ~ "System support",
+      attitude_general_score ~ "General attitudes towards GBV and the health provider role",
+      attitude_acceptability_score ~ "Acceptability for a man to hit his partner",
+      attitude_genderroles_score ~ "Attitudes towards gender roles",
+      attitude_profroles_score ~ "Attitudes towards professional roles",
+      empathy_score ~ "Empathy",
+      confidence_score ~ "Confidence",
+      practice_score ~ "Practices"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})"
+    ),
+    digits = all_continuous() ~ 2
+  ) %>%
+  add_p() %>%
+  add_n() %>%
+  bold_p()
+scores_unmatched_3timepoints
+
+# Scores unmatched across timepoints 2 & 3
+scores_unmatched_2timepoints <- clean_scores %>%
+  tbl_summary(
+    include = -c(participant_id_3, inclusive_status, region, status),
+    by = c(time_point),
+    type = c(
+      system_support_score, practice_score, knowledge_warning_score,
+      knowledge_appropriate_score
+    ) ~ "continuous",
+    label = list(
+      knowledge_general_score ~ "General knowledge",
+      knowledge_warning_score ~ "Warning signs",
+      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV",
+      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV",
+      system_support_score ~ "System support",
+      attitude_general_score ~ "General attitudes towards GBV and the health provider role",
+      attitude_acceptability_score ~ "Acceptability for a man to hit his partner",
+      attitude_genderroles_score ~ "Attitudes towards gender roles",
+      attitude_profroles_score ~ "Attitudes towards professional roles",
+      empathy_score ~ "Empathy",
+      confidence_score ~ "Confidence",
+      practice_score ~ "Practices"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})"
+    ),
+    digits = all_continuous() ~ 2
+  ) %>%
+  add_p() %>%
+  add_n() %>%
+  bold_p()
+scores_unmatched_2timepoints
+
+# Scores unmatched across timepoints 1 & 3
+scores_unmatched_time1and3 <- clean_scores %>%
+  filter(time_point != 2) %>%
+  tbl_summary(
+    include = -c(participant_id_3, inclusive_status, region, status),
+    by = c(time_point),
+    type = c(
+      system_support_score, practice_score, knowledge_warning_score,
+      knowledge_appropriate_score
+    ) ~ "continuous",
+    label = list(
+      knowledge_general_score ~ "General knowledge",
+      knowledge_warning_score ~ "Warning signs",
+      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV",
+      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV",
+      system_support_score ~ "System support",
+      attitude_general_score ~ "General attitudes towards GBV and the health provider role",
+      attitude_acceptability_score ~ "Acceptability for a man to hit his partner",
+      attitude_genderroles_score ~ "Attitudes towards gender roles",
+      attitude_profroles_score ~ "Attitudes towards professional roles",
+      empathy_score ~ "Empathy",
+      confidence_score ~ "Confidence",
+      practice_score ~ "Practices"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})"
+    ),
+    digits = all_continuous() ~ 2
+  ) %>%
+  add_p() %>%
+  add_n() %>%
+  bold_p()
+scores_unmatched_time1and3
+
+# Scores individually matched across timepoints 1 & 3
+scores_matched_time1and3 <- clean_scores %>%
+  filter(status == "All three") %>%
+  filter(time_point != 2) %>%
+  tbl_summary(
+    include = -c(participant_id_3, inclusive_status, region, status),
+    by = c(time_point),
+    type = c(
+      system_support_score, practice_score, knowledge_warning_score,
+      knowledge_appropriate_score
+    ) ~ "continuous",
+    label = list(
+      knowledge_general_score ~ "General knowledge",
+      knowledge_warning_score ~ "Warning signs",
+      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV",
+      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV",
+      system_support_score ~ "System support",
+      attitude_general_score ~ "General attitudes towards GBV and the health provider role",
+      attitude_acceptability_score ~ "Acceptability for a man to hit his partner",
+      attitude_genderroles_score ~ "Attitudes towards gender roles",
+      attitude_profroles_score ~ "Attitudes towards professional roles",
+      empathy_score ~ "Empathy",
+      confidence_score ~ "Confidence",
+      practice_score ~ "Practices"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})"
+    ),
+    digits = all_continuous() ~ 2
+  ) %>%
+  add_p() %>%
+  add_n() %>%
+  bold_p()
+scores_matched_time1and3
