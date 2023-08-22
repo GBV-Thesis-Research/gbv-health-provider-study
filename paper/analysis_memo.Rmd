@@ -64,7 +64,7 @@ The pre/post assessment is a survey administered at baseline, post-intensive tra
 ## Data cleaning
 
 ## Statistical analysis
-
+Participants were assigned a unique ID number and will be matched by participant ID to assess individual change over time. Given the timeframe of this study and the focus on practice rather than research, there were minimal attempts made to retain participants in the study. As such, we were only able to match ~25% of participants across the three time points. As such, we will also analyze survey scores across the three timepoints at the group level.
 
 # Results
 
