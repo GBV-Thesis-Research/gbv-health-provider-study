@@ -39,6 +39,8 @@ source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 
 ## Background
 
+Gender-based violence (GBV) is a pervasive issue in Southeast Asia that has significant negative effects on the health and wellbeing of those affected. Timor-Leste has one of the highest high rates of GBV in the world, with one study reporting that 59% of Timorese women experience GBV in their lifetime. In response, the Timor-Leste Ministry of Health (MOH) developed national guidelines to steer the health sectors response to GBV. While national guidelines have been developed, training in-service providers is critical to effective implementation of these guidelines. There is currently no national curriculum for training in-service providers. HAMNASA, a local NGO in Timor-Leste, led a three-year USAID-funded project to implement an in-service GBV curriculum. In partnership with the MoH, Ministry of Social Solidarity and Inclusion, and the National Institute of Health (INS), HAMNASA implemented a 'Responding to GBV' curriculum for in-service healthcare providers based upon the WHO's curriculum for training healthcare providers on caring for women subjected to violence. Research into novel interventions for training in-service healthcare providers is important because it provides critical information for developing and implementing effective interventions to prevent and address GBV in the region. By understanding the prevalence and impact of GBV, as well as identifying effective interventions, policymakers and practitioners can better allocate resources and design programs that can help reduce the incidence of GBV and improve the health and wellbeing of those affected.
+
 ## Aims
 
 Aim 1: To assess change in individual health provider knowledge, attitudes, empathy, and confidence in responding to gender-based violence (GBV) before and after participation in the 'Responding to GBV' curriculum in the intervention municipalities in Timor-Leste.
@@ -57,8 +59,6 @@ Aim 2: To assess change in advancing individual health providers’ knowledge, a
 Scores in six domains: 1) knowledge, 2) attitudes, 3) system support, 4) confidence, 5) empathy and 6) practices. The domains of knowledge and attitudes had four sub-domains each. Knowledge was broken up into: 1) general knowledge of GBV, 2) warning signs of GBV, 3) appropriate ways to ask about GBV and 4) helpful responses to support a woman subjected to GBV. Attitudes was broken up into: 1) general attitudes towards GBV and the health provider role, 2) acceptability for a man to his his partner, 3) attitudes towards gender roles, and 4) attitudes towards professional roles.
 
 ## Study procedures
-
-
 
 ## Data cleaning
 
