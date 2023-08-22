@@ -38,18 +38,15 @@ source(paste(disc_project_wd, "/code/table_scores.R", sep = ""))
 # Analysis plan
 
 ## Background
-
 Gender-based violence (GBV) is a pervasive issue in Southeast Asia that has significant negative effects on the health and wellbeing of those affected. Timor-Leste has one of the highest high rates of GBV in the world, with one study reporting that 59% of Timorese women experience GBV in their lifetime. In response, the Timor-Leste Ministry of Health (MOH) developed national guidelines to steer the health sectors response to GBV. While national guidelines have been developed, training in-service providers is critical to effective implementation of these guidelines. There is currently no national curriculum for training in-service providers. HAMNASA, a local NGO in Timor-Leste, led a three-year USAID-funded project to implement an in-service GBV curriculum. In partnership with the MoH, Ministry of Social Solidarity and Inclusion, and the National Institute of Health (INS), HAMNASA implemented a 'Responding to GBV' curriculum for in-service healthcare providers based upon the WHO's curriculum for training healthcare providers on caring for women subjected to violence. Research into novel interventions for training in-service healthcare providers is important because it provides critical information for developing and implementing effective interventions to prevent and address GBV in the region. By understanding the prevalence and impact of GBV, as well as identifying effective interventions, policymakers and practitioners can better allocate resources and design programs that can help reduce the incidence of GBV and improve the health and wellbeing of those affected.
 
 ## Aims
-
 Aim 1: To assess change in individual health provider knowledge, attitudes, empathy, and confidence in responding to gender-based violence (GBV) before and after participation in the 'Responding to GBV' curriculum in the intervention municipalities in Timor-Leste.
   Sub-aim 1.1: To assess change in self-reported provider practices in identifying and responding to gender based violence in the past month.
 
 Aim 2: To assess change in advancing individual health providers’ knowledge, attitudes, and empathy related to GBV after the 14-month Learning Lab curriculum when compared to the 5-day intensive training, using baseline, post-intensive, and endline data.
 
 ## Study details
-
 **Design:** Pre/post intervention comparison
 **Population:** Healthcare providers in Liquica and Ermera municipalities, Timor-Leste.
 **Sites:** 10 community health centers (CHCs) total, 6 in Liquica and 4 in Ermera municipality. Health post staff were eligible to attend at their local CHC, with a maximum of 63 health posts in the municipalities.
@@ -62,6 +59,7 @@ Scores in six domains: 1) knowledge, 2) attitudes, 3) system support, 4) confide
 The pre/post assessment is a survey administered at baseline, post-intensive training, and endline with which researchers can assess change in healthcare provider knowledge, attitudes, empathy, confidence, system support beliefs, and practices related to GBV. The survey captures basic demographic data (sex, age, profession, etc.) about the respondents as well. Survey data was collected via paper forms and entered into RedCap data management software for use by the research team. 
 
 ## Data cleaning
+
 
 ## Statistical analysis
 Participants were assigned a unique ID number and will be matched by participant ID to assess individual change over time. Given the timeframe of this study and the focus on practice rather than research, there were minimal attempts made to retain participants in the study. As such, we were only able to match ~25% of participants across the three time points. As such, we will also analyze survey scores across the three timepoints at the group level.
