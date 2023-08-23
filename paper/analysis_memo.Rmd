@@ -59,7 +59,9 @@ Scores in six domains: 1) knowledge, 2) attitudes, 3) system support, 4) confide
 The pre/post assessment is a survey administered at baseline, post-intensive training, and endline with which researchers can assess change in healthcare provider knowledge, attitudes, empathy, confidence, system support beliefs, and practices related to GBV. The survey captures basic demographic data (sex, age, profession, etc.) about the respondents as well. Survey data was collected via paper forms and entered into RedCap data management software for use by the research team. 
 
 ## Data cleaning
+For the empathy and attitude domains, responses were scored according to the following scale for positively worded items (for which preferred answer is ALWAYS): NEVER=0; RARELY=1; SOMETIMES=2; OFTEN=3; ALWAYS=4. For negatively worded items (for which preferred answer is NEVER), the scores were reversed to account for the desired response.
 
+All domains' scores were normalized using a 100-point scale.
 
 ## Statistical analysis
 Participants were assigned a unique ID number and will be matched by participant ID to assess individual change over time. Given the timeframe of this study and the focus on practice rather than research, there were minimal attempts made to retain participants in the study. As such, we were only able to match ~25% of participants across the three time points. As such, we will also analyze survey scores across the three timepoints at the group level.
