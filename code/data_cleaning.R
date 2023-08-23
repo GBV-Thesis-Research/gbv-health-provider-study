@@ -211,6 +211,8 @@ data <- data %>%
   relocate(standardized_facility, .after = facility) %>%
   left_join(standard_facility_names, by = c("standardized_facility" = "full_name"))
 
+# Convert timepoint to factor
+# data$time_point <- cut(data$time_point, 3, labels = c("Timepoint 1", "Timepoint 2", "Timepoint 3"))
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")

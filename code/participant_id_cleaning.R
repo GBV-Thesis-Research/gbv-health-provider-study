@@ -128,4 +128,3 @@ path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep
 path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
 saveRDS(clean_data, file = path_to_clean_rds)
 saveRDS(data_with_three_time_points, file = path_to_clean_three_timepoints)
-
