@@ -111,6 +111,23 @@ participant_id_table <-
     label = list(status ~ "Exclusive timepoint status", inclusive_status ~ "Inclusive timepoint status")
   )
 
+# Create dataframe for mismatched demographic data from pre, post-intensive, and follow-up tests
+dem_info <- clean_data %>%
+  group_by(participant_id_3) %>%
+  summarize(
+    num_timepoints = n_distinct(time_point),
+    same_sex_all = n_distinct(sex) == 1,
+    same_age_all = n_distinct(age) == 1,
+    same_position_all = n_distinct(position) == 1
+  )
+
+# Identify which participants have mismatched demographic data across timepoints
+pids_to_check <- dem_info %>%
+  group_by(participant_id_3) %>%
+  filter(any(!same_sex_all) | any(!same_age_all) | any(!same_position_all)) %>%
+  distinct(participant_id_3) %>%
+  select(participant_id_3)
+
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
