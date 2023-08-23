@@ -77,18 +77,6 @@ demographic_table %>%
 scores_matched_3timepoints %>%
   modify_caption("Individually Matched Scores Across 3 Timepoints")
 
-scores_matched_time1and3 %>%
-  modify_caption("Matched Scores - Timepoints 1 and 3")
-
-scores_matched_2timepoints %>%
-  modify_caption("Individually Matched Scores Across Timepoints 2 and 3")
-
 scores_unmatched_3timepoints %>%
   modify_caption("Unmatched Scores Across 3 Timepoints")
-
-scores_unmatched_time1and3 %>%
-  modify_caption("Table 6. Unmatched Scores - Timepoints 1 and 3")
-
-scores_unmatched_2timepoints %>%
-  modify_caption("Table 7. Unmatched Scores Across Timepoints 2 and 3")
 ```
