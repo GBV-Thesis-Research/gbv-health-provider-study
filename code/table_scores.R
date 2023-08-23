@@ -32,6 +32,9 @@ style_file(paste(gbv_project_wd, "/code/table_scores.R", sep = ""))
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
 clean_scores <- readRDS(path_to_clean_rds_scores)
 
+# Converting timepoint to factor here until data cleaning script is fixed
+clean_scores$time_point <- cut(clean_scores$time_point, 3, labels = c("Timepoint 1", "Timepoint 2", "Timepoint 3"))
+
 # Scores individually matched across 3 timepoints
 scores_matched_3timepoints <- clean_scores %>%
   filter(status == "All three") %>%
