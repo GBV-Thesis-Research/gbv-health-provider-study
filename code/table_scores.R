@@ -41,7 +41,7 @@ scores_matched_3timepoints <- clean_scores %>%
     by = c(time_point),
     type = c(
       system_support_score, practice_score, knowledge_warning_score,
-      knowledge_appropriate_score
+      knowledge_appropriate_score, knowledge_helpful_score
     ) ~ "continuous",
     label = list(
       knowledge_general_score ~ "General knowledge",
