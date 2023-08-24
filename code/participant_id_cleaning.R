@@ -29,11 +29,6 @@ link_log <- read_excel(path_to_link_log) %>%
   select(participant_id_2, participant_id_3) %>%
   distinct(participant_id_2, .keep_all = TRUE)
 
-replace_with_most_common <- function(x) {
-  most_common_value <- table(x) %>% which.max()
-  replace(x, x == 3, most_common_value)
-}
-
 data <- data %>%
   mutate(
     participant_id_2 =
