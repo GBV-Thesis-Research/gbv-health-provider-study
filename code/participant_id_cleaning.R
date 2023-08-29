@@ -34,12 +34,20 @@ data <- data %>%
     participant_id_2 =
       tolower(str_replace_all(participant_id, "[0-9[:space:][:punct:]]", ""))
   ) %>%
+  mutate(sex_matching = ifelse(sex == 3, NA, sex)) %>%
   mutate(participant_id_2 = ifelse(participant_id_2 == "", participant_id, participant_id_2)) %>%
   mutate(participant_id_2 = paste(participant_id_2, tolower(str_replace_all(standardized_facility, " ", "_")), sep = "_")) %>%
+  group_by(participant_id_2) %>%
+  fill(sex_matching, .direction = "downup") %>%
+  ungroup() %>%
   group_by(participant_id_2, time_point) %>%
   mutate(row_number = row_number()) %>%
   mutate(participant_id_2 = ifelse(row_number > 1, paste0(participant_id_2, "_", row_number), participant_id_2)) %>%
   select(-row_number) %>%
+  ungroup() %>%
+  group_by(participant_id_2) %>%
+  mutate(same_sex_all = n_distinct(sex_matching) == 1) %>%
+  mutate(participant_id_2 = ifelse(same_sex_all != 1, paste0(participant_id_2, "_", sex_matching), participant_id_2)) %>%
   ungroup() %>%
   left_join(link_log, by = "participant_id_2") %>%
   group_by(participant_id_3) %>%
@@ -93,7 +101,7 @@ data_with_three_time_points <- data %>%
 clean_data <- data %>%
   select(-all_of(c(
     "participant_id", "entries_1", "entries_2", "entries_3", "facility_name_title_case",
-    "participant_id_2", "facility", "date"
+    "participant_id_2", "facility", "date", "position_years", "position_months"
   )))
 
 participant_id_table_data <- clean_data %>%
@@ -116,7 +124,7 @@ dem_info <- clean_data %>%
   group_by(participant_id_3) %>%
   summarize(
     num_timepoints = n_distinct(time_point),
-    same_sex_all = n_distinct(sex) == 1,
+    same_sex_all = n_distinct(sex_matching) == 1,
     same_age_all = n_distinct(age) == 1,
     same_position_all = n_distinct(position) == 1
   )
@@ -124,9 +132,11 @@ dem_info <- clean_data %>%
 # Identify which participants have mismatched demographic data across timepoints
 pids_to_check <- dem_info %>%
   group_by(participant_id_3) %>%
-  filter(any(!same_sex_all) | any(!same_age_all) | any(!same_position_all)) %>%
+  filter(any(!same_position_all)) %>%
   distinct(participant_id_3) %>%
   select(participant_id_3)
+
+pids_to_check <- pids_to_check$participant_id_3
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
