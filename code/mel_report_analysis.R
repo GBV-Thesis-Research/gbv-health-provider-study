@@ -24,3 +24,18 @@ path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.R
 clean_data_scores <- readRDS(path_to_clean_rds_scores)
 
 # CREATE NEW COMPOSITE SCORES BASED ON MEL PLAN --------------------------------
+# Create new composite score for outcome 4, including the knowledge, attitude, and 
+# empathy domains
+clean_data_scores <- clean_data_scores %>%
+  mutate(outcome4_composite = ((knowledge_general_score +
+                                  knowledge_warning_score + 
+                                  knowledge_appropriate_score +
+                                  knowledge_helpful_score +
+                                  attitude_general_score +
+                                  attitude_acceptability_score +
+                                  attitude_genderroles_score +
+                                  attitude_profroles_score +
+                                  empathy_score)/900)*100)
+
+# Create new composite score for outcome 5, including the confidence, system support,
+# and professional role domains
