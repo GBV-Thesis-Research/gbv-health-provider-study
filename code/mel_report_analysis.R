@@ -23,19 +23,36 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
 clean_data_scores <- readRDS(path_to_clean_rds_scores)
 
-# CREATE NEW COMPOSITE SCORES BASED ON MEL PLAN --------------------------------
-# Create new composite score for outcome 4, including the knowledge, attitude, and 
-# empathy domains
+# Reduce data to only include matches (n = 46)
 clean_data_scores <- clean_data_scores %>%
-  mutate(outcome4_composite = ((knowledge_general_score +
-                                  knowledge_warning_score + 
-                                  knowledge_appropriate_score +
-                                  knowledge_helpful_score +
-                                  attitude_general_score +
-                                  attitude_acceptability_score +
-                                  attitude_genderroles_score +
-                                  attitude_profroles_score +
-                                  empathy_score)/900)*100)
+  filter(status == "All three")
 
-# Create new composite score for outcome 5, including the confidence, system support,
-# and professional role domains
+# CREATE NEW VARIABLES BASED ON MEL PLAN --------------------------------
+# Create new pre-score variable for outcome 4, including the knowledge, attitude, and empathy domains
+clean_data_scores <- clean_data_scores %>%
+  mutate(outcome4_pre_score = ifelse(time_point == 1,
+                                     ((knowledge_general_score + knowledge_warning_score +
+                                         knowledge_appropriate_score + knowledge_helpful_score +
+                                         attitude_general_score + attitude_acceptability_score +
+                                         attitude_genderroles_score + attitude_profroles_score +
+                                         empathy_score) / 900) * 100,
+                                     NA))
+
+# Create new post-score variable for outcome 4, including the knowledge, attitude, and empathy domains
+clean_data_scores <- clean_data_scores %>%
+  mutate(outcome4_post_score = ifelse(time_point == 3,
+                                     ((knowledge_general_score + knowledge_warning_score +
+                                         knowledge_appropriate_score + knowledge_helpful_score +
+                                         attitude_general_score + attitude_acceptability_score +
+                                         attitude_genderroles_score + attitude_profroles_score +
+                                         empathy_score) / 900) * 100,
+                                     NA))
+
+# Create new variable for improvement pre to post for outcome 4, including the 
+# knowledge, attitude, and empathy domains (post-score - pre-score) -- how to do this with participants as rows?
+
+
+
+# Create new variable for improvement pre to post for outcome 5, including the 
+# confidence, system support, and professional role domains <- have to ask Xylia 
+# about the profesisonal role one here as its in attitude domain, not its own domain
