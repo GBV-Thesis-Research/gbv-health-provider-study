@@ -27,7 +27,7 @@ clean_data_scores <- readRDS(path_to_clean_rds_scores)
 clean_data_scores <- clean_data_scores %>%
   filter(status == "All three")
 
-# CREATE NEW VARIABLES BASED ON MEL PLAN --------------------------------
+# CREATE NEW VARIABLES BASED ON MEL PLAN ---------------------------------------
 # Create new pre-score variable for outcome 4, including the knowledge, attitude, and empathy domains
 clean_data_scores <- clean_data_scores %>%
   mutate(outcome4_pre_score = ifelse(time_point == 1,
@@ -38,7 +38,7 @@ clean_data_scores <- clean_data_scores %>%
                                          empathy_score) / 900) * 100,
                                      NA))
 
-# Create new post-score variable for outcome 4, including the knowledge, attitude, and empathy domains
+# Create new follow-up-score variable for outcome 4, including the knowledge, attitude, and empathy domains
 clean_data_scores <- clean_data_scores %>%
   mutate(outcome4_post_score = ifelse(time_point == 3,
                                      ((knowledge_general_score + knowledge_warning_score +
@@ -48,11 +48,49 @@ clean_data_scores <- clean_data_scores %>%
                                          empathy_score) / 900) * 100,
                                      NA))
 
-# Create new variable for improvement pre to post for outcome 4, including the 
-# knowledge, attitude, and empathy domains (post-score - pre-score) -- how to do this with participants as rows?
-
-
-
+# Group participants by health facility at baseline
+clean_data_scores <- clean_data_scores %>%
+  mutate(baseline_facility = ifelse( > 30, "High", "Low")
+         
 # Create new variable for improvement pre to post for outcome 5, including the 
 # confidence, system support, and professional role domains <- have to ask Xylia 
 # about the profesisonal role one here as its in attitude domain, not its own domain
+
+
+
+
+
+# Create score tables - outcome 4
+scores_summary_table <- clean_scores %>%
+  # filter(status == "All three") %>%
+  filter(time_point != 1) %>%
+  tbl_summary(
+    include = -c(participant_id_3, inclusive_status, region, status),
+    by = c(time_point),
+    type = c(
+      system_support_score, practice_score, knowledge_warning_score,
+      knowledge_appropriate_score
+    ) ~ "continuous",
+    label = list(
+      knowledge_general_score ~ "General knowledge",
+      knowledge_warning_score ~ "Warning signs",
+      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV",
+      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV",
+      system_support_score ~ "System support",
+      attitude_general_score ~ "General attitudes towards GBV and the health provider role",
+      attitude_acceptability_score ~ "Acceptability for a man to hit his partner",
+      attitude_genderroles_score ~ "Attitudes towards gender roles",
+      attitude_profroles_score ~ "Attitudes towards professional roles",
+      empathy_score ~ "Empathy",
+      confidence_score ~ "Confidence",
+      practice_score ~ "Practice"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})"
+    ),
+    digits = all_continuous() ~ 2
+  ) %>%
+  add_p() %>%
+  add_n() %>%
+  bold_p()
+scores_summary_table
