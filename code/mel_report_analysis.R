@@ -48,18 +48,28 @@ clean_data_scores <- clean_data_scores %>%
                                          empathy_score) / 900) * 100,
                                      NA))
 
-# Group participants by health facility at baseline
+# Create new pre-score variable for outcome 4, including the confidence, system support, 
+# and professional role domains <- have to ask Xylia  about the professional role one here 
+# as its in attitude domain, not its own domain
+clean_data_scores <- clean_data_scores %>%
+  mutate(outcome5_pre_score = ifelse(time_point == 1,
+                                     ((confidence_score + system_support_score) / 200) * 100,
+                                     NA))
+
+# Create new follow-up score variable for outcome 4, including the confidence, system support, 
+# and professional role domains <- have to ask Xylia  about the professional role one here 
+# as its in attitude domain, not its own domain
+clean_data_scores <- clean_data_scores %>%
+  mutate(outcome5_post_score = ifelse(time_point == 3,
+                                     ((confidence_score + system_support_score) / 200) * 100,
+                                     NA))
+
+# CREATE NEW DATAFRAME FOR REGIONAL SCORES BASED ON MEL PLAN -------------------
+# Create new data frame for regional domain scores
 clean_data_scores <- clean_data_scores %>%
   mutate(baseline_facility = ifelse( > 30, "High", "Low")
-         
-# Create new variable for improvement pre to post for outcome 5, including the 
-# confidence, system support, and professional role domains <- have to ask Xylia 
-# about the profesisonal role one here as its in attitude domain, not its own domain
 
-
-
-
-
+# CREATE SCORE TABLES FOR REGIONAL SCORES BASED ON MEL PLAN -------------------
 # Create score tables - outcome 4
 scores_summary_table <- clean_scores %>%
   # filter(status == "All three") %>%
