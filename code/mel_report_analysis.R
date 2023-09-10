@@ -64,10 +64,20 @@ clean_data_scores <- clean_data_scores %>%
                                      ((confidence_score + system_support_score) / 200) * 100,
                                      NA))
 
-# CREATE NEW DATAFRAME FOR REGIONAL SCORES BASED ON MEL PLAN -------------------
+# CREATE NEW DATAFRAMES FOR FACILITY & REGIONAL SCORES BASED ON MEL PLAN -------
 # Create new data frame for regional domain scores
 regional_scores <- clean_data_scores %>%
   group_by(region) %>%
+  summarize(
+    outcome4_pre_score = mean(outcome4_pre_score, na.rm = TRUE),
+    outcome4_post_score = mean(outcome4_post_score, na.rm = TRUE),
+    outcome5_pre_score = mean(outcome5_pre_score, na.rm = TRUE),
+    outcome5_post_score = mean(outcome5_post_score, na.rm = TRUE),
+  )
+
+# Create new data frame for regional domain scores
+facility_scores <- clean_data_scores %>%
+  group_by(standardized_facility) %>%
   summarize(
     outcome4_pre_score = mean(outcome4_pre_score, na.rm = TRUE),
     outcome4_post_score = mean(outcome4_post_score, na.rm = TRUE),
