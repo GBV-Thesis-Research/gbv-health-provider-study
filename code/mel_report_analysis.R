@@ -66,8 +66,14 @@ clean_data_scores <- clean_data_scores %>%
 
 # CREATE NEW DATAFRAME FOR REGIONAL SCORES BASED ON MEL PLAN -------------------
 # Create new data frame for regional domain scores
-clean_data_scores <- clean_data_scores %>%
-  mutate(baseline_facility = ifelse( > 30, "High", "Low")
+regional_scores <- clean_data_scores %>%
+  group_by(region) %>%
+  summarize(
+    outcome4_pre_score = mean(outcome4_pre_score, na.rm = TRUE),
+    outcome4_post_score = mean(outcome4_post_score, na.rm = TRUE),
+    outcome5_pre_score = mean(outcome5_pre_score, na.rm = TRUE),
+    outcome5_post_score = mean(outcome5_post_score, na.rm = TRUE),
+  )
 
 # CREATE SCORE TABLES FOR REGIONAL SCORES BASED ON MEL PLAN -------------------
 # Create score tables - outcome 4
