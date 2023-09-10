@@ -64,9 +64,9 @@ clean_data_scores <- clean_data_scores %>%
                                      ((confidence_score + system_support_score) / 200) * 100,
                                      NA))
 
-# CREATE NEW DATAFRAMES FOR FACILITY & REGIONAL SCORES BASED ON MEL PLAN -------
-# Create new data frame for regional domain scores
-regional_scores <- clean_data_scores %>%
+# CREATE NEW DATAFRAME FOR MEAN REGIONAL SCORES --------------------------------
+# Create new data frame for mean regional domain scores
+regional_scores_mean <- clean_data_scores %>%
   group_by(region) %>%
   summarize(
     outcome4_pre_score = mean(outcome4_pre_score, na.rm = TRUE),
@@ -75,8 +75,20 @@ regional_scores <- clean_data_scores %>%
     outcome5_post_score = mean(outcome5_post_score, na.rm = TRUE),
   )
 
-# Create new data frame for regional domain scores
-facility_scores <- clean_data_scores %>%
+# Transpose regional_scores_mean table
+regional_scores_mean <- t(regional_scores_mean) %>% 
+  as.data.frame(regional_scores_mean)
+
+# Rename columns to regions & drop region row from dataframe
+colnames(regional_scores_mean) <- regional_scores_mean[1, ] 
+regional_scores_mean <- regional_scores_mean[-1, ]
+
+# Rename rows to outcomes pre/post 
+row.names(regional_scores_mean) <- c("Outcome 4 pre", "Outcome 4 post", "Outcome 5 pre", "Outcome 5 post")
+
+# CREATE NEW DATAFRAME FOR MEAN FACILITY SCORES --------------------------------
+# Create new data frame for mean facility domain scores
+facility_scores_mean <- clean_data_scores %>%
   group_by(standardized_facility) %>%
   summarize(
     outcome4_pre_score = mean(outcome4_pre_score, na.rm = TRUE),
@@ -85,38 +97,80 @@ facility_scores <- clean_data_scores %>%
     outcome5_post_score = mean(outcome5_post_score, na.rm = TRUE),
   )
 
-# CREATE SCORE TABLES FOR REGIONAL SCORES BASED ON MEL PLAN -------------------
+# Transpose regional_scores_mean table
+facility_scores_mean <- t(facility_scores_mean) %>% 
+  as.data.frame(facility_scores_mean)
+
+# Rename columns to regions & drop region row from dataframe
+colnames(facility_scores_mean) <- regional_scores_mean[1, ] 
+facility_scores_mean <- facility_scores_mean[-1, ]
+
+# Rename rows to outcomes pre/post 
+row.names(facility_scores_mean) <- c("Outcome 4 pre", "Outcome 4 post", "Outcome 5 pre", "Outcome 5 post")
+
+# CREATE NEW DATAFRAMES FOR MEDIAN REGIONAL SCORES------------------------------
+# Create new data frame for median regional domain scores
+regional_scores_median <- clean_data_scores %>%
+  group_by(region) %>%
+  summarize(
+    outcome4_pre_score = median(outcome4_pre_score, na.rm = TRUE),
+    outcome4_post_score = median(outcome4_post_score, na.rm = TRUE),
+    outcome5_pre_score = median(outcome5_pre_score, na.rm = TRUE),
+    outcome5_post_score = median(outcome5_post_score, na.rm = TRUE),
+  )
+
+# Transpose regional_scores_mean table
+regional_scores_median <- t(regional_scores_median) %>% 
+  as.data.frame(regional_scores_median)
+
+# Rename columns to regions & drop region row from dataframe
+colnames(regional_scores_median) <- regional_scores_median[1, ] 
+regional_scores_median <- regional_scores_median[-1, ]
+
+# Rename rows to outcomes pre/post 
+row.names(regional_scores_median) <- c("Outcome 4 pre", "Outcome 4 post", "Outcome 5 pre", "Outcome 5 post")
+
+# CREATE NEW DATAFRAMES FOR MEDIAN FACILITY SCORES------------------------------
+
+# Create new data frame for median facility domain scores
+facility_scores_median <- clean_data_scores %>%
+  group_by(standardized_facility) %>%
+  summarize(
+    outcome4_pre_score = median(outcome4_pre_score, na.rm = TRUE),
+    outcome4_post_score = median(outcome4_post_score, na.rm = TRUE),
+    outcome5_pre_score = median(outcome5_pre_score, na.rm = TRUE),
+    outcome5_post_score = median(outcome5_post_score, na.rm = TRUE),
+  )
+
+# Transpose regional_scores_mean table
+facility_scores_median <- t(facility_scores_median) %>% 
+  as.data.frame(facility_scores_median)
+
+# Rename columns to regions & drop region row from dataframe
+colnames(facility_scores_median) <- facility_scores_median[1, ] 
+facility_scores_median <- facility_scores_median[-1, ]
+
+# Rename rows to outcomes pre/post 
+row.names(facility_scores_median) <- c("Outcome 4 pre", "Outcome 4 post", "Outcome 5 pre", "Outcome 5 post")
+
+# CREATE MEDIAN SCORE TABLES FOR REGIONAL SCORES BASED ON MEL PLAN ---------------
 # Create score tables - outcome 4
-scores_summary_table <- clean_scores %>%
-  # filter(status == "All three") %>%
-  filter(time_point != 1) %>%
+outcome4_scores_summary_table <- regional_scores_median %>%
   tbl_summary(
-    include = -c(participant_id_3, inclusive_status, region, status),
-    by = c(time_point),
+    by = c(starts_with("outcome4")),
     type = c(
-      system_support_score, practice_score, knowledge_warning_score,
-      knowledge_appropriate_score
+      region
     ) ~ "continuous",
     label = list(
-      knowledge_general_score ~ "General knowledge",
-      knowledge_warning_score ~ "Warning signs",
-      knowledge_appropriate_score ~ "Appropriate ways to ask about GBV",
-      knowledge_helpful_score ~ "Helpful responses to support a woman subjected to GBV",
-      system_support_score ~ "System support",
-      attitude_general_score ~ "General attitudes towards GBV and the health provider role",
-      attitude_acceptability_score ~ "Acceptability for a man to hit his partner",
-      attitude_genderroles_score ~ "Attitudes towards gender roles",
-      attitude_profroles_score ~ "Attitudes towards professional roles",
-      empathy_score ~ "Empathy",
-      confidence_score ~ "Confidence",
-      practice_score ~ "Practice"
+      outcome4_pre_score ~ "Outcome 4: knowledge, empathy, and attitudes pre-score",
+      outcome4_post_score ~ "Outcome 4: knowledge, empathy, and attitudes pre-score"
     ),
     statistic = list(
-      all_continuous() ~ "{mean} ({sd})"
+      all_continuous() ~ "{median} ({sd})"
     ),
     digits = all_continuous() ~ 2
   ) %>%
   add_p() %>%
   add_n() %>%
   bold_p()
-scores_summary_table
+outcome4_scores_summary_table
