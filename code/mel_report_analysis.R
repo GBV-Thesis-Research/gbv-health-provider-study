@@ -23,6 +23,10 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
 clean_data_scores <- readRDS(path_to_clean_rds_scores)
 
+path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
+clean_data <- readRDS(path_to_clean_three_timepoints)
+
+
 # Reduce data to only include matches (n = 46)
 clean_data_scores <- clean_data_scores %>%
   filter(status == "All three")
@@ -146,3 +150,17 @@ result <- wilcox.test(group1, group2, paired = TRUE)
 # Merge dataframes
 regional_scores_median <- merge(regional_scores_median_pre, regional_scores_median_post, all = TRUE)
 
+# CALCULATIONS FOR # OF CLIENTS IDENTIFIED ------------------------------------
+clientnum_baseline <- clean_data %>% 
+  filter(status == "All three") %>%
+  filter(time_point == 1) %>%
+  filter(practices_18 == 1)
+
+sum(clientnum_baseline$practices_18yes_number)/6
+
+clientnum_endline <- clean_data %>% 
+  filter(status == "All three") %>%
+  filter(time_point == 3) %>%
+  filter(practices_18 == 1)
+
+sum(clientnum_endline$practices_18yes_number)/16
