@@ -5,8 +5,6 @@
 ## Author: Susan Glenn
 ##################################################
 
-# NOTE: https://www.danieldsjoberg.com/gtsummary/articles/gallery.html#paired-test
-
 #### WD SETUP ####
 current_wd <- getwd()
 
@@ -31,3 +29,14 @@ style_file(paste(gbv_project_wd, "/code/table_scores.R", sep = ""))
 # Load cleaned data
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
 clean_scores <- readRDS(path_to_clean_rds_scores)
+
+# CREATE MEAN SCORES FOR EACH DOMAIN-------------------------------------------
+
+
+# CREATE PLOT FOR SCORES ACROSS TIMEPOINTS ------------------------------------
+ggplot(clean_data_scores, aes(x = Timepoint, y = Value1)) +
+  geom_bar(stat = "identity", position = "dodge", fill = "blue", width = 0.7) +
+  geom_bar(aes(x = Timepoint, y = Value2), stat = "identity", position = "dodge", fill = "red", width = 0.7) +
+  labs(title = "Bar Chart with Three Timepoints", x = "Timepoint", y = "Values") +
+  scale_fill_manual(values = c("blue", "red")) +
+  theme_minimal()
