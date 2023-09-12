@@ -30,83 +30,43 @@ style_file(paste(gbv_project_wd, "/code/table_scores.R", sep = ""))
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
 clean_scores <- readRDS(path_to_clean_rds_scores)
 
-# CREATE MEAN SCORES FOR EACH DOMAIN-------------------------------------------
-mean_pre <- clean_data_scores %>%
-  filter(time_point == 1) %>%
-  summarize(
-    knowledge_general_score = mean(knowledge_general_score),
-    knowledge_warning_score = mean(knowledge_warning_score),
-    knowledge_helpful_score = mean(knowledge_helpful_score),
-    knowledge_appropriate_score = mean(knowledge_appropriate_score),
-    attitude_general_score = mean(attitude_general_score),
-    attitude_acceptability_score = mean(attitude_acceptability_score),
-    attitude_genderroles_score = mean(attitude_genderroles_score),
-    empathy_score = mean(empathy_score),
-    system_support_score = mean(system_support_score),
-    confidence_score = mean(confidence_score),
-    practice_score = mean(practice_score, na.rm=T)
-  )
+result <- clean_scores %>%
+  group_by(time_point) %>%
+  summarize(knowledge_general_score_mean = mean(knowledge_general_score, na.rm = TRUE), 
+            knowledge_warning_score_mean = mean(knowledge_warning_score, na.rm = TRUE), 
+            knowledge_helpful_score_mean = mean(knowledge_helpful_score, na.rm = TRUE), 
+            knowledge_appropriate_score_mean = mean(knowledge_appropriate_score, na.rm = TRUE),
+            attitude_general_score_mean = mean(attitude_general_score, na.rm = TRUE), 
+            attitude_acceptability_score_mean = mean(attitude_acceptability_score, na.rm = TRUE), 
+            attitude_genderroles_score_mean = mean(attitude_genderroles_score, na.rm = TRUE), 
+            empathy_score_mean = mean(empathy_score, na.rm = TRUE), 
+            system_support_score_mean = mean(system_support_score, na.rm = TRUE), 
+            confidence_score_mean = mean(confidence_score, na.rm = TRUE), 
+            practice_score_mean = mean(practice_score, na.rm = TRUE)
+            ) %>%
+  ungroup() %>%
+  pivot_longer(cols = ends_with("_mean"), names_to = "score_variable", 
+               values_to = "mean_score") %>%
+  mutate(time_point = factor(time_point, levels = c(1, 2, 3), 
+                             labels = c("Timepoint 1", "Timepoint 2", "Timepoint 3")))
 
-mean_pre <- mean_pre %>%
-  gather(key = "domain", value = "mean_score")
-
-mean_pre$timepoint <- c("Baseline")
-
-mean_post <- clean_data_scores %>%
-  filter(time_point == 2) %>%
-  summarize(
-    knowledge_general_score = mean(knowledge_general_score),
-    knowledge_warning_score = mean(knowledge_warning_score),
-    knowledge_helpful_score = mean(knowledge_helpful_score),
-    knowledge_appropriate_score = mean(knowledge_appropriate_score),
-    attitude_general_score = mean(attitude_general_score),
-    attitude_acceptability_score = mean(attitude_acceptability_score),
-    attitude_genderroles_score = mean(attitude_genderroles_score),
-    empathy_score = mean(empathy_score),
-    system_support_score = mean(system_support_score),
-    confidence_score = mean(confidence_score),
-    practice_score = mean(practice_score, na.rm=T)
-  )
-
-mean_post <- mean_post %>%
-  gather(key = "domain", value = "mean_score")
-
-mean_post$timepoint <- c("Post-intensive training")
-
-mean_fuat <- clean_data_scores %>%
-  filter(time_point == 3) %>%
-  summarize(
-    knowledge_general_score = mean(knowledge_general_score),
-    knowledge_warning_score = mean(knowledge_warning_score),
-    knowledge_helpful_score = mean(knowledge_helpful_score),
-    knowledge_appropriate_score = mean(knowledge_appropriate_score),
-    attitude_general_score = mean(attitude_general_score),
-    attitude_acceptability_score = mean(attitude_acceptability_score),
-    attitude_genderroles_score = mean(attitude_genderroles_score),
-    empathy_score = mean(empathy_score),
-    system_support_score = mean(system_support_score),
-    confidence_score = mean(confidence_score),
-    practice_score = mean(practice_score, na.rm=T)
-  )
-
-mean_fuat <- mean_fuat %>%
-  gather(key = "domain", value = "mean_score")
-
-mean_fuat$timepoint <- c("Endline")
-
-# Bind all mean scores into one dataframe
-combined_mean_scores <- rbind(mean_pre, mean_post, mean_fuat)
 
 # CREATE PLOT FOR SCORES ACROSS TIMEPOINTS ------------------------------------
-mean_bar_plot <- ggplot(combined_mean_scores, aes(domain, mean_score, fill = timepoint)) +
-  geom_bar(stat="identity", position = "dodge") +
-  labs(title="Mean scores by domain and timepoint", x = "Domain", y = "Mean score out of 100",
-       fill = "Timepoint")
+mean_bar_plot <- ggplot(result, aes(fill=time_point, y=mean_score, x=score_variable)) + 
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Mean Scores by Domain for Each Timepoint",
+       x = "Domain",
+       y = "Mean Score") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_fill_brewer(palette = "Paired")
 
-mean_bar_plot
+folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
+file_name <- "mean_scores_bar_chart.png"
+ggsave(filename = file.path(folder_path, file_name), plot = mean_bar_plot, device = "png")
 
-mean_bar_plot <- mean_bar_plot +
-  scale_x_discrete(labels = c("Acceptable attitudes toward GBV", "Attitude towards gender roles", 
-                              "General attitudes toward GBV", "Confidence", "Empathy", "Appropriate Knowledge", 
-                              "General knowledge", "Knowledge of helpful responses to GBV", "Knowledge of warning signs",
-                              "Helpful practices", "Empathy"), guide = "Domain")
+# mean_bar_plot <- mean_bar_plot +
+#   scale_x_discrete(labels = c("Acceptable attitudes toward GBV", "Attitude towards gender roles", 
+#                               "General attitudes toward GBV", "Confidence", "Empathy", "Appropriate Knowledge", 
+#                               "General knowledge", "Knowledge of helpful responses to GBV", "Knowledge of warning signs",
+#                               "Helpful practices", "Empathy"), guide = "Domain")
