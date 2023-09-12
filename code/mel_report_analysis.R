@@ -18,7 +18,8 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
-#style_file(paste(gbv_project_wd, "/code/mel_report_analysis.R", sep = ""))
+source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
+style_file(paste(gbv_project_wd, "/code/mel_report_analysis.R", sep = ""))
 
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
 clean_data_scores <- readRDS(path_to_clean_rds_scores)
@@ -32,41 +33,47 @@ clean_data_scores <- clean_data_scores %>%
   filter(status == "All three")
 
 # CREATE NEW VARIABLES BASED ON MEL PLAN ---------------------------------------
-# Create new pre-score variable for outcome 4, including the knowledge, attitude, and empathy domains
+# Create new pre-score variable for outcome 4, including the knowledge, attitude,
+# and empathy domains
 clean_data_scores <- clean_data_scores %>%
   mutate(outcome4_pre_score = ifelse(time_point == 1,
-                                     ((knowledge_general_score + knowledge_warning_score +
-                                       knowledge_appropriate_score + knowledge_helpful_score +
-                                         attitude_general_score + attitude_acceptability_score +
-                                         attitude_genderroles_score + attitude_profroles_score +
-                                         empathy_score) / 900) * 100,
-                                     NA))
-#
-# Create new follow-up-score variable for outcome 4, including the knowledge, attitude, and empathy domains
+    ((knowledge_general_score + knowledge_warning_score +
+      knowledge_appropriate_score + knowledge_helpful_score +
+      attitude_general_score + attitude_acceptability_score +
+      attitude_genderroles_score + attitude_profroles_score +
+      empathy_score) / 900) * 100,
+    NA
+  ))
+
+# Create new follow-up-score variable for outcome 4, including the knowledge,
+# attitude, and empathy domains
 clean_data_scores <- clean_data_scores %>%
   mutate(outcome4_post_score = ifelse(time_point == 3,
-                                     ((knowledge_general_score + knowledge_warning_score +
-                                         knowledge_appropriate_score + knowledge_helpful_score +
-                                         attitude_general_score + attitude_acceptability_score +
-                                         attitude_genderroles_score + attitude_profroles_score +
-                                         empathy_score) / 900) * 100,
-                                     NA))
+    ((knowledge_general_score + knowledge_warning_score +
+      knowledge_appropriate_score + knowledge_helpful_score +
+      attitude_general_score + attitude_acceptability_score +
+      attitude_genderroles_score + attitude_profroles_score +
+      empathy_score) / 900) * 100,
+    NA
+  ))
 
 # # Create new pre-score variable for outcome 4, including the confidence, system support,
 # # and professional role domains <- have to ask Xylia  about the professional role one here
 # # as its in attitude domain, not its own domain
 clean_data_scores <- clean_data_scores %>%
   mutate(outcome5_pre_score = ifelse(time_point == 1,
-                                     ((confidence_score + system_support_score) / 200) * 100,
-                                     NA))
+    ((confidence_score + system_support_score) / 200) * 100,
+    NA
+  ))
 
 # # Create new follow-up score variable for outcome 4, including the confidence, system support,
 # # and professional role domains <- have to ask Xylia  about the professional role one here
 # # as its in attitude domain, not its own domain
 clean_data_scores <- clean_data_scores %>%
   mutate(outcome5_post_score = ifelse(time_point == 3,
-                                     ((confidence_score + system_support_score) / 200) * 100,
-                                     NA))
+    ((confidence_score + system_support_score) / 200) * 100,
+    NA
+  ))
 
 # # CREATE NEW DATAFRAMES FOR MEDIAN REGIONAL SCORES------------------------------
 # # Create new data frame for median regional domain scores
@@ -109,7 +116,7 @@ for (col in names(regional_scores_median_post)) {
 }
 str(regional_scores_median_post)
 
-# 
+#
 result <- wilcox.test(group1, group2, paired = TRUE)
 
 # CREATE NEW DATAFRAMES FOR MEDIAN REGIONAL SCORES FOR OUTCOME 4----------------
@@ -127,9 +134,9 @@ result <- wilcox.test(group1, group2, paired = TRUE)
 #     attitude_genderroles_score = median(attitude_genderroles_score),
 #     empathy_score = median(empathy_score)
 #   )
-# 
+#
 # #regional_scores_median_pre <- regional_scores_median_pre %>% mutate(timepoint = "1")
-# 
+#
 # # Create new data frame for median regional domain scores - post-test
 # regional_scores_median_post <- clean_data_scores %>%
 #   filter(time_point == 3) %>%
@@ -145,22 +152,22 @@ result <- wilcox.test(group1, group2, paired = TRUE)
 #     empathy_score = median(empathy_score)
 #   )
 
-#regional_scores_median_post <- regional_scores_median_post %>% mutate(timepoint = "3")
+# regional_scores_median_post <- regional_scores_median_post %>% mutate(timepoint = "3")
 
 # Merge dataframes
 regional_scores_median <- merge(regional_scores_median_pre, regional_scores_median_post, all = TRUE)
 
 # CALCULATIONS FOR # OF CLIENTS IDENTIFIED ------------------------------------
-clientnum_baseline <- clean_data %>% 
+clientnum_baseline <- clean_data %>%
   filter(status == "All three") %>%
   filter(time_point == 1) %>%
   filter(practices_18 == 1)
 
-sum(clientnum_baseline$practices_18yes_number)/6
+sum(clientnum_baseline$practices_18yes_number) / 6
 
-clientnum_endline <- clean_data %>% 
+clientnum_endline <- clean_data %>%
   filter(status == "All three") %>%
   filter(time_point == 3) %>%
   filter(practices_18 == 1)
 
-sum(clientnum_endline$practices_18yes_number)/16
+sum(clientnum_endline$practices_18yes_number) / 16
