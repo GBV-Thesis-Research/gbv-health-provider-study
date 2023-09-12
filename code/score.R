@@ -184,6 +184,28 @@ merged_scores <- inner_join(knowledge_sys_support_scores, scores, by = c(
   "participant_id_3", "time_point", "standardized_facility", "region"
 ))
 
+# CREATE NEW VARIABLES BASED ON MEL PLAN ---------------------------------------
+# Create new pre-score variable for outcome 4, including the knowledge, attitude,
+# and empathy domains
+merged_scores <- merged_scores %>%
+  mutate(outcome4_score = ifelse(status == "All three",
+    ((knowledge_general_score + knowledge_warning_score +
+      knowledge_appropriate_score + knowledge_helpful_score +
+      attitude_general_score + attitude_acceptability_score +
+      attitude_genderroles_score + attitude_profroles_score +
+      empathy_score) / 900) * 100,
+    NA
+  ))
+
+# Create new pre-score variable for outcome 4, including the confidence, system support,
+# and professional role domains <- have to ask Xylia  about the professional role one here
+# as its in attitude domain, not its own domain
+merged_scores <- merged_scores %>%
+  mutate(outcome5_score = ifelse(status == "All three",
+    ((confidence_score + system_support_score) / 200) * 100,
+    NA
+  ))
+
 # Write score data to folder
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
 saveRDS(merged_scores, file = path_to_clean_rds_scores)
