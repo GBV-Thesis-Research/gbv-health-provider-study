@@ -36,20 +36,20 @@ clean_data_scores <- clean_data_scores %>%
   )
 
 # CREATE NEW DATAFRAMES FOR MEDIAN REGIONAL SCORES------------------------------
-regional_scores_median <- clean_data_scores %>%
+regional_scores <- clean_data_scores %>%
   group_by(time_point) %>%
   pivot_wider(names_from = c(region), values_from = c(outcome4_score, outcome5_score))
 
 # Create Tables
-outcome4_columns <- names(regional_scores_median)[grep("outcome4", names(regional_scores_median))]
+outcome4_columns <- names(regional_scores)[grep("outcome4", names(regional_scores))]
 outcome_4_table <-
-  regional_scores_median %>%
+  regional_scores %>%
   select(all_of(outcome4_columns), time_point) %>%
   tbl_summary(
     by = time_point,
     type = c(outcome4_columns) ~ "continuous",
     statistic = list(
-      all_continuous() ~ "{median} ({sd})"
+      all_continuous() ~ "{mean} ({sd})"
     ),
     missing = "no",
     label = list(
@@ -64,8 +64,6 @@ outcome_4_table <-
       outcome4_score_Letefoho ~ "Letefoho"
     )
   ) %>%
-  add_p() %>%
-  bold_p() %>%
   add_n() %>%
   modify_header(
     label = "**Region**",
@@ -73,15 +71,15 @@ outcome_4_table <-
     stat_2 = "**Timepoint 3**"
   )
 
-outcome5_columns <- names(regional_scores_median)[grep("outcome5", names(regional_scores_median))]
+outcome5_columns <- names(regional_scores)[grep("outcome5", names(regional_scores))]
 outcome_5_table <-
-  regional_scores_median %>%
+  regional_scores %>%
   select(all_of(outcome5_columns), time_point) %>%
   tbl_summary(
     by = time_point,
     type = c(outcome5_columns) ~ "continuous",
     statistic = list(
-      all_continuous() ~ "{median} ({sd})"
+      all_continuous() ~ "{mean} ({sd})"
     ),
     missing = "no",
     label = list(
@@ -96,8 +94,6 @@ outcome_5_table <-
       outcome5_score_Letefoho ~ "Letefoho"
     )
   ) %>%
-  add_p() %>%
-  bold_p() %>%
   add_n() %>%
   modify_header(
     label = "**Region**",
