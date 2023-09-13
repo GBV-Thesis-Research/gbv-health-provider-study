@@ -134,16 +134,16 @@ knowledge_sys_support_key <- key %>%
   select(matches("knowledge|system_support"))
 
 knowledge_sys_support_answers <- clean_data %>%
-  select(participant_id_3, time_point, matches("knowledge|system_support"))
+  select(participant_id_3, time_point, standardized_facility, region, matches("knowledge|system_support"))
 
 key_vector <- as.vector(unlist(t(knowledge_sys_support_key)))
 
-participant_ids <- knowledge_sys_support_answers[, 1:2]
+participant_ids <- knowledge_sys_support_answers[, 1:4]
 
 knowledge_sys_support_scores_scored <-
   psych::score.multiple.choice(
     key = key_vector,
-    data = knowledge_sys_support_answers[, -(1:2)],
+    data = knowledge_sys_support_answers[, -(1:4)],
     score = FALSE, missing = FALSE, short = TRUE
   )
 
@@ -158,7 +158,7 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
     system_support_score = (rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE) / 6) * 100,
   ) %>%
   select(
-    participant_id_3, time_point, knowledge_general_score, knowledge_warning_score,
+    participant_id_3, time_point, standardized_facility, region, knowledge_general_score, knowledge_warning_score,
     knowledge_appropriate_score, knowledge_helpful_score, system_support_score
   )
 
@@ -174,15 +174,37 @@ scores <- clean_data %>%
     practice_score = (rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE) / 9) * 100,
   ) %>%
   select(
-    participant_id_3, status, inclusive_status, region, time_point, attitude_general_score, attitude_acceptability_score,
+    participant_id_3, status, inclusive_status, standardized_facility, region, time_point, attitude_general_score, attitude_acceptability_score,
     attitude_genderroles_score, attitude_profroles_score, empathy_score,
     confidence_score, practice_score
   )
 
 # Merge all scores into one data frame
 merged_scores <- inner_join(knowledge_sys_support_scores, scores, by = c(
-  "participant_id_3", "time_point"
+  "participant_id_3", "time_point", "standardized_facility", "region"
 ))
+
+# CREATE NEW VARIABLES BASED ON MEL PLAN ---------------------------------------
+# Create new pre-score variable for outcome 4, including the knowledge, attitude,
+# and empathy domains
+merged_scores <- merged_scores %>%
+  mutate(outcome4_score = ifelse(status == "All three",
+    ((knowledge_general_score + knowledge_warning_score +
+      knowledge_appropriate_score + knowledge_helpful_score +
+      attitude_general_score + attitude_acceptability_score +
+      attitude_genderroles_score + attitude_profroles_score +
+      empathy_score) / 900) * 100,
+    NA
+  ))
+
+# Create new pre-score variable for outcome 4, including the confidence, system support,
+# and professional role domains <- have to ask Xylia  about the professional role one here
+# as its in attitude domain, not its own domain
+merged_scores <- merged_scores %>%
+  mutate(outcome5_score = ifelse(status == "All three",
+    ((confidence_score + system_support_score) / 200) * 100,
+    NA
+  ))
 
 # Write score data to folder
 path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
