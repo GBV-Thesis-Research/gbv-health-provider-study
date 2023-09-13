@@ -72,8 +72,8 @@ result <- clean_scores %>%
 # CREATE PLOT FOR MEAN SCORES ACROSS TIMEPOINTS ------------------------------------
 mean_bar_plot <- ggplot(result, aes(fill=time_point, y=mean_score, x=score_variable)) + 
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Mean Scores by Domain for Each Timepoint",
-       x = "Domain",
+  labs(title = "Mean Scores by Domain and Timepoint",
+       x = "Assessment Domain",
        y = "Mean Score",
        fill = "Timepoint") +
   theme_minimal() +
