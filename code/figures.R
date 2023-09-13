@@ -69,7 +69,6 @@ result <- clean_scores %>%
                                          "Provider confidence", "Provider practices",
                                          "System support")))
 
-
 # CREATE PLOT FOR MEAN SCORES ACROSS TIMEPOINTS ------------------------------------
 mean_bar_plot <- ggplot(result, aes(fill=time_point, y=mean_score, x=score_variable)) + 
   geom_bar(stat = "identity", position = "dodge") +
