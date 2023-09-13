@@ -48,7 +48,7 @@ result <- clean_scores %>%
   pivot_longer(cols = ends_with("_mean"), names_to = "score_variable", 
                values_to = "mean_score") %>%
   mutate(time_point = factor(time_point, levels = c(1, 2, 3), 
-                             labels = c("Timepoint 1", "Timepoint 2", "Timepoint 3"))) %>%
+                             labels = c("Baseline", "Post-intensive training", "Endline"))) %>%
   mutate(score_variable = factor(score_variable, levels = c("knowledge_general_score_mean", 
                                                         "knowledge_warning_score_mean",
                                                         "knowledge_appropriate_score_mean",
@@ -69,12 +69,13 @@ result <- clean_scores %>%
                                          "System support")))
 
 
-# CREATE PLOT FOR SCORES ACROSS TIMEPOINTS ------------------------------------
+# CREATE PLOT FOR MEAN SCORES ACROSS TIMEPOINTS ------------------------------------
 mean_bar_plot <- ggplot(result, aes(fill=time_point, y=mean_score, x=score_variable)) + 
   geom_bar(stat = "identity", position = "dodge") +
   labs(title = "Mean Scores by Domain for Each Timepoint",
        x = "Domain",
-       y = "Mean Score") +
+       y = "Mean Score",
+       fill = "Timepoint") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
   scale_fill_brewer(palette = "Paired")
@@ -82,3 +83,5 @@ mean_bar_plot <- ggplot(result, aes(fill=time_point, y=mean_score, x=score_varia
 folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
 file_name <- "mean_scores_bar_chart.png"
 ggsave(filename = file.path(folder_path, file_name), plot = mean_bar_plot, device = "png")
+
+# CREATE PLOT FOR PERCENTAGE POINT DIFFERENCE BY FACILITY ----------------------
