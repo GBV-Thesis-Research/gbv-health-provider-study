@@ -31,6 +31,7 @@ path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.R
 clean_scores <- readRDS(path_to_clean_rds_scores)
 
 result <- clean_scores %>%
+  filter(status=="All three") %>%
   group_by(time_point) %>%
   summarize(knowledge_general_score_mean = mean(knowledge_general_score, na.rm = TRUE), 
             knowledge_warning_score_mean = mean(knowledge_warning_score, na.rm = TRUE), 
@@ -85,3 +86,4 @@ file_name <- "mean_scores_bar_chart.png"
 ggsave(filename = file.path(folder_path, file_name), plot = mean_bar_plot, device = "png")
 
 # CREATE PLOT FOR PERCENTAGE POINT DIFFERENCE BY FACILITY ----------------------
+
