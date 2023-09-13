@@ -48,7 +48,25 @@ result <- clean_scores %>%
   pivot_longer(cols = ends_with("_mean"), names_to = "score_variable", 
                values_to = "mean_score") %>%
   mutate(time_point = factor(time_point, levels = c(1, 2, 3), 
-                             labels = c("Timepoint 1", "Timepoint 2", "Timepoint 3")))
+                             labels = c("Timepoint 1", "Timepoint 2", "Timepoint 3"))) %>%
+  mutate(score_variable = factor(score_variable, levels = c("knowledge_general_score_mean", 
+                                                        "knowledge_warning_score_mean",
+                                                        "knowledge_appropriate_score_mean",
+                                                        "knowledge_helpful_score_mean",
+                                                        "attitude_general_score_mean",
+                                                        "attitude_acceptability_score_mean",
+                                                        "attitude_genderroles_score_mean",
+                                                        "empathy_score_mean",
+                                                        "confidence_score_mean",
+                                                        "practice_score_mean",
+                                                        "system_support_score_mean"),
+                              labels = c("General Knowledge", "Warning Signs", 
+                                         "Appropriate inquiry", 
+                                         "Helpful responses",
+                                         "General attitudes", "GBV unacceptability",
+                                         "Gender roles", "Provider empathy",
+                                         "Provider confidence", "Provider practices",
+                                         "System support")))
 
 
 # CREATE PLOT FOR SCORES ACROSS TIMEPOINTS ------------------------------------
@@ -64,9 +82,3 @@ mean_bar_plot <- ggplot(result, aes(fill=time_point, y=mean_score, x=score_varia
 folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
 file_name <- "mean_scores_bar_chart.png"
 ggsave(filename = file.path(folder_path, file_name), plot = mean_bar_plot, device = "png")
-
-# mean_bar_plot <- mean_bar_plot +
-#   scale_x_discrete(labels = c("Acceptable attitudes toward GBV", "Attitude towards gender roles", 
-#                               "General attitudes toward GBV", "Confidence", "Empathy", "Appropriate Knowledge", 
-#                               "General knowledge", "Knowledge of helpful responses to GBV", "Knowledge of warning signs",
-#                               "Helpful practices", "Empathy"), guide = "Domain")
