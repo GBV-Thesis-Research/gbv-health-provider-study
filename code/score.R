@@ -193,8 +193,7 @@ merged_scores <- merged_scores %>%
       knowledge_appropriate_score + knowledge_helpful_score +
       attitude_general_score + attitude_acceptability_score +
       attitude_genderroles_score + attitude_profroles_score +
-      empathy_score) / 900) * 100,
-    NA
+      empathy_score) / 900) * 100, NA
   ))
 
 # Create new score variable for outcome 5, including the confidence, system support,
