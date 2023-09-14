@@ -50,17 +50,42 @@ Three indicators included in the Harmonia Activity’s monitoring and evaluation
 | Outcome 7: Increase in clients identified who are victims of GBV                                                     | Indicator 7: % increase in GBV clients identified                                         | Two timepoints: pre-training and post-intervention* *This measure can be used to compare to health facility reporting (which is the official MEL data source) on clients identified | Percentage compared to baseline | 50% increase   |
 
 # Methods
-
 ## Data Collection
+A pre- and post-survey was adapted from the WHO curriculum evaluation tool, with the Toronto Empathy Questionnaire (TEQ) added. The 105 question survey was translated from English into Tetum by HAMNASA staff and was administered immediately pre- and post-intensive training, as well as at an endline survey administered following the monthly learning labs in June and July 2023. 
+
+All surveys were completed on paper forms and entered into RedCap data management software by HAMNASA staff. Participants were assigned unique identifiers that were utilized in combination with facility, sex, and position to match individuals across the three timepoints. Only individuals who completed all three surveys (pre-training, post-intensive, and post-intervention) were included in the analysis in order to measure change over time.
 
 ## Data Analysis
+<u>Pre-and post-training scores by topic area</u>
+The evaluation tool included 11 topic areas across 5 domains (knowledge, attitudes, confidence, empathy, and system support). Two domains, knowledge and attitudes, each had 4 sub-domains. Scores for knowledge and attitudes are reported by sub-domain to increase specificity. 
+
+True/false and yes/no questions were scored 1 for correct answers and 0 for incorrect, unanswered questions, or responses of “I don’t know.” Questions using a Likert scale were scored as the number of responses minus 1, with the least desirable response being scored as 0. 
+
+For the empathy and attitude domains only, questions were worded both positively and negatively. Responses were scored according to the following scale for positively worded items (for which preferred answer was “always”): never = 0; rarely = 1; sometimes = 2; often = 3; always = 4. For negatively worded items (for which preferred answer was “never”), the scores were reversed to account for the desired response.
+
+Composite variables for each domain and subdomain were created by summing the scores of each survey item within each the respective domain. All domains’ scores were normalized on a 100-point scale. 
+
+<u>Self-reported practices</u>
+Participants self-reported practices in identifying and caring for women subjected to violence in the survey. There should not have been variation in practices from pre- to post-intensive, so only the baseline (pre-survey) measure was used from the intensive. The proportion of participants who identified a woman suffering from domestic violence among their female patients in the past month was calculated. Among those providers who identified women suffering from violence, the average number of patients identified and the proportion of appropriate actions taken were calculated and compared at baseline (pre-intensive training) to endline (post-learning labs).
 
 # Results
-
 ## Demographic information
+Matched data was available for 46 individuals (138 surveys) from a total of 676 surveys over the three timepoints. Participant demographic characteristics and work history at baseline are presented in Table 2.
+
+The overall sample was 63% female (29 participants) and 37% male (17 participants). 50% of the sample was between 25-34 years old (22 participants). The most common position held was medical doctor (32% or 14 participants), followed by nurse (27% or 12 participants) and midwife (25% or 11 participants). At baseline, participants had been practicing in their clinical roles for an average of 7 years. Most participants saw an average of 39 or fewer patients per week, with 27% (12 participants) seeing less than 20 patients per week and another 27% seeing between 20-39 patients per week. 24% of participants (11 participants) saw 60 or more patients per week. Only 8.7% of participants (4 participants) had ever received GBV training before.
+
 ```{r}
 demographic_table %>%
   modify_caption("**Table 1. Participant Characteristics**")
 ```
 
+## Outcome 4: Health providers who have participated in the ‘Responding to GBV Learning Lab’ Curriculum demonstrate improved knowledge related to GBV.
+
+## Outcome 5: Health providers who have participated in the ‘Responding to GBV Learning Lab’ have increased confidence in delivering survivor-centered care.
+
+## Outcome 7: Increase in clients identified who are victims of GBV.
+
+## Additional Analyses
+
+# Interpretation 
 
