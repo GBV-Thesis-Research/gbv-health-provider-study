@@ -35,81 +35,19 @@ clean_data_scores <- clean_data_scores %>%
     outcome5_score
   )
 
-# CREATE NEW DATAFRAMES FOR MEDIAN REGIONAL SCORES------------------------------
 regional_scores <- clean_data_scores %>%
-  ##  group_by(time_point) %>%
-  pivot_wider(names_from = c(region), values_from = c(outcome4_score, outcome5_score))
+  pivot_wider(names_from = c(region), values_from = c(outcome4_score, outcome5_score)) %>%
+  mutate(total_outcome4 = rowSums(select(., starts_with("outcome4")), na.rm = TRUE)) %>%
+  mutate(total_outcome5 = rowSums(select(., starts_with("outcome5")), na.rm = TRUE))
 
-regional_scores <- regional_scores %>%
-  mutate(sum_outcome4 = rowSums(select(., starts_with("outcome4")), na.rm = TRUE)) %>%
-  mutate(sum_outcome5 = rowSums(select(., starts_with("outcome5")), na.rm = TRUE))
+difference_by_facility <- 
+  clean_data_scores %>%
+  select(-c(participant_id_3)) %>%
+  group_by(region, time_point) %>%
+  summarize(outcome4_mean_value = mean(outcome4_score, na.rm = TRUE), 
+            outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)) %>%
+  ungroup() %>%
+  pivot_wider(names_from = time_point, values_from = c(outcome4_mean_value, outcome5_mean_value)) %>%
+  mutate(outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1, 
+         outcome5_difference = outcome5_mean_value_3 - outcome5_mean_value_1)
 
-# tried creating a difference column here, though it isn't working and I don't think it's the right approach
-# regional_scores <- regional_scores %>%
-#   group_by(participant_id_3) %>%
-#   mutate(difference_outcome4 = sum_outcome4 - lag(sum_outcome4))
-
-# Create Tables
-outcome4_columns <- names(regional_scores)[grep("outcome4", names(regional_scores))]
-outcome_4_table <-
-  regional_scores %>%
-  select(all_of(outcome4_columns), time_point) %>%
-  tbl_summary(
-    by = time_point,
-    type = c(outcome4_columns) ~ "continuous",
-    statistic = list(
-      all_continuous() ~ "{mean} ({sd})"
-    ),
-    missing = "no",
-    label = list(
-      outcome4_score_Gleno ~ "Gleno",
-      outcome4_score_Guissarudo ~ "Guissarudo",
-      outcome4_score_Atsabe ~ "Atsabe",
-      outcome4_score_Maubara ~ "Maubara",
-      outcome4_score_Hatolia ~ "Hatolia",
-      outcome4_score_Liquica ~ "Liquica",
-      outcome4_score_Bazartete ~ "Bazartete",
-      outcome4_score_Railaco ~ "Railaco",
-      outcome4_score_Letefoho ~ "Letefoho",
-      sum_outcome4 ~ "All Facilities"
-    )
-  ) %>%
-  add_n() %>%
-  add_difference() %>%
-  modify_header(
-    label = "**Facility**",
-    stat_1 = "**Timepoint 1**",
-    stat_2 = "**Timepoint 3**"
-  )
-
-outcome5_columns <- names(regional_scores)[grep("outcome5", names(regional_scores))]
-outcome_5_table <-
-  regional_scores %>%
-  select(all_of(outcome5_columns), time_point) %>%
-  tbl_summary(
-    by = time_point,
-    type = c(outcome5_columns) ~ "continuous",
-    statistic = list(
-      all_continuous() ~ "{mean} ({sd})"
-    ),
-    missing = "no",
-    label = list(
-      outcome5_score_Gleno ~ "Gleno",
-      outcome5_score_Guissarudo ~ "Guissarudo",
-      outcome5_score_Atsabe ~ "Atsabe",
-      outcome5_score_Maubara ~ "Maubara",
-      outcome5_score_Hatolia ~ "Hatolia",
-      outcome5_score_Liquica ~ "Liquica",
-      outcome5_score_Bazartete ~ "Bazartete",
-      outcome5_score_Railaco ~ "Railaco",
-      outcome5_score_Letefoho ~ "Letefoho",
-      sum_outcome5 ~ "All Facilities"
-    )
-  ) %>%
-  add_n() %>%
-  add_difference() %>%
-  modify_header(
-    label = "**Facility**",
-    stat_1 = "**Timepoint 1**",
-    stat_2 = "**Timepoint 3**"
-  )
