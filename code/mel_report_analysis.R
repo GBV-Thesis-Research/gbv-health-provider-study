@@ -40,14 +40,17 @@ regional_scores <- clean_data_scores %>%
   mutate(total_outcome4 = rowSums(select(., starts_with("outcome4")), na.rm = TRUE)) %>%
   mutate(total_outcome5 = rowSums(select(., starts_with("outcome5")), na.rm = TRUE))
 
-difference_by_facility <- 
+difference_by_facility <-
   clean_data_scores %>%
   select(-c(participant_id_3)) %>%
   group_by(region, time_point) %>%
-  summarize(outcome4_mean_value = mean(outcome4_score, na.rm = TRUE), 
-            outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)) %>%
+  summarize(
+    outcome4_mean_value = mean(outcome4_score, na.rm = TRUE),
+    outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)
+  ) %>%
   ungroup() %>%
   pivot_wider(names_from = time_point, values_from = c(outcome4_mean_value, outcome5_mean_value)) %>%
-  mutate(outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1, 
-         outcome5_difference = outcome5_mean_value_3 - outcome5_mean_value_1)
-
+  mutate(
+    outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1,
+    outcome5_difference = outcome5_mean_value_3 - outcome5_mean_value_1
+  )
