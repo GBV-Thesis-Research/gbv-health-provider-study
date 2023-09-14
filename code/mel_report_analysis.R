@@ -44,6 +44,11 @@ regional_scores <- regional_scores %>%
   mutate(sum_outcome4 = rowSums(select(., starts_with("outcome4")), na.rm = TRUE)) %>%
   mutate(sum_outcome5 = rowSums(select(., starts_with("outcome5")), na.rm = TRUE))
 
+# tried creating a difference column here, though it isn't working and I don't think it's the right approach
+# regional_scores <- regional_scores %>%
+#   group_by(participant_id_3) %>%
+#   mutate(difference_outcome4 = sum_outcome4 - lag(sum_outcome4))
+
 # Create Tables
 outcome4_columns <- names(regional_scores)[grep("outcome4", names(regional_scores))]
 outcome_4_table <-
@@ -70,6 +75,7 @@ outcome_4_table <-
     )
   ) %>%
   add_n() %>%
+  add_difference() %>%
   modify_header(
     label = "**Facility**",
     stat_1 = "**Timepoint 1**",
@@ -101,6 +107,7 @@ outcome_5_table <-
     )
   ) %>%
   add_n() %>%
+  add_difference() %>%
   modify_header(
     label = "**Facility**",
     stat_1 = "**Timepoint 1**",
