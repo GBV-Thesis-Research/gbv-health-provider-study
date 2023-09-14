@@ -23,6 +23,7 @@ source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
 style_file(paste(gbv_project_wd, "/code/table_1.R", sep = ""))
 
 # Load cleaned data
+path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 clean_data <- readRDS(path_to_clean_rds)
 
 # Create table
@@ -34,7 +35,7 @@ labels <- list(
     position_years_clean = "Years of practice"
   )
 )
-filtered_data <- clean_data %>% filter(time_point == 1)
+filtered_data <- clean_data %>% filter(time_point == 1, status == "All three")
 
 demographic_table <- filtered_data %>%
   select(c("sex_factored", "age_groups", "position_groups", "position_years_clean", "municipality")) %>%
