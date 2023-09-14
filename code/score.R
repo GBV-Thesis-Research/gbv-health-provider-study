@@ -185,7 +185,7 @@ merged_scores <- inner_join(knowledge_sys_support_scores, scores, by = c(
 ))
 
 # CREATE NEW VARIABLES BASED ON MEL PLAN ---------------------------------------
-# Create new pre-score variable for outcome 4, including the knowledge, attitude,
+# Create new score variable for outcome 4, including the knowledge, attitude,
 # and empathy domains
 merged_scores <- merged_scores %>%
   mutate(outcome4_score = ifelse(status == "All three",
@@ -197,7 +197,7 @@ merged_scores <- merged_scores %>%
     NA
   ))
 
-# Create new pre-score variable for outcome 4, including the confidence, system support,
+# Create new score variable for outcome 5, including the confidence, system support,
 # and professional role domains <- have to ask Xylia  about the professional role one here
 # as its in attitude domain, not its own domain
 merged_scores <- merged_scores %>%

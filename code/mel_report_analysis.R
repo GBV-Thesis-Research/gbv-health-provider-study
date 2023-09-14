@@ -63,12 +63,19 @@ outcome_4_table <-
       outcome4_score_Railaco ~ "Railaco",
       outcome4_score_Letefoho ~ "Letefoho"
     )
-  ) %>%
+    ) %>%
   add_n() %>%
   modify_header(
     label = "**Region**",
     stat_1 = "**Timepoint 1**",
-    stat_2 = "**Timepoint 3**"
+    stat_2 = "**Timepoint 3**") %>% 
+  
+  add_stat(
+    fns = list(
+      "Overall" = ~ mean(.x)
+      ),
+      columns = c(outcome4_columns),
+      label = "Overall"
   )
 
 outcome5_columns <- names(regional_scores)[grep("outcome5", names(regional_scores))]
