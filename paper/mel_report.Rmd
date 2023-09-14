@@ -33,7 +33,6 @@ knitr::opts_chunk$set(fig.align = 'center',
 ## SOURCE FIGURES AND TABLES
 source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/mel_report_analysis.R", sep = ""))
-source(paste(disc_project_wd, "/figures.R", sep = ""))
 source(paste(disc_project_wd, "/code/figures.R", sep = ""))
 ```
 
@@ -85,17 +84,22 @@ demographic_table %>%
 When comparing the results to indicator 4, which is the percentage of health facilities demonstrate improvement in staff knowledge, attitude, and empathy in responding to GBV, the project did not meet/met/exceeded. ____% of  intervention facilities demonstrated improvement in staff knowledge, attitudes, and empathy in responding to GBV (table 2). Additional analysis of this indicator can be found in the Appendix.
 
 ```{r}
-outcome_4_table %>%
-  modify_caption("**Table 2. Average Facility Scores on Outcome 4 at Baseline and Endline**")
+table <- difference_by_facility %>%
+  select(region, outcome4_mean_value_1, outcome4_mean_value_3, outcome4_difference) %>%
+flextable()
+
+table <- set_header_labels(
+  table,
+  region = "Region",
+  outcome4_mean_value_1 = "Mean score timepoint 1", 
+  outcome4_mean_value_3 = "Mean score timepoint 3", 
+  outcome4_difference = "Difference in mean scores"
+)
+table
 ```
 
 ## Outcome 5: Health providers who have participated in the ‘Responding to GBV Learning Lab’ have increased confidence in delivering survivor-centered care.
 When comparing the results to indicator 5, which is the percentage of health facilities that demonstrate improvement in health provider confidence in responding to GBV, the project did not meet/met/exceeded. ____% of  intervention facilities demonstrated improvement in staff confidence in responding to GBV (table 3). Additional analysis of this indicator can be found in the Appendix.
-
-```{r}
-outcome_5_table %>%
-  modify_caption("**Table 3. Average Facility Scores on Outcome 5 at Baseline and Endline**")
-```
 
 ## Outcome 7: Increase in clients identified who are victims of GBV.
 At baseline, healthcare providers (n = 6) self-reported identifying an average of 1.5 clients who were victims of GBV in the past month. At endline, healthcare providers (n = 16) self-reported identifying an average of 3 clients who were victims of GBV in the past month. These self-reported numbers exceeded indicator seven’s target of a 50% increase in clients identified. Per self-reports, the number of providers identifying clients experiencing GBV within the past month increased by 167% and the number of clients identified increased by 100%. Facility records will be assessed to capture a more holistic picture of client identification in the facility. 
@@ -111,30 +115,8 @@ While the above scores demonstrate the impact of the entirety of the ‘Respondi
 # Appendix 
 ## All participant scores
 ```{r}
-mean_bar_plot %>%
-  modify_caption("**Table __. Average Participant Score by Domain**")
-```
-
-```{r}
-table <- difference_by_facility %>%
-  select(region, outcome4_mean_value_1, outcome4_mean_value_3, outcome4_difference) %>%
-flextable()
-
-table <- set_header_labels(
-  table,
-  region = "Region",
-  outcome4_mean_value_1 = "Mean score timepoint 1", 
-  outcome4_mean_value_3 = "Mean score timepoint 3", 
-  outcome4_difference = "Difference in mean scores"
-)
-table
-```
-
-```{r}
 figure_fp <- paste(gbv_project_wd, "/figures/mean_scores_bar_chart.png", sep = "")
 
 knitr::include_graphics(figure_fp)
 
 ```
-
->>>>>>> main
