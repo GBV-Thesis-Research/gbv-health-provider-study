@@ -61,7 +61,7 @@ table
 ```{r}
 figure_fp <- paste(gbv_project_wd, "/figures/mean_scores_bar_chart.png", sep = "")
 
-knitr::include_graphics(figure_fp)  # Replace "example.png" with your image file
+knitr::include_graphics(figure_fp)
 
 ```
 
