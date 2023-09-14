@@ -33,6 +33,7 @@ knitr::opts_chunk$set(fig.align = 'center',
 ## SOURCE FIGURES AND TABLES
 source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/mel_report_analysis.R", sep = ""))
+source(paste(disc_project_wd, "/code/figures.R", sep = ""))
 
 ```
 
@@ -55,5 +56,12 @@ table <- set_header_labels(
   outcome4_difference = "Difference in mean scores"
 )
 table
+```
+
+```{r}
+figure_fp <- paste(gbv_project_wd, "/figures/mean_scores_bar_chart.png", sep = "")
+
+knitr::include_graphics(figure_fp)
+
 ```
 
