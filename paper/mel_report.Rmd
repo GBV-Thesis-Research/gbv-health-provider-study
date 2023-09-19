@@ -88,9 +88,6 @@ outcome4_table <- difference_by_facility %>%
   select(region, outcome4_mean_value_1, outcome4_mean_value_3, outcome4_difference) %>%
 flextable() 
 
-# Add the footer row to the flextable
-outcome4_table <- add_footer_row(outcome4_table, top = FALSE, values = mean_values, colwidths = integer(0))
-
 outcome4_table <- set_header_labels(
   table,
   region = "Region",

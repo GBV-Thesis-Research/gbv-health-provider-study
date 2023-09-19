@@ -29,7 +29,7 @@ clean_data <- readRDS(path_to_clean_three_timepoints)
 
 # Reduce data to only include matches (n = 46)
 clean_data_scores <- clean_data_scores %>%
-  filter(status == "All three" & time_point != 2) %>%
+  ##  filter(status == "All three" & time_point != 2) %>%
   select(
     participant_id_3, region, time_point, outcome4_score,
     outcome5_score
