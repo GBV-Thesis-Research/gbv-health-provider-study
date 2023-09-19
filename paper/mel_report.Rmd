@@ -14,6 +14,7 @@ library(stringr)
 library(officedown)
 library(officer) 
 library(knitr)
+library(gtsummary)
 current_wd <- getwd()
 
 if(endsWith(current_wd, "gbv-health-provider-study")){
@@ -190,7 +191,34 @@ outcome7_table
 While the above scores demonstrate the impact of the entirety of the ‘Responding to GBV Learning Labs’ Curriculum, inclusive of the 5-day intensive training and the 14-month Learning Lab intervention, we were interested in assessing what occurred between the end of the 5-day intensive training (the post-intensive assessment) and the end of the learning labs (endline). 
 
 ```{r}
+clean_scores <- clean_scores %>%
+  mutate(timepoint_factored = factor(time_point,
+                                     levels = c(2, 3),
+                                     labels = c("Post-intensive Training", "Endline")))
 
+learning_labs_table <-
+  clean_scores %>%
+  filter(status == "All three") %>%  
+  filter(time_point != 1) %>%
+  tbl_summary(
+    include = c("outcome4_score", "outcome5_score", "timepoint_factored"), 
+    by = c(timepoint_factored),
+    type = c(
+      outcome4_score, outcome5_score
+    ) ~ "continuous",
+    label = list(
+      outcome4_score ~ "Outcome 4 Score",
+      outcome5_score ~ "Outcome 5 Score"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})"
+    ),
+    digits = all_continuous() ~ 2
+  ) %>%
+  add_p() %>%
+  add_n() %>%
+  bold_p()
+learning_labs_table
 ```
 
 # Interpretation 
