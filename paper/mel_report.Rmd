@@ -31,10 +31,11 @@ knitr::opts_chunk$set(fig.align = 'center',
                       dpi = 300)
 
 ## SOURCE FIGURES AND TABLES
-# source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
+source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/mel_report_analysis.R", sep = ""))
 source(paste(disc_project_wd, "/code/figures.R", sep = ""))
 source(paste(disc_project_wd, "/code/participant_id_cleaning.R", sep = ""))
+source(paste(disc_project_wd, "/code/table_scores.R", sep = ""))
 ```
 
 # Background
@@ -188,6 +189,9 @@ outcome7_table
 ## Learning Labs
 While the above scores demonstrate the impact of the entirety of the ‘Responding to GBV Learning Labs’ Curriculum, inclusive of the 5-day intensive training and the 14-month Learning Lab intervention, we were interested in assessing what occurred between the end of the 5-day intensive training (the post-intensive assessment) and the end of the learning labs (endline). 
 
+```{r}
+
+```
 
 # Interpretation 
 

@@ -181,7 +181,7 @@ scores <- clean_data %>%
 
 # Merge all scores into one data frame
 merged_scores <- inner_join(knowledge_sys_support_scores, scores, by = c(
-  "participant_id_3", "time_point", "standardized_facility", "region"
+  "participant_id_3", "time_point", "standardized_facility", "region", "status"
 ))
 
 # CREATE NEW VARIABLES BASED ON MEL PLAN ---------------------------------------
