@@ -34,6 +34,7 @@ knitr::opts_chunk$set(fig.align = 'center',
 source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/mel_report_analysis.R", sep = ""))
 source(paste(disc_project_wd, "/code/figures.R", sep = ""))
+source(paste(disc_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 ```
 
 # Background
@@ -133,6 +134,39 @@ outcome5_table
 At baseline, healthcare providers (n = 6) self-reported identifying an average of 1.5 clients who were victims of GBV in the past month. At endline, healthcare providers (n = 16) self-reported identifying an average of 3 clients who were victims of GBV in the past month. These self-reported numbers exceeded indicator seven’s target of a 50% increase in clients identified. Per self-reports, the number of providers identifying clients experiencing GBV within the past month increased by 167% and the number of clients identified increased by 100%. Facility records will be assessed to capture a more holistic picture of client identification in the facility. 
 
 Of those healthcare providers who identified clients within the past month who were victims of GBV, there was an improvement in the actions taken from baseline to endline (table __).
+
+```{r}
+pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
+
+outcome7_table <- clean_data %>%
+  filter(status == "All three") %>%
+  filter(time_point != 2) %>%
+  select(all_of(pract19_clean_vars), participant_id_3, time_point) %>%
+  flextable()
+
+outcome7_table
+
+outcome4_table <- set_header_labels(
+  outcome4_table,
+  region = "Region",
+  outcome4_mean_value_1 = "Mean score at baseline",
+  outcome4_mean_value_3 = "Mean score at endline",
+  outcome4_difference = "Difference in mean scores")
+
+footer_values <- c("All Facilities", 
+                   mean(difference_by_facility$outcome4_mean_value_1, na.rm = TRUE),
+                   mean(difference_by_facility$outcome4_mean_value_3, na.rm = TRUE),
+                   mean(difference_by_facility$outcome4_difference, na.rm = TRUE))
+
+outcome4_table <- add_footer_row(outcome4_table, values = footer_values, colwidths = c(1,1,1,1))
+
+outcome4_table
+clean_data <- clean_data %>%
+  mutate(
+    across(all_of(pract19_clean_vars), ~ ifelse(. == 2, 0, .))
+  )
+
+```
 
 ## Learning Labs
 While the above scores demonstrate the impact of the entirety of the ‘Responding to GBV Learning Labs’ Curriculum, inclusive of the 5-day intensive training and the 14-month Learning Lab intervention, we were interested in assessing what occurred between the end of the 5-day intensive training (the post-intensive assessment) and the end of the learning labs (endline). 
