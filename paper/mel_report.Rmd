@@ -138,34 +138,31 @@ Of those healthcare providers who identified clients within the past month who w
 ```{r}
 pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
 
-outcome7_table <- clean_data %>%
+outcome7pre <- clean_data %>%
+  filter(status == "All three" & time_point == 1) %>%
+  select(all_of(pract19_clean_vars)) %>%
+  na.omit() %>%
+  t() %>%
+  as.data.frame() %>%
+  mutate(percent_correct_pre = (rowSums(.))/6) %>%
+  select(percent_correct_pre)
+outcome7pre$question <- rownames(outcome7pre)
+
+outcome7post <- clean_data %>%
   filter(status == "All three") %>%
-  filter(time_point != 2) %>%
-  select(all_of(pract19_clean_vars), participant_id_3, time_point) %>%
-  flextable()
+  filter(time_point == 3) %>%
+  select(all_of(pract19_clean_vars)) %>%
+  na.omit() %>%
+  t() %>%
+  as.data.frame() %>%
+  mutate(percent_correct_post = (rowSums(.))/16) %>%
+  select(percent_correct_post)
+outcome7post$question <- rownames(outcome7post)
 
-outcome7_table
+outcome7_pre_post <- merge(outcome7pre, outcome7post, by = "question", all = TRUE) %>%
+  mutate(difference = percent_correct_post - percent_correct_pre)
 
-outcome4_table <- set_header_labels(
-  outcome4_table,
-  region = "Region",
-  outcome4_mean_value_1 = "Mean score at baseline",
-  outcome4_mean_value_3 = "Mean score at endline",
-  outcome4_difference = "Difference in mean scores")
-
-footer_values <- c("All Facilities", 
-                   mean(difference_by_facility$outcome4_mean_value_1, na.rm = TRUE),
-                   mean(difference_by_facility$outcome4_mean_value_3, na.rm = TRUE),
-                   mean(difference_by_facility$outcome4_difference, na.rm = TRUE))
-
-outcome4_table <- add_footer_row(outcome4_table, values = footer_values, colwidths = c(1,1,1,1))
-
-outcome4_table
-clean_data <- clean_data %>%
-  mutate(
-    across(all_of(pract19_clean_vars), ~ ifelse(. == 2, 0, .))
-  )
-
+flextable(outcome7_pre_post)
 ```
 
 ## Learning Labs
