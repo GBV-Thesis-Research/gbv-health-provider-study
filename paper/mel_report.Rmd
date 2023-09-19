@@ -107,6 +107,27 @@ outcome4_table
 
 ## Outcome 5: Health providers who have participated in the ‘Responding to GBV Learning Lab’ have increased confidence in delivering survivor-centered care.
 When comparing the results to indicator 5, which is the percentage of health facilities that demonstrate improvement in health provider confidence in responding to GBV, the project did not meet/met/exceeded. ____% of  intervention facilities demonstrated improvement in staff confidence in responding to GBV (table 3). Additional analysis of this indicator can be found in the Appendix.
+```{r}
+outcome5_table <- difference_by_facility %>%
+  select(region, outcome5_mean_value_1, outcome5_mean_value_3, outcome5_difference) %>%
+flextable() 
+
+outcome5_table <- set_header_labels(
+  outcome5_table,
+  region = "Region",
+  outcome5_mean_value_1 = "Mean score at baseline",
+  outcome5_mean_value_3 = "Mean score at endline",
+  outcome5_difference = "Difference in mean scores")
+
+footer_values <- c("All Facilities", 
+                   mean(difference_by_facility$outcome5_mean_value_1, na.rm = TRUE),
+                   mean(difference_by_facility$outcome5_mean_value_3, na.rm = TRUE),
+                   mean(difference_by_facility$outcome5_difference, na.rm = TRUE))
+
+outcome5_table <- add_footer_row(outcome5_table, values = footer_values, colwidths = c(1,1,1,1))
+
+outcome5_table
+```
 
 ## Outcome 7: Increase in clients identified who are victims of GBV.
 At baseline, healthcare providers (n = 6) self-reported identifying an average of 1.5 clients who were victims of GBV in the past month. At endline, healthcare providers (n = 16) self-reported identifying an average of 3 clients who were victims of GBV in the past month. These self-reported numbers exceeded indicator seven’s target of a 50% increase in clients identified. Per self-reports, the number of providers identifying clients experiencing GBV within the past month increased by 167% and the number of clients identified increased by 100%. Facility records will be assessed to capture a more holistic picture of client identification in the facility. 
