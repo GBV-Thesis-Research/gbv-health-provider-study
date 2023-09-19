@@ -31,7 +31,7 @@ knitr::opts_chunk$set(fig.align = 'center',
                       dpi = 300)
 
 ## SOURCE FIGURES AND TABLES
-source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
+# source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/mel_report_analysis.R", sep = ""))
 source(paste(disc_project_wd, "/code/figures.R", sep = ""))
 source(paste(disc_project_wd, "/code/participant_id_cleaning.R", sep = ""))
@@ -77,8 +77,8 @@ Matched data was available for 46 individuals (138 surveys) from a total of 676 
 The overall sample was 63% female (29 participants) and 37% male (17 participants). 50% of the sample was between 25-34 years old (22 participants). The most common position held was medical doctor (32% or 14 participants), followed by nurse (27% or 12 participants) and midwife (25% or 11 participants). At baseline, participants had been practicing in their clinical roles for an average of 7 years. Most participants saw an average of 39 or fewer patients per week, with 27% (12 participants) seeing less than 20 patients per week and another 27% seeing between 20-39 patients per week. 24% of participants (11 participants) saw 60 or more patients per week. Only 8.7% of participants (4 participants) had ever received GBV training before.
 
 ```{r}
-demographic_table %>%
-  modify_caption("**Table 1. Participant Characteristics at Baseline**")
+# demographic_table %>%
+#   modify_caption("**Table 1. Participant Characteristics at Baseline**")
 ```
 
 ## Outcome 4: Health providers who have participated in the ‘Responding to GBV Learning Lab’ Curriculum demonstrate improved knowledge related to GBV.
@@ -162,7 +162,27 @@ outcome7post$question <- rownames(outcome7post)
 outcome7_pre_post <- merge(outcome7pre, outcome7post, by = "question", all = TRUE) %>%
   mutate(difference = percent_correct_post - percent_correct_pre)
 
-flextable(outcome7_pre_post)
+question_names <- c("Assessed the immediate level of danger for the woman",
+                    "Discussed the options she may have",
+                    "Documented domestic violence history and physical examination findings",
+                    "Helped the woman to create a plan to increase her and her children’s safety",
+                    "Offered validating and supportive statements",
+                    "Provided basic information about domestic violence",
+                    "Provided education or resource materials about domestic violence",
+                    "Referred the woman to support services in the community",
+                    "Talked to the woman about her needs")
+rownames(outcome7_pre_post) <- question_names
+  
+outcome7_table <- flextable(outcome7_pre_post)
+
+outcome7_table <- set_header_labels(
+  outcome7_table,
+  question = "Action Taken",
+  percent_correct_pre = "Percent taking action at baseline",
+  percent_correct_post = "Percent taking action at endline",
+  difference = "Percent difference in actions taken at baseline and endline")
+
+outcome7_table
 ```
 
 ## Learning Labs
