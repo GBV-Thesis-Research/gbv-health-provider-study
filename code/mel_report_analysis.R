@@ -49,8 +49,7 @@ difference_by_facility <-
     outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)
   ) %>%
   ungroup() %>%
-  pivot_wider(names_from = time_point, values_from = c(outcome4_mean_value, outcome5_mean_value)) %>%
-  mutate(
-    outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1,
-    outcome5_difference = outcome5_mean_value_3 - outcome5_mean_value_1
-  )
+  pivot_wider(names_from = time_point, values_from = c(outcome4_mean_value, outcome5_mean_value))
+
+difference_by_facility <- difference_by_facility %>%
+  mutate(outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1)

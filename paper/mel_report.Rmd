@@ -89,11 +89,18 @@ outcome4_table <- difference_by_facility %>%
 flextable() 
 
 outcome4_table <- set_header_labels(
-  table,
+  outcome4_table,
   region = "Region",
-  outcome4_mean_value_1 = "Mean score timepoint 1", 
-  outcome4_mean_value_3 = "Mean score timepoint 3", 
-  outcome4_difference = "Difference in mean scores") 
+  outcome4_mean_value_1 = "Mean score at baseline",
+  outcome4_mean_value_3 = "Mean score at endline",
+  outcome4_difference = "Difference in mean scores")
+
+footer_values <- c("All Facilities", 
+                   mean(difference_by_facility$outcome4_mean_value_1),
+                   mean(difference_by_facility$outcome4_mean_value_3),
+                   mean(difference_by_facility$outcome4_difference))
+
+outcome4_table <- add_footer_row(outcome4_table, values = footer_values, colwidths = c(1,1,1,1))
 
 outcome4_table
 ```
