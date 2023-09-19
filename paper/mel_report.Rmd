@@ -96,9 +96,9 @@ outcome4_table <- set_header_labels(
   outcome4_difference = "Difference in mean scores")
 
 footer_values <- c("All Facilities", 
-                   mean(difference_by_facility$outcome4_mean_value_1),
-                   mean(difference_by_facility$outcome4_mean_value_3),
-                   mean(difference_by_facility$outcome4_difference))
+                   mean(difference_by_facility$outcome4_mean_value_1, na.rm = TRUE),
+                   mean(difference_by_facility$outcome4_mean_value_3, na.rm = TRUE),
+                   mean(difference_by_facility$outcome4_difference, na.rm = TRUE))
 
 outcome4_table <- add_footer_row(outcome4_table, values = footer_values, colwidths = c(1,1,1,1))
 
