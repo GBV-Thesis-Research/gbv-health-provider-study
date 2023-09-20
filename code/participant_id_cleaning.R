@@ -116,6 +116,18 @@ pids_to_check <- dem_info %>%
 
 pids_to_check <- pids_to_check$participant_id_3
 
+# Recode participant_id_3 #9 to Ermera facility for all timepoints. We confirmed he is the same individual who
+# moved facilities in the last month of the intervention, so will maintain the same facility as at baseline for the purposes
+# of the analysis.
+
+clean_data <- clean_data %>%
+  mutate(
+    region = case_when(
+      participant_id_3 == 9 ~ "Ermera",
+      TRUE ~ region  # Keep the original value for other cases
+    )
+  )
+
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
 path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
