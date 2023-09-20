@@ -89,7 +89,7 @@ ggsave(filename = file.path(folder_path, file_name), plot = mean_bar_plot, devic
 difference_by_facility <-
   clean_scores %>%
   select(-c(participant_id_3)) %>%
-  group_by(region, time_point) %>%
+  group_by(CHC_catchment, time_point) %>%
   summarize(
     outcome4_mean_value = mean(outcome4_score, na.rm = TRUE),
     outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)
@@ -100,17 +100,17 @@ difference_by_facility <-
     outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1,
     outcome5_difference = outcome5_mean_value_3 - outcome5_mean_value_1
   ) %>%
-  select(region, outcome4_difference, outcome5_difference) %>%
+  select(CHC_catchment, outcome4_difference, outcome5_difference) %>%
   pivot_longer(cols = ends_with("difference"), names_to = "score_variable", 
                values_to = "percent_difference") 
 
 difference_by_facility <- difference_by_facility %>%
   mutate(score_variable = recode(score_variable, "outcome4_difference" = "Outcome 4", "outcome5_difference" = "Outcome 5"))
 
-difference_by_facility <- difference_by_facility[-c(19,20), ]
+difference_by_facility <- difference_by_facility[-c(21,22), ]
 
 # create plot of difference by facility
-percent_diff_bar_plot <- ggplot(difference_by_facility, aes(fill=score_variable, y=percent_difference, x=region)) + 
+percent_diff_bar_plot <- ggplot(difference_by_facility, aes(fill=score_variable, y=percent_difference, x=CHC_catchment)) + 
   geom_bar(stat = "identity", position = "dodge") +
   labs(title = "Percent Change in Average Facility Score from Baseline to Endline",
        x = "Facility",
