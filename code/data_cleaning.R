@@ -211,6 +211,12 @@ data <- data %>%
   relocate(standardized_facility, .after = facility) %>%
   left_join(standard_facility_names, by = c("standardized_facility" = "full_name"))
 
+# Create new column for CHCs & the health posts in their region (called "CHC_catchment)
+data <- data %>%
+  mutate(CHC_catchment = ifelse(standardized_facility %in% c( "CHC Gleno", "HP Lauala Leten", "HP Aituro", "HP Huitasu"), "CHC Gleno", .)) %>%
+  mutate(CHC_catchment = ifelse(standardized_facility %in% c( "CHC Ermera", "HP Ponilala", "HP Lodudu"), "CHC Ermera", .)) %>%
+  mutate(CHC_catchment = ifelse(standardized_facility %in% c( "CHC Railaco", "HP Railaco Leten", "HP Matata", "HP Delesu", "HP Samalete", 
+                                                              "HP Terasu"), "CHC Railaco", .))
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
