@@ -205,7 +205,7 @@ data <- data %>%
   ) %>%
   mutate(standardized_facility = ifelse(facility_name_title_case %in% c(
     "Ssam / Dhs", "Centru Saude Deho", "Ps Estado", "Postu Da Saude",
-    "Chc Centru Saude", "Js200921", "Hp", "Hp Deleco", "Hp Ekapu", "Ps Fatuquero",
+    "Chc Centru Saude", "Js200921", "Hp", "Hp Deleco", "Hp Ekapu",
     "Ps Vatunau", "Hp Lebutelo", "Posto Saude", "Cs Internamentu"
   ), NA, standardized_facility)) %>%
   relocate(standardized_facility, .after = facility) %>%
@@ -213,12 +213,45 @@ data <- data %>%
 
 # Create new column for CHCs & the health posts in their region (called "CHC_catchment)
 data <- data %>%
-  mutate(CHC_catchment = ifelse(standardized_facility %in% c("CHC Gleno", "HP Lauala Leten", "HP Aituro", "HP Huitasu"), "CHC Gleno", .)) %>%
-  mutate(CHC_catchment = ifelse(standardized_facility %in% c("CHC Ermera", "HP Ponilala", "HP Lodudu"), "CHC Ermera", .)) %>%
-  mutate(CHC_catchment = ifelse(standardized_facility %in% c(
-    "CHC Railaco", "HP Railaco Leten", "HP Matata", "HP Delesu", "HP Samalete",
-    "HP Terasu"
-  ), "CHC Railaco", .))
+  mutate(CHC_catchment = case_when(
+    standardized_facility %in% c("CHC Gleno", "HP Lauala Leten", "HP Aituro", "HP Huitasu") ~ "CHC Gleno",
+    standardized_facility %in% c("CHC Ermera", "HP Ponilala", "HP Lodudu") ~ "CHC Ermera",
+    standardized_facility %in% c(
+      "CHC Railaco", "HP Railaco Leten", "HP Matata", "HP Delesu", "HP Samalete",
+      "HP Terasu", "Ps Fatuquero"
+    ) ~ "CHC Railaco",
+    standardized_facility %in% c(
+      "CHC Hatolia", "HP Raeraga", "HP Manulete", "HP Manusae", "HP Asulau Sare",
+      "HP Leimea Kraik"
+    ) ~ "CHC Hatolia",
+    standardized_facility %in% c(
+      "CHC Letefoho", "HP Bakita Eraulo", "HP Gaulolo", "HP Hatugau", "HP Leimea Sorin Balu",
+      "HP Aimeta", "HP Hatuhei", "HP Leobasa", "HP Lekisala"
+    ) ~ "CHC Letefoho",
+    standardized_facility %in% c(
+      "CHC Atsabe", "HP Paramin", "HP Baboe Leten", "HP Malabe", "HP Lasaun",
+      "HP Laubonu", "HP Leimea Leten", "HP Atara"
+    ) ~ "CHC Atsabe",
+    standardized_facility %in% c(
+      "CHC Guissarudo", "HP Fatubolu", "HP Fatubesi", "HP Urahou", "HP Lisapat",
+      "HP Mau-Ubo", "HP Hatulai Lete"
+    ) ~ "CHC Guissarudo",
+    standardized_facility %in% c(
+      "CHC Maubara", "HP Guico", "HP Siamodo", "HP Uluana", "HP Caicassa",
+      "HP Raenaba", "HP Vatuboro 1", "HP Vatuboro 2", "HP Ediri", "HP Maubaralissa", "HP Lisaico"
+    ) ~ "CHC Maubara",
+    standardized_facility %in% c(
+      "CHC Bazartete", "HP Lauhata", "HP Maumeta", "HP Ulmera", "HP Motaulun",
+      "HP Tibar", "HP Raimeta", "HP Fahilebu", "HP Baura", "HP Leorema"
+    ) ~ "CHC Bazartete",
+    standardized_facility %in% c(
+      "CHC Liquica", "HP Metagou", "HP Darulete", "HP Ebenu", "HP Loidahar",
+      "HP Hatuquessi", "HP Acumanu", "HP Leotala"
+    ) ~ "CHC Liquica",
+    TRUE ~ NA
+  ))
+
+data <- data %>% relocate(CHC_catchment, .after = standardized_facility)
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
