@@ -84,5 +84,54 @@ folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
 file_name <- "mean_scores_bar_chart.png"
 ggsave(filename = file.path(folder_path, file_name), plot = mean_bar_plot, device = "png")
 
-# CREATE PLOT FOR PERCENTAGE POINT DIFFERENCE BY FACILITY ----------------------
+# TABLE OF MEAN SCORES FOR OUTCOME 4 AND OUTCOME 5 BY FACILITY
+mean_scores_outcome_4_and_5 <- 
+  clean_scores %>%
+  select(-c(participant_id_3)) %>%
+  filter(status == "All three") %>%
+  group_by(region, time_point) %>%
+  summarize(
+    outcome4_mean_value = mean(outcome4_score, na.rm = TRUE),
+    outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  pivot_wider(names_from = time_point, values_from = c(outcome4_mean_value, outcome5_mean_value)) %>%
+  mutate(
+    outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1,
+    outcome5_difference = outcome5_mean_value_3 - outcome5_mean_value_1
+  ) %>%
+  select(region, outcome4_mean_value_1, outcome4_mean_value_3, outcome4_difference, outcome5_mean_value_1, outcome5_mean_value_3, outcome5_difference)
 
+outcome_4_table <- 
+  mean_scores_outcome_4_and_5 %>%
+  select(region, starts_with("outcome4"))
+
+outcome_5_table <- 
+  mean_scores_outcome_4_and_5 %>%
+  select(region, starts_with("outcome5"))
+
+# CREATE PLOT FOR DIFFERENCE IN MEAN SCORES BY FACILITY ----------------------
+
+difference_by_facility <-
+  mean_scores_outcome_4_and_5 %>%
+  select(region, outcome4_difference, outcome5_difference) %>%
+  pivot_longer(cols = ends_with("difference"), names_to = "score_variable", 
+               values_to = "percent_difference") 
+
+difference_by_facility <- difference_by_facility %>%
+  mutate(score_variable = recode(score_variable, "outcome4_difference" = "Outcome 4", "outcome5_difference" = "Outcome 5"))
+
+# create plot of difference by facility
+percent_diff_bar_plot <- ggplot(difference_by_facility, aes(fill=score_variable, y=percent_difference, x=region)) + 
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Mean Score Differences by Facility",
+       x = "Facility",
+       y = "Score change in mean score",
+       fill = "MEL Outcome") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_fill_brewer(palette = "Paired")
+
+folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
+file_name <- "mean_diff_bar_plot.png"
+ggsave(filename = file.path(folder_path, file_name), plot = percent_diff_bar_plot, device = "png")
