@@ -85,4 +85,38 @@ file_name <- "mean_scores_bar_chart.png"
 ggsave(filename = file.path(folder_path, file_name), plot = mean_bar_plot, device = "png")
 
 # CREATE PLOT FOR PERCENTAGE POINT DIFFERENCE BY FACILITY ----------------------
+# create dataframe
+difference_by_facility <-
+  clean_scores %>%
+  select(-c(participant_id_3)) %>%
+  group_by(region, time_point) %>%
+  summarize(
+    outcome4_mean_value = mean(outcome4_score, na.rm = TRUE),
+    outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  pivot_wider(names_from = time_point, values_from = c(outcome4_mean_value, outcome5_mean_value)) %>%
+  mutate(
+    outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1,
+    outcome5_difference = outcome5_mean_value_3 - outcome5_mean_value_1
+  ) %>%
+  select(region, outcome4_difference, outcome5_difference) %>%
+  pivot_longer(cols = ends_with("difference"), names_to = "score_variable", 
+               values_to = "percent_difference")
 
+difference_by_facility <- difference_by_facility[-c(19,20), ]
+
+# create plot of difference by facility
+percent_diff_bar_plot <- ggplot(difference_by_facility, aes(fill=score_variable, y=percent_difference, x=region)) + 
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Mean Scores by Domain and Timepoint",
+       x = "Facility",
+       y = "Percent Change from Baseline to Endline",
+       fill = "MEL Outcome") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_fill_brewer(palette = "Paired")
+
+folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
+file_name <- "percent_diff_bar_plot.png"
+ggsave(filename = file.path(folder_path, file_name), plot = percent_diff_bar_plot, device = "png")
