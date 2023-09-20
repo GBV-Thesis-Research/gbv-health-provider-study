@@ -36,7 +36,7 @@ scores_summary_table <- clean_scores %>%
   # filter(status == "All three") %>%
   filter(time_point != 1) %>%
   tbl_summary(
-    include = -c(participant_id_3, inclusive_status, region, status, standardized_facility),
+    include = -c(participant_id_3, inclusive_status, CHC_catchment, region, status, standardized_facility),
     by = c(time_point),
     type = c(
       system_support_score, practice_score, knowledge_warning_score,
