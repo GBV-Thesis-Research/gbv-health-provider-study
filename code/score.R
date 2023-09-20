@@ -134,16 +134,16 @@ knowledge_sys_support_key <- key %>%
   select(matches("knowledge|system_support"))
 
 knowledge_sys_support_answers <- clean_data %>%
-  select(participant_id_3, time_point, standardized_facility, region, matches("knowledge|system_support"))
+  select(participant_id_3, time_point, standardized_facility, region, CHC_catchment, matches("knowledge|system_support"))
 
 key_vector <- as.vector(unlist(t(knowledge_sys_support_key)))
 
-participant_ids <- knowledge_sys_support_answers[, 1:4]
+participant_ids <- knowledge_sys_support_answers[, 1:5]
 
 knowledge_sys_support_scores_scored <-
   psych::score.multiple.choice(
     key = key_vector,
-    data = knowledge_sys_support_answers[, -(1:4)],
+    data = knowledge_sys_support_answers[, -(1:5)],
     score = FALSE, missing = FALSE, short = TRUE
   )
 
@@ -158,7 +158,7 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
     system_support_score = (rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE) / 6) * 100,
   ) %>%
   select(
-    participant_id_3, time_point, standardized_facility, region, knowledge_general_score, knowledge_warning_score,
+    participant_id_3, time_point, CHC_catchment, standardized_facility, region, knowledge_general_score, knowledge_warning_score,
     knowledge_appropriate_score, knowledge_helpful_score, system_support_score
   )
 
