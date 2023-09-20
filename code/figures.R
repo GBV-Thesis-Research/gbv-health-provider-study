@@ -122,7 +122,7 @@ diff_by_facility <- diff_by_facility %>%
   mutate(score_variable = recode(score_variable, "outcome4_difference" = "Outcome 4", "outcome5_difference" = "Outcome 5"))
 
 # create plot of difference by facility
-percent_diff_bar_plot <- ggplot(diff_by_facility, aes(fill=score_variable, y=percent_difference, x=region)) + 
+mean_diff_bar_plot <- ggplot(diff_by_facility, aes(fill=score_variable, y=percent_difference, x=region)) + 
   geom_bar(stat = "identity", position = "dodge") +
   labs(title = "Mean Score Differences by Facility",
        x = "Facility",
@@ -134,4 +134,4 @@ percent_diff_bar_plot <- ggplot(diff_by_facility, aes(fill=score_variable, y=per
 
 folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
 file_name <- "mean_diff_bar_plot.png"
-ggsave(filename = file.path(folder_path, file_name), plot = percent_diff_bar_plot, device = "png")
+ggsave(filename = file.path(folder_path, file_name), plot = mean_diff_bar_plot, device = "png")

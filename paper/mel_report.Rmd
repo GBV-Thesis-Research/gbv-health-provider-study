@@ -127,14 +127,14 @@ outcome4_table
 When comparing the results to indicator 5, which is the percentage of health facilities that demonstrate improvement in health provider confidence in responding to GBV, the project exceeded the MEL target, with 100% of facilities demonstrating improvement in staff confidence in responding to GBV (table 4). Additional analysis of this indicator can be found in the Appendix.
 ```{r}
 outcome5_table <- difference_by_facility %>%
-  select(CHC_catchment, outcome5_mean_value_1, outcome5_mean_value_3, outcome5_difference) %>%
+  select(region, outcome5_mean_value_1, outcome5_mean_value_3, outcome5_difference) %>%
 flextable()
 
 outcome5_table <- set_caption(outcome5_table, "**Table 4. Outcome 5: Mean Provider Confidence Score by Facility Catchment Area**")
 
 outcome5_table <- set_header_labels(
   outcome5_table,
-  CHC_catchment = "Catchment area",
+  region = "Catchment area",
   outcome5_mean_value_1 = "Baseline",
   outcome5_mean_value_3 = "Endline",
   outcome5_difference = "Percent Difference")
@@ -265,7 +265,11 @@ While this report primarily looked at changes from baseline to endline, there wa
 ## Participant Scores without Facility Categories
 ```{r}
 figure_fp <- paste(gbv_project_wd, "/figures/mean_scores_bar_chart.png", sep = "")
-
 knitr::include_graphics(figure_fp)
+```
 
+## Mean Score Differences by Facility
+```{r}
+figure_fp <- paste(gbv_project_wd, "/figures/mean_diff_bar_plot.png", sep = "")
+knitr::include_graphics(figure_fp)
 ```
