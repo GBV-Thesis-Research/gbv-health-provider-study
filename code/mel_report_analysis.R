@@ -31,19 +31,19 @@ clean_data <- readRDS(path_to_clean_three_timepoints)
 clean_data_scores <- clean_data_scores %>%
   ##  filter(status == "All three" & time_point != 2) %>%
   select(
-    participant_id_3, region, time_point, outcome4_score,
+    participant_id_3, CHC_catchment, time_point, outcome4_score,
     outcome5_score
   )
 
 regional_scores <- clean_data_scores %>%
-  pivot_wider(names_from = c(region), values_from = c(outcome4_score, outcome5_score)) %>%
+  pivot_wider(names_from = c(CHC_catchment), values_from = c(outcome4_score, outcome5_score)) %>%
   mutate(total_outcome4 = rowSums(select(., starts_with("outcome4")), na.rm = TRUE)) %>%
   mutate(total_outcome5 = rowSums(select(., starts_with("outcome5")), na.rm = TRUE))
 
 difference_by_facility <-
   clean_data_scores %>%
   select(-c(participant_id_3)) %>%
-  group_by(region, time_point) %>%
+  group_by(CHC_catchment, time_point) %>%
   summarize(
     outcome4_mean_value = mean(outcome4_score, na.rm = TRUE),
     outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)
