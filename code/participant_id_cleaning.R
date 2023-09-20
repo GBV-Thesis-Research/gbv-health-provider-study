@@ -51,6 +51,7 @@ data <- data %>%
   ungroup() %>%
   left_join(link_log, by = "participant_id_2") %>%
   group_by(participant_id_3) %>%
+  fill(standardized_facility, region, .direction = "downup") %>%
   mutate(
     entries_1 = sum(time_point == 1),
     entries_2 = sum(time_point == 2),
@@ -67,29 +68,6 @@ data <- data %>%
   mutate(status = ifelse(is.na(status), "Other", status)) %>%
   ungroup() %>%
   relocate(c(status, participant_id_3), .after = time_point)
-
-# Clustering code to figure out matches
-dist_matrix <- stringdist::stringdistmatrix(data$participant_id_2, data$participant_id_2)
-
-hclust_result <- hclust(as.dist(dist_matrix), method = "ward.D2")
-num_clusters <- nrow(data) / 3 # You can adjust this based on your data and desired grouping
-clusters <- cutree(hclust_result, k = num_clusters)
-
-data_clustered <- data %>%
-  mutate(cluster = clusters)
-
-data_clustered <- data_clustered %>%
-  group_by(cluster) %>%
-  mutate(
-    entries_1 = sum(time_point == 1),
-    entries_2 = sum(time_point == 2),
-    entries_3 = sum(time_point == 3)
-  ) %>%
-  mutate(flag = ifelse(entries_1 == 1 & entries_2 == 1 & entries_3 == 1, "Three timepoints", NA)) %>%
-  mutate(flag = ifelse(is.na(flag) & entries_1 == 1 & entries_2 == 1 & entries_3 == 0, "Two timepoints", flag)) %>%
-  mutate(flag = ifelse(is.na(flag) & entries_1 == 1 & entries_2 == 1 & entries_3 > 0, "Maybe matches", flag)) %>%
-  ungroup() %>%
-  select(participant_id, participant_id_2, time_point, standardized_facility, time_point, cluster, flag, entries_1, entries_2, entries_3)
 
 data_with_three_time_points <- data %>%
   filter(status == "All three") %>%

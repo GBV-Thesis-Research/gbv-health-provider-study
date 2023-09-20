@@ -203,7 +203,8 @@ data <- data %>%
   mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Chcguisaduru"), "Guissarudo", facility_name_title_case)) %>%
   mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Bakhita"), "Bakita Eraulo", facility_name_title_case)) %>%
   mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Hp Leofela"), "Leotala", facility_name_title_case)) %>%
-  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Falihbo"), "Fahilebu", facility_name_title_case))
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Falihbo"), "Fahilebu", facility_name_title_case)) %>%
+  mutate(facility_name_title_case = ifelse(facility_name_title_case %in% c("Ps Fatuquero"), "Postu Tratamentu Fatuquero", facility_name_title_case))
 
 data <- data %>%
   mutate(
@@ -215,12 +216,11 @@ data <- data %>%
   ) %>%
   mutate(standardized_facility = ifelse(facility_name_title_case %in% c(
     "Ssam / Dhs", "Centru Saude Deho", "Ps Estado", "Postu Da Saude",
-    "Chc Centru Saude", "Js200921", "Hp", "Hp Deleco", "Hp Ekapu", "Ps Fatuquero",
+    "Chc Centru Saude", "Js200921", "Hp", "Hp Deleco", "Hp Ekapu",
     "Ps Vatunau", "Hp Lebutelo", "Posto Saude", "Cs Internamentu"
   ), NA, standardized_facility)) %>%
   relocate(standardized_facility, .after = facility) %>%
   left_join(standard_facility_names, by = c("standardized_facility" = "full_name"))
-
 
 # Write data to folder
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
