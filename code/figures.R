@@ -112,17 +112,17 @@ outcome_5_table <-
 
 # CREATE PLOT FOR DIFFERENCE IN MEAN SCORES BY FACILITY ----------------------
 
-difference_by_facility <-
+diff_by_facility <-
   mean_scores_outcome_4_and_5 %>%
   select(region, outcome4_difference, outcome5_difference) %>%
   pivot_longer(cols = ends_with("difference"), names_to = "score_variable", 
                values_to = "percent_difference") 
 
-difference_by_facility <- difference_by_facility %>%
+diff_by_facility <- diff_by_facility %>%
   mutate(score_variable = recode(score_variable, "outcome4_difference" = "Outcome 4", "outcome5_difference" = "Outcome 5"))
 
 # create plot of difference by facility
-percent_diff_bar_plot <- ggplot(difference_by_facility, aes(fill=score_variable, y=percent_difference, x=region)) + 
+percent_diff_bar_plot <- ggplot(diff_by_facility, aes(fill=score_variable, y=percent_difference, x=region)) + 
   geom_bar(stat = "identity", position = "dodge") +
   labs(title = "Mean Score Differences by Facility",
        x = "Facility",

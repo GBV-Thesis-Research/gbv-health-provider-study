@@ -101,14 +101,14 @@ When assessing indicator 4, the percentage of health facilities demonstrating im
 
 ```{r}
 outcome4_table <- difference_by_facility %>%
-  select(CHC_catchment, outcome4_mean_value_1, outcome4_mean_value_3, outcome4_difference) %>%
+  select(region, outcome4_mean_value_1, outcome4_mean_value_3, outcome4_difference) %>%
 flextable()
 
 outcome4_table <- set_caption(outcome4_table, "**Table 3. Outcome 4: Mean Provider Knowledge Score by Facility Catchment Area**")
 
 outcome4_table <- set_header_labels(
   outcome4_table,
-  CHC_catchment = "Catchment area",
+  region = "Catchment area",
   outcome4_mean_value_1 = "Baseline",
   outcome4_mean_value_3 = "Endline",
   outcome4_difference = "Percent Difference")
