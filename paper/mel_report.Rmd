@@ -34,10 +34,10 @@ knitr::opts_chunk$set(fig.align = 'center',
                       dpi = 300)
 
 ## SOURCE FIGURES AND TABLES
+source(paste(disc_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/mel_report_analysis.R", sep = ""))
 source(paste(disc_project_wd, "/code/figures.R", sep = ""))
-source(paste(disc_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 source(paste(disc_project_wd, "/code/table_scores.R", sep = ""))
 source(paste(disc_project_wd, "/code/indicator_table.R", sep = ""))
 ```

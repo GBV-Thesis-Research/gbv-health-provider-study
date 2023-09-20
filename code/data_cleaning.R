@@ -170,7 +170,7 @@ data <- data %>%
 
 # Recode question 10 to be 1 = yes, 0 = no for providers having identified a woman
 # suffering DV in the past month.
-pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
+pract19_clean_vars <- names(data)[str_detect(names(data), "practices_clean_19")]
 
 data <- data %>%
   mutate(across(all_of(pract19_clean_vars), ~ case_when(
