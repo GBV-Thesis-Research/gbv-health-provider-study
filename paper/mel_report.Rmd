@@ -253,8 +253,13 @@ learning_labs_table
 ```
 
 # Conclusion 
-There was improvement on all MEL indicators (outcomes 4, 5, and 7) from baseline to endline. 
+There was improvement on all MEL indicators (outcomes 4, 5, and 7) from baseline to endline. These results point to the 'Responding to GBV' curriculum's ability to impact healthcare providers' GBV knowledge and confidence in providing care to victims of GBV. This is particularly important given the high levels of GBV in the intervention municipalities and the low level of previous GBV training participants had received. 
 
+While there was an overall improvement in knowledge and confidence scores, there was large variation in individual facilities' improvement, including a decrease in outcome 4's scores at endline for CHC Ermera. It may be worthwhile to investigate facility characteristics in the future to determine what may be causing the variation in improvement, and characteristics associated with more improvement.
+
+While the number of providers who identified a woman who was a victim of GBV in the past month was relatively small, there were substantial improvements in both the number of providers who identified a woman who was a victim of GBV in the past month and the use of appropriate practices in caring for women who are victims of GBV. The largest changes from baseline to endline in the use of appropriate practices were: referring the woman to support services in the community, helping the woman to create a plan to increase her and her children’s safety, and talking to the woman about her needs. Six of the nine appropriate practices in caring for a woman experiencing GBV were reportedly used by 100% of providers at endline. This is an important finding as it indicates that improvements in GBV knowledge and confidence appear to translate to changes in clinical practice.
+
+While this report primarily looked at changes from baseline to endline, there was interest in understanding the impact of the learning labs on provider knowledge and confidence. Outcomes 4 and 5 both improved, though outcome 4 was not significant, after the intensive training. This may indicate that the learning labs maintained existing knowledge and continued to improve knowledge following the intensive training. In the absence of a counterfactual, however, it is not possible to say with certaintty what would have happened without the learning labs. Investigating the utility of the learning labs in addition to the intensive trainings provides an opportunity for future research. [insert evidence about knowledge drop-off in other training programs]
 
 # Appendix 
 ## Participant Scores without Facility Categories
