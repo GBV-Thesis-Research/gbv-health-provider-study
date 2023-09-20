@@ -54,3 +54,9 @@ difference_by_facility <-
 difference_by_facility <- difference_by_facility %>%
   mutate(outcome4_difference = outcome4_mean_value_3 - outcome4_mean_value_1) %>%
   mutate(outcome5_difference = outcome5_mean_value_3 - outcome5_mean_value_1)
+
+difference_by_facility$outcome5_difference <- as.numeric(difference_by_facility$outcome5_difference)
+
+# Limit to 2 decimals places
+numeric_columns <- sapply(difference_by_facility, is.numeric)
+difference_by_facility[numeric_columns] <- round(difference_by_facility[numeric_columns], digits = 2)

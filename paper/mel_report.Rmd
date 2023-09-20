@@ -32,7 +32,7 @@ knitr::opts_chunk$set(fig.align = 'center',
                       dpi = 300)
 
 ## SOURCE FIGURES AND TABLES
-source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
+# source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/mel_report_analysis.R", sep = ""))
 source(paste(disc_project_wd, "/code/figures.R", sep = ""))
 source(paste(disc_project_wd, "/code/participant_id_cleaning.R", sep = ""))
@@ -69,6 +69,8 @@ For the empathy and attitude domains only, questions were worded both positively
 
 Composite variables for each domain and subdomain were created by summing the scores of each survey item within each the respective domain. All domains’ scores were normalized on a 100-point scale. 
 
+Given the small sample size, CHCs and health posts were collapsed into one "CHC catchment area."
+
 <u>Self-reported practices</u>
 Participants self-reported practices in identifying and caring for women subjected to violence in the survey. There should not have been variation in practices from pre- to post-intensive, so only the baseline (pre-survey) measure was used from the intensive. The proportion of participants who identified a woman suffering from domestic violence among their female patients in the past month was calculated. Among those providers who identified women suffering from violence, the average number of patients identified and the proportion of appropriate actions taken were calculated and compared at baseline (pre-intensive training) to endline (post-learning labs).
 
@@ -79,8 +81,8 @@ Matched data was available for 46 individuals (138 surveys) from a total of 676 
 The overall sample was 63% female (29 participants) and 37% male (17 participants). 50% of the sample was between 25-34 years old (22 participants). The most common position held was medical doctor (32% or 14 participants), followed by nurse (27% or 12 participants) and midwife (25% or 11 participants). At baseline, participants had been practicing in their clinical roles for an average of 7 years. Most participants saw an average of 39 or fewer patients per week, with 27% (12 participants) seeing less than 20 patients per week and another 27% seeing between 20-39 patients per week. 24% of participants (11 participants) saw 60 or more patients per week. Only 8.7% of participants (4 participants) had ever received GBV training before.
 
 ```{r}
-demographic_table %>%
-  modify_caption("**Table 1. Participant Characteristics at Baseline**")
+# demographic_table %>%
+#   modify_caption("**Table 1. Participant Characteristics at Baseline**")
 ```
 
 ## Outcome 4: Health providers who have participated in the ‘Responding to GBV Learning Lab’ Curriculum demonstrate improved knowledge related to GBV.
@@ -93,7 +95,7 @@ flextable()
 
 outcome4_table <- set_header_labels(
   outcome4_table,
-  CHC_catchment = "Facility",
+  CHC_catchment = "Catchment area",
   outcome4_mean_value_1 = "Mean score at baseline",
   outcome4_mean_value_3 = "Mean score at endline",
   outcome4_difference = "Difference in mean scores")
@@ -112,22 +114,26 @@ outcome4_table
 When comparing the results to indicator 5, which is the percentage of health facilities that demonstrate improvement in health provider confidence in responding to GBV, the project did not meet/met/exceeded. ____% of  intervention facilities demonstrated improvement in staff confidence in responding to GBV (table 3). Additional analysis of this indicator can be found in the Appendix.
 ```{r}
 outcome5_table <- difference_by_facility %>%
-  select(region, outcome5_mean_value_1, outcome5_mean_value_3, outcome5_difference) %>%
-flextable() 
+  select(CHC_catchment, outcome5_mean_value_1, outcome5_mean_value_3, outcome5_difference) %>%
+flextable()
 
 outcome5_table <- set_header_labels(
   outcome5_table,
-  region = "Region",
+  CHC_catchment = "Catchment area",
   outcome5_mean_value_1 = "Mean score at baseline",
   outcome5_mean_value_3 = "Mean score at endline",
   outcome5_difference = "Difference in mean scores")
-
+  
 footer_values <- c("All Facilities", 
                    mean(difference_by_facility$outcome5_mean_value_1, na.rm = TRUE),
                    mean(difference_by_facility$outcome5_mean_value_3, na.rm = TRUE),
                    mean(difference_by_facility$outcome5_difference, na.rm = TRUE))
 
 outcome5_table <- add_footer_row(outcome5_table, values = footer_values, colwidths = c(1,1,1,1))
+
+outcome5_table$outcome5_mean_value_1 <- format(outcome5_table$outcome5_mean_value_1, digits = 2)
+outcome5_table$outcome5_mean_value_3 <- format(outcome5_table$outcome5_mean_value_3, digits = 2)
+outcome5_table$outcome5_difference <- format(outcome5_table$outcome5_difference, digits = 2)
 
 outcome5_table
 ```
