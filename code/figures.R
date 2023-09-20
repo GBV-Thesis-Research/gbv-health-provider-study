@@ -102,16 +102,19 @@ difference_by_facility <-
   ) %>%
   select(region, outcome4_difference, outcome5_difference) %>%
   pivot_longer(cols = ends_with("difference"), names_to = "score_variable", 
-               values_to = "percent_difference")
+               values_to = "percent_difference") 
+
+difference_by_facility <- difference_by_facility %>%
+  mutate(score_variable = recode(score_variable, "outcome4_difference" = "Outcome 4", "outcome5_difference" = "Outcome 5"))
 
 difference_by_facility <- difference_by_facility[-c(19,20), ]
 
 # create plot of difference by facility
 percent_diff_bar_plot <- ggplot(difference_by_facility, aes(fill=score_variable, y=percent_difference, x=region)) + 
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Mean Scores by Domain and Timepoint",
+  labs(title = "Percent Change in Average Facility Score from Baseline to Endline",
        x = "Facility",
-       y = "Percent Change from Baseline to Endline",
+       y = "Percent Change",
        fill = "MEL Outcome") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
