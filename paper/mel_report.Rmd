@@ -131,10 +131,6 @@ footer_values <- c("All Facilities",
 
 outcome5_table <- add_footer_row(outcome5_table, values = footer_values, colwidths = c(1,1,1,1))
 
-outcome5_table$outcome5_mean_value_1 <- format(outcome5_table$outcome5_mean_value_1, digits = 2)
-outcome5_table$outcome5_mean_value_3 <- format(outcome5_table$outcome5_mean_value_3, digits = 2)
-outcome5_table$outcome5_difference <- format(outcome5_table$outcome5_difference, digits = 2)
-
 outcome5_table
 ```
 
@@ -152,7 +148,7 @@ outcome7pre <- clean_data %>%
   na.omit() %>%
   t() %>%
   as.data.frame() %>%
-  mutate(percent_correct_pre = (rowSums(.))/6) %>%
+  mutate(percent_correct_pre = (rowSums(.))/6*100) %>%
   select(percent_correct_pre)
 outcome7pre$question <- rownames(outcome7pre)
 
@@ -163,14 +159,22 @@ outcome7post <- clean_data %>%
   na.omit() %>%
   t() %>%
   as.data.frame() %>%
-  mutate(percent_correct_post = (rowSums(.))/16) %>%
+  mutate(percent_correct_post = (rowSums(.))/16*100) %>%
   select(percent_correct_post)
 outcome7post$question <- rownames(outcome7post)
 
 outcome7_pre_post <- merge(outcome7pre, outcome7post, by = "question", all = TRUE) %>%
-  mutate(difference = percent_correct_post - percent_correct_pre)
-
-question_names <- c("Assessed the immediate level of danger for the woman",
+  mutate(difference = percent_correct_post - percent_correct_pre) %>% 
+  mutate(question = factor(question, levels = c("practices_clean_19a", 
+                                                        "practices_clean_19b",
+                                                        "practices_clean_19c",
+                                                        "practices_clean_19d",
+                                                        "practices_clean_19e",
+                                                        "practices_clean_19f",
+                                                        "practices_clean_19g",
+                                                        "practices_clean_19h",
+                                                        "practices_clean_19i"),
+                              labels = c("Assessed the immediate level of danger for the woman",
                     "Discussed the options she may have",
                     "Documented domestic violence history and physical examination findings",
                     "Helped the woman to create a plan to increase her and her children’s safety",
@@ -178,8 +182,10 @@ question_names <- c("Assessed the immediate level of danger for the woman",
                     "Provided basic information about domestic violence",
                     "Provided education or resource materials about domestic violence",
                     "Referred the woman to support services in the community",
-                    "Talked to the woman about her needs")
-rownames(outcome7_pre_post) <- question_names
+                    "Talked to the woman about her needs")))
+
+numeric_columns <- sapply(outcome7_pre_post, is.numeric)
+outcome7_pre_post[numeric_columns] <- round(outcome7_pre_post[numeric_columns], digits = 2)
   
 outcome7_table <- flextable(outcome7_pre_post)
 
@@ -222,7 +228,6 @@ learning_labs_table <-
     digits = all_continuous() ~ 2
   ) %>%
   add_p() %>%
-  add_n() %>%
   bold_p()
 learning_labs_table
 ```
