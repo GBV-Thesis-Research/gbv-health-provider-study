@@ -64,21 +64,7 @@ difference_by_facility$outcome5_difference <- as.numeric(difference_by_facility$
 numeric_columns <- sapply(difference_by_facility, is.numeric)
 difference_by_facility[numeric_columns] <- round(difference_by_facility[numeric_columns], digits = 2)
 
-# investigating ermera
-
-difference_by_facility <-
-  clean_data_scores %>%
-  select(-c(participant_id_3)) %>%
-  group_by(region, time_point) %>%
-  summarize(
-    outcome4_mean_value = mean(outcome4_score, na.rm = TRUE),
-    outcome5_mean_value = mean(outcome5_score, na.rm = TRUE)
-  ) %>%
-  ungroup() %>%
-  pivot_wider(names_from = time_point, values_from = c(outcome4_mean_value, outcome5_mean_value))
-
-
-
+# investigating ermera score decrease
 ermera_table <- clean_scores %>%
   filter(status == "All three") %>%
   filter(time_point != 2) %>%
@@ -114,3 +100,8 @@ ermera_table <- clean_scores %>%
   add_n() %>%
   bold_p()
 ermera_table
+
+ermera_scores <- clean_scores %>%
+  filter(status == "All three") %>%
+  filter(time_point != 2) %>%
+  filter(region == "Ermera")
