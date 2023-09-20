@@ -10,6 +10,8 @@ output:
 ---
 
 ```{r, setup, include=FALSE, warning = FALSE, message=FALSE}
+options(repos = "https://cloud.r-project.org/")
+
 library(stringr)
 library(officedown)
 library(officer) 
@@ -32,12 +34,12 @@ knitr::opts_chunk$set(fig.align = 'center',
                       dpi = 300)
 
 ## SOURCE FIGURES AND TABLES
-# source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
+source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/mel_report_analysis.R", sep = ""))
 source(paste(disc_project_wd, "/code/figures.R", sep = ""))
 source(paste(disc_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 source(paste(disc_project_wd, "/code/table_scores.R", sep = ""))
-source(paste(disc_project_wd, "/code/indcator_table.R", sep = ""))
+source(paste(disc_project_wd, "/code/indicator_table.R", sep = ""))
 ```
 
 # Background
@@ -57,8 +59,7 @@ Three indicators included in the Harmonia Activity’s monitoring, evaluation, a
 <!-- | Outcome 7: Increase in clients identified who are victims of GBV                                                     | Indicator 7: % increase in GBV clients identified                                         | Two timepoints: pre-training and post-intervention* *This measure can be used to compare to health facility reporting (which is the official MEL data source) on clients identified | Percentage compared to baseline | 50% increase   | -->
 
 ```{r}
-indicator_table %>%
-  modify_caption("**Table 1. MEL Indicators**")
+indicator_table
 ```
 
 # Methods
