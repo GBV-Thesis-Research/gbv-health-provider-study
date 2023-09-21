@@ -76,7 +76,11 @@ data <- data %>%
   mutate(
     region = case_when(
       participant_id_3 == 9 ~ "Ermera",
-      TRUE ~ region # Keep the original value for other cases
+      TRUE ~ region
+    ),
+    standardized_facility = case_when(
+      participant_id_3 == 9 ~ "Ermera",
+      TRUE ~ standardized_facility
     )
   )
 
