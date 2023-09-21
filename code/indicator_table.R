@@ -53,6 +53,5 @@ names(indicators)[3] <- "Frequency of Collection"
 names(indicators)[4] <- "Unit of Measure"
 
 # Create indicator table
-indicator_table <- kable(indicators) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+indicator_table <- flextable(indicators)
 indicator_table
