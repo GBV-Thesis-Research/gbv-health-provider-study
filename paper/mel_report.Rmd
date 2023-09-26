@@ -260,7 +260,7 @@ While this report primarily focuses on changes in provider GBV knowledge and con
 # Limitations:
 It is important to acknowledge several limitations in this work:
 - Sample Size: Some analyses are constrained by small sample sizes, particularly in Ermera, which may limit the generalizability of the findings.
-- Data on Attendance: The absence of comprehensive data on attendance at learning labs hinders a thorough assessment of its impact on knowledge and confidence scores.
+- Data on Attendance: The absence of individual-level data on attendance at learning labs hinders a thorough assessment of its impact on knowledge and confidence scores.
 - Causality: The study's observational nature prevents us from establishing causality between participation in the 'Responding to GBV' curriculum and improvements in knowledge and confidence.
 - Survey Questions and Translation: Further investigation is needed to address potential issues related to survey questions or translation, particularly in subdomains showing variation in scores.
 - Counterfactual: The lack of a counterfactual group makes it challenging to attribute all observed improvements solely to the curriculum.
