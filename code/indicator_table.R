@@ -43,7 +43,7 @@ indicators <- data.frame(
                                 *This measure can be used to compare to health facility reporting 
                                 (which is the official MEL data source) on clients identified"),
   Unit_of_Measure = c("Average composite score of knowledge, attitude, and empathy domains by health facility cohort pre- to post-intervention",
-                      "Average composite score of the confidence, system support, and professional role domains  by health facility cohort pre to post-intervention",
+                      "Average composite score of the confidence, system support, and professional role domains by health facility cohort pre to post-intervention",
                       "Percentage compared to baseline"),
   Value = c("80% of health facilities", "80% of health facilities", "50% increase")
 )
