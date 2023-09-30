@@ -91,13 +91,13 @@ demographic_table %>%
 ```
 
 ## Outcome 4: Health providers who have participated in the ‘Responding to GBV Learning Lab’ Curriculum demonstrate improved knowledge related to GBV.
-When evaluating Outcome 4, which measures the percentage of healthcare facilities showing enhancement in staff knowledge, attitudes, and empathy regarding GBV response, the project surpassed the MEL target. Specifically, 90% of the facilities exhibited improvements in staff knowledge, attitudes, and empathy in dealing with GBV, as detailed in Table 3. Further analysis of this indicator is available in the Appendix.
+When evaluating Outcome 4, which measures the percentage of healthcare facilities showing enhancement in staff knowledge, attitudes, and empathy regarding GBV response, the project surpassed the MEL target. Specifically, 90% of the facilities exhibited improvements in staff knowledge, attitudes, and empathy in dealing with GBV. In two catchement areas, Bazartete and Railaco, the improvements were slight, but seven areas had substantial improvements, as detailed in Table 3. Further analysis of this indicator is available in the Appendix.
 ```{r}
 outcome4_table <- difference_by_facility %>%
   select(region, outcome4_mean_value_1, outcome4_mean_value_3, outcome4_difference) %>%
 flextable()
 
-outcome4_table <- set_caption(outcome4_table, "**Table 3. Outcome 4: Mean Provider Knowledge Score by Facility Catchment Area**")
+outcome4_table <- set_caption(outcome4_table, "**Table 3. Outcome 4: Mean Provider Knowledge, Attitudes, and Empathy Score by Facility Catchment Area**")
 
 outcome4_table <- set_header_labels(
   outcome4_table,
