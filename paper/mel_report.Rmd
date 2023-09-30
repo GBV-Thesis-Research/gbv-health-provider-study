@@ -1,5 +1,5 @@
 ---
-title: "Monitoring, Evalution and Learning Report"
+title: "Monitoring, Evaluation and Learning Report"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
    bookdown::word_document2:
