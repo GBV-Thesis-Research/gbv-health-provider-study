@@ -117,7 +117,7 @@ outcome4_table
 ```
 
 ## Outcome 5: Health providers who have participated in the ‘Responding to GBV Learning Lab’ have increased confidence in delivering survivor-centered care.
-When evaluating Indicator 5, which gauges the percentage of health facilities showcasing enhanced health provider confidence in GBV response, the project not only met but exceeded the MEL target. Specifically, Table 4 reveals that all facilities, constituting 100%, demonstrated improvements in staff confidence when responding to GBV. Further analysis of this indicator is available in the Appendix.
+When evaluating Indicator 5, which gauges the percentage of health facilities showcasing enhanced health provider confidence, system support, and understanding of their professional role in GBV response, the project not only met but exceeded the MEL target. Specifically, Table 4 reveals that all facilities, constituting 100%, demonstrated improvements in staff confidence when responding to GBV. Further analysis of this indicator is available in the Appendix.
 
 ```{r}
 outcome5_table <- difference_by_facility %>%
@@ -203,7 +203,7 @@ outcome7_table <- set_header_labels(
   question = "Action Taken",
   percent_correct_pre = "Baseline",
   percent_correct_post = "Endline",
-  difference = "Percent difference")
+  difference = "Percentage point difference")
 
 outcome7_table <- set_caption(outcome7_table, "**Table 5. Outcome 7: Provider Practices in Identifying and Caring for Victims of GBV**")
 
@@ -211,7 +211,7 @@ outcome7_table
 ```
 
 ## Learning Labs
-While the above analysis demonstrates the impact of the entirety of the ‘Responding to GBV Learning Labs’ Curriculum, inclusive of the 5-day intensive training and the 14-month Learning Lab intervention, additional analysis was conducted to understand trends between the end of the 5-day intensive training (the post-intensive assessment) and endline (table 6).
+While the above analysis demonstrates the impact of the entirety of the ‘Responding to GBV Learning Labs’ Curriculum, inclusive of the 5-day intensive training and the 14-month Learning Lab intervention, additional analysis was conducted to understand trends between the end of the 5-day intensive training (the post-intensive assessment) and endline (table 6). Individual-level attendance data for the learning labs was unavailable (see limitations section). From post-intensive to endline, staff knowledge, attitudes, and empathy (outcome 4) improved, but not significantly. However, staff confidence, system support, and professional role scores (outcome 5) increased significantly. 
 ```{r}
 clean_scores <- clean_scores %>%
   mutate(timepoint_factored = factor(time_point,
