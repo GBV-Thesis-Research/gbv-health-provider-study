@@ -173,8 +173,8 @@ outcome4_table %>%
   save_as_image(temp_img_file, width = 7, height = 3)
 folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
 file_name <- "outcome4_table.png"
-unlink(temp_img_file)
 file.copy(temp_img_file, file.path(folder_path, file_name))
+unlink(temp_img_file)
 
 # OUTCOME 5 TABLE
 outcome5_table <- difference_by_facility %>%
@@ -197,9 +197,13 @@ footer_values <- c("All Facilities",
 
 outcome5_table <- add_footer_row(outcome5_table, values = footer_values, colwidths = c(1,1,1,1))
 
+temp_img_file2 <- tempfile(fileext = ".png")
+outcome5_table %>%
+  save_as_image(temp_img_file2, width = 7, height = 3)
 folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
 file_name <- "outcome5_table.png"
-ggsave(filename = file.path(folder_path, file_name), plot = outcome5_table, device = "png")
+file.copy(temp_img_file2, file.path(folder_path, file_name))
+unlink(temp_img_file2)
 
 # OUTCOME 7 TABLE
 pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
