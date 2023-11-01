@@ -95,58 +95,13 @@ demographic_table %>%
 When evaluating Outcome 4, which measures the percentage of healthcare facilities showing enhancement in staff knowledge, attitudes, and empathy regarding GBV response, the project surpassed the MEL target. Specifically, 90% of the facilities exhibited improvements in staff knowledge, attitudes, and empathy in dealing with GBV. In two catchement areas, Bazartete and Railaco, the improvements were slight, but seven areas had substantial improvements, as detailed in Table 3. Further analysis of this indicator is available in the Appendix.
 ```{r}
 outcome4_table
-
-# outcome4_table <- difference_by_facility %>%
-#   select(region, outcome4_mean_value_1, outcome4_mean_value_3, outcome4_difference) %>%
-#   flextable()
-# 
-# outcome4_table <- set_caption(outcome4_table, "**Table 3. Outcome 4: Mean Provider Knowledge, Attitudes, and Empathy Score by Facility Catchment Area**")
-# 
-# outcome4_table <- set_header_labels(
-#   outcome4_table,
-#   region = "Catchment area",
-#   outcome4_mean_value_1 = "Baseline",
-#   outcome4_mean_value_3 = "Endline",
-#   outcome4_difference = "Difference in mean scores")
-# 
-# footer_values <- c("All Facilities", 
-#                    mean(difference_by_facility$outcome4_mean_value_1, na.rm = TRUE),
-#                    mean(difference_by_facility$outcome4_mean_value_3, na.rm = TRUE),
-#                    mean(difference_by_facility$outcome4_difference, na.rm = TRUE))
-# 
-# outcome4_table <- add_footer_row(outcome4_table, values = footer_values, colwidths = c(1,1,1,1))
-# 
-# outcome4_table
 ```
 
 ## Outcome 5: Health providers who have participated in the ‘Responding to GBV Learning Lab’ have increased confidence in delivering survivor-centered care.
 When evaluating Indicator 5, which gauges the percentage of health facilities showcasing enhanced health provider confidence, system support, and understanding of their professional role in GBV response, the project not only met but exceeded the MEL target. Specifically, Table 4 reveals that all facilities, constituting 100%, demonstrated improvements in staff confidence when responding to GBV. Further analysis of this indicator is available in the Appendix.
 
 ```{r}
-outcome5_table %>%
-  modify_caption("**Table 4. Outcome 5: Mean Provider Confidence Score by Facility Catchment Area**")
-
-# outcome5_table <- difference_by_facility %>%
-#   select(region, outcome5_mean_value_1, outcome5_mean_value_3, outcome5_difference) %>%
-# flextable()
-# 
-# outcome5_table <- set_caption(outcome5_table, "**Table 4. Outcome 5: Mean Provider Confidence Score by Facility Catchment Area**")
-# 
-# outcome5_table <- set_header_labels(
-#   outcome5_table,
-#   region = "Catchment area",
-#   outcome5_mean_value_1 = "Baseline",
-#   outcome5_mean_value_3 = "Endline",
-#   outcome5_difference = "Difference in mean scores")
-#   
-# footer_values <- c("All Facilities", 
-#                    mean(difference_by_facility$outcome5_mean_value_1, na.rm = TRUE),
-#                    mean(difference_by_facility$outcome5_mean_value_3, na.rm = TRUE),
-#                    mean(difference_by_facility$outcome5_difference, na.rm = TRUE))
-# 
-# outcome5_table <- add_footer_row(outcome5_table, values = footer_values, colwidths = c(1,1,1,1))
-# 
-# outcome5_table
+outcome5_table
 ```
 
 ## Outcome 7: Increase in clients identified who are victims of GBV.
@@ -155,107 +110,13 @@ At baseline, healthcare providers (n = 6) self-reported identifying an average o
 Of those healthcare providers who identified clients within the past month who were victims of GBV, there was improvement on all but one appropriate practice from baseline to endline (table 5). The one practice without improvement, offering validating and supportive statements, was already at 100% at baseline and therefore could not improve further.
 
 ```{r}
-outcome7_table %>%
-  modify_caption("**Table 5. Outcome 7: Provider Practices in Identifying and Caring for Victims of GBV**")
-
-# pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
-# 
-# outcome7pre <- clean_data %>%
-#   filter(status == "All three" & time_point == 1) %>%
-#   select(all_of(pract19_clean_vars)) %>%
-#   na.omit() %>%
-#   t() %>%
-#   as.data.frame() %>%
-#   mutate(percent_correct_pre = (rowSums(.))/6*100) %>%
-#   select(percent_correct_pre)
-# outcome7pre$question <- rownames(outcome7pre)
-# 
-# outcome7post <- clean_data %>%
-#   filter(status == "All three") %>%
-#   filter(time_point == 3) %>%
-#   select(all_of(pract19_clean_vars)) %>%
-#   na.omit() %>%
-#   t() %>%
-#   as.data.frame() %>%
-#   mutate(percent_correct_post = (rowSums(.))/16*100) %>%
-#   select(percent_correct_post)
-# outcome7post$question <- rownames(outcome7post)
-# 
-# outcome7_pre_post <- merge(outcome7pre, outcome7post, by = "question", all = TRUE) %>%
-#   mutate(difference = percent_correct_post - percent_correct_pre) %>% 
-#   mutate(question = factor(question, levels = c("practices_clean_19a", 
-#                                                         "practices_clean_19b",
-#                                                         "practices_clean_19c",
-#                                                         "practices_clean_19d",
-#                                                         "practices_clean_19e",
-#                                                         "practices_clean_19f",
-#                                                         "practices_clean_19g",
-#                                                         "practices_clean_19h",
-#                                                         "practices_clean_19i"),
-#                               labels = c("Assessed the immediate level of danger for the woman",
-#                     "Discussed the options she may have",
-#                     "Documented domestic violence history and physical examination findings",
-#                     "Helped the woman to create a plan to increase her and her children’s safety",
-#                     "Offered validating and supportive statements",
-#                     "Provided basic information about domestic violence",
-#                     "Provided education or resource materials about domestic violence",
-#                     "Referred the woman to support services in the community",
-#                     "Talked to the woman about her needs")))
-# 
-# numeric_columns <- sapply(outcome7_pre_post, is.numeric)
-# outcome7_pre_post[numeric_columns] <- round(outcome7_pre_post[numeric_columns], digits = 2)
-#   
-# outcome7_table <- flextable(outcome7_pre_post)
-# 
-# outcome7_table <- set_header_labels(
-#   outcome7_table,
-#   question = "Action Taken",
-#   percent_correct_pre = "Baseline",
-#   percent_correct_post = "Endline",
-#   difference = "Percentage point difference")
-# 
-# outcome7_table <- set_caption(outcome7_table, "**Table 5. Outcome 7: Provider Practices in Identifying and Caring for Victims of GBV**")
-# 
-# outcome7_table
+outcome7_table 
 ```
 
 ## Learning Labs
 While the above analysis demonstrates the impact of the entirety of the ‘Responding to GBV Learning Labs’ Curriculum, inclusive of the 5-day intensive training and the 14-month Learning Lab intervention, additional analysis was conducted to understand trends between the end of the 5-day intensive training (the post-intensive assessment) and endline (table 6). Individual-level attendance data for the learning labs was unavailable (see limitations section). From post-intensive to endline, staff knowledge, attitudes, and empathy (outcome 4) improved, but not significantly. However, staff confidence, system support, and professional role scores (outcome 5) increased significantly. 
 ```{r}
-learning_labs_table %>%
-  modify_caption("**Table 6. Outcome 4 & 5 Scores from Post-intensive Training to Endline**")
-
-# clean_scores <- clean_scores %>%
-#   mutate(timepoint_factored = factor(time_point,
-#                                      levels = c(2, 3),
-#                                      labels = c("Post-intensive Training", "Endline")))
-# 
-# learning_labs_table <-
-#   clean_scores %>%
-#   filter(status == "All three") %>%  
-#   filter(time_point != 1) %>%
-#   tbl_summary(
-#     include = c("outcome4_score", "outcome5_score", "timepoint_factored"), 
-#     by = c(timepoint_factored),
-#     type = c(
-#       outcome4_score, outcome5_score
-#     ) ~ "continuous",
-#     label = list(
-#       outcome4_score ~ "Outcome 4 Score",
-#       outcome5_score ~ "Outcome 5 Score"
-#     ),
-#     statistic = list(
-#       all_continuous() ~ "{mean} ({sd})"
-#     ),
-#     digits = all_continuous() ~ 2
-#   ) %>%
-#   add_p() %>%
-#   bold_p()
-# 
-# learning_labs_table <- learning_labs_table %>%
-#   modify_caption("**Table 6. Outcome 4 & 5 Scores from Post-intensive Training to Endline**")
-# 
-# learning_labs_table
+learning_labs_table
 ```
 
 # Discussion 
