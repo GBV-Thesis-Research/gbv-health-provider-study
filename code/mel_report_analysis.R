@@ -105,3 +105,5 @@ ermera_scores <- clean_scores %>%
   filter(status == "All three") %>%
   filter(time_point != 2) %>%
   filter(region == "Ermera")
+
+# Outcome 4 table
