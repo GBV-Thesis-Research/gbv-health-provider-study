@@ -13,6 +13,7 @@ library(officedown)
 library(officer) 
 library(gtsummary)
 library(flextable)
+library(kableExtra)
 
 if (endsWith(current_wd, "gbv-health-provider-study")) {
   gbv_project_wd <- current_wd
@@ -264,9 +265,13 @@ outcome7_table <- set_header_labels(
 
 outcome7_table <- set_caption(outcome7_table, "**Table 5. Outcome 7: Provider Practices in Identifying and Caring for Victims of GBV**")
 
+temp_img_file3 <- tempfile(fileext = ".png")
+outcome7_table %>%
+  save_as_image(temp_img_file3, width = 7, height = 3)
 folder_path <- paste(gbv_project_wd, "/figures/", sep = "")
 file_name <- "outcome7_table.png"
-ggsave(filename = file.path(folder_path, file_name), plot = outcome7_table, device = "png")
+file.copy(temp_img_file3, file.path(folder_path, file_name))
+unlink(temp_img_file3)
 
 # LEARNING LABS TABLE
 clean_scores <- clean_scores %>%
@@ -299,4 +304,4 @@ learning_labs_table <-
 learning_labs_table <- learning_labs_table %>%
   modify_caption("**Table 6. Outcome 4 & 5 Scores from Post-intensive Training to Endline**")
 
-learning_labs_table
+save_kable(learning_labs_table, "/Users/susanglenn/Repositories/gbv-health-provider-study/figures/my_summary_table.png")
