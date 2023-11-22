@@ -22,7 +22,7 @@ source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
 style_file(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
 path_to_imterim_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
-path_to_link_log <- paste("/Users/susanglenn/Desktop/School/Thesis/link_log_new_forimport.xlsx")
+path_to_link_log <- paste(gbv_project_wd, "/extra_data/link_log_new_forimport.xlsx")
 data <- readRDS(path_to_imterim_clean_rds)
 
 link_log <- read_excel(path_to_link_log) %>%
@@ -122,4 +122,3 @@ path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep
 path_to_clean_three_timepoints <- paste(gbv_project_wd, "/data/clean/gbv_data_clean_three_timepoints.RDS", sep = "")
 saveRDS(clean_data, file = path_to_clean_rds)
 saveRDS(data_with_three_time_points, file = path_to_clean_three_timepoints)
-
