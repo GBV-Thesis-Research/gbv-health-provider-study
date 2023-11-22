@@ -22,7 +22,8 @@ source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
 style_file(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
 path_to_imterim_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
-path_to_link_log <- paste(gbv_project_wd, "/extra_data/link_log_new_forimport.xlsx")
+path_to_link_log <- paste(gbv_project_wd, "/extra_data/link_log_new_forimport.xlsx", sep = "")
+
 data <- readRDS(path_to_imterim_clean_rds)
 
 link_log <- read_excel(path_to_link_log) %>%
