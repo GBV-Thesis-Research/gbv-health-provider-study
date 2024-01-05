@@ -34,7 +34,7 @@ attendance_data <- read_excel(path_to_attendance_data) %>%
   mutate_all(~replace(., is.na(.), 0)) %>%
   rowwise() %>%
   mutate(
-    attendance_score = sum(c_across(cols)) / 9
+    attendance_score = (sum(c_across(cols)) / 9) * 100
   ) %>%
   ungroup() %>%
   arrange(participant_id_3)
