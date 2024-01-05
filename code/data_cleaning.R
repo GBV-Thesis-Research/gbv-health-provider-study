@@ -168,6 +168,16 @@ data <- data %>%
   mutate(practices_clean_19h = ifelse(practices_18 == 1, practices_19h, NA)) %>%
   mutate(practices_clean_19i = ifelse(practices_18 == 1, practices_19i, NA))
 
+# Recode question 10 to be 1 = yes, 0 = no for providers having identified a woman
+# suffering DV in the past month.
+pract19_clean_vars <- names(data)[str_detect(names(data), "practices_clean_19")]
+
+data <- data %>%
+  mutate(across(all_of(pract19_clean_vars), ~ case_when(
+    . %in% c(2) ~ 0,
+    TRUE ~ .
+  )))
+
 data <- data %>%
   mutate(training_group = case_when(
     date %in% c("2021-07-12", "2021-07-16") ~ "Liquica R1 and R2",

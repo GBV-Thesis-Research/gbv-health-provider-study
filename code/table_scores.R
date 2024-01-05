@@ -33,14 +33,14 @@ path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.R
 clean_scores <- readRDS(path_to_clean_rds_scores)
 
 scores_summary_table <- clean_scores %>%
-  # filter(status == "All three") %>%
+  filter(status == "All three") %>%
   filter(time_point != 1) %>%
   tbl_summary(
     include = -c(participant_id_3, inclusive_status, region, status, standardized_facility),
     by = c(time_point),
     type = c(
       system_support_score, practice_score, knowledge_warning_score,
-      knowledge_appropriate_score
+      knowledge_appropriate_score, knowledge_helpful_score
     ) ~ "continuous",
     label = list(
       knowledge_general_score ~ "General knowledge",

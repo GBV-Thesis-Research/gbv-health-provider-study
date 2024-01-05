@@ -70,6 +70,21 @@ data <- data %>%
   ungroup() %>%
   relocate(c(status, participant_id_3), .after = time_point)
 
+# Recode participant_id_3 #9 to Ermera facility for all timepoints. We confirmed he is the same individual who
+# moved facilities in the last month of the intervention, so will maintain the same facility as at baseline for the purposes
+# of the analysis.
+data <- data %>%
+  mutate(
+    region = case_when(
+      participant_id_3 == 9 ~ "Ermera",
+      TRUE ~ region
+    ),
+    standardized_facility = case_when(
+      participant_id_3 == 9 ~ "Ermera",
+      TRUE ~ standardized_facility
+    )
+  )
+
 data_with_three_time_points <- data %>%
   filter(status == "All three") %>%
   select(-all_of(c(
