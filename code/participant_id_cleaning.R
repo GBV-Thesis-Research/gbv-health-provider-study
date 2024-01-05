@@ -23,6 +23,7 @@ style_file(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 
 path_to_imterim_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_interim_clean.RDS", sep = "")
 path_to_link_log <- paste(gbv_project_wd, "/extra_data/link_log.xlsx", sep = "")
+
 data <- readRDS(path_to_imterim_clean_rds)
 
 link_log <- read_excel(path_to_link_log) %>%
@@ -90,6 +91,7 @@ participant_id_table_data <- clean_data %>%
     "One & three only", "Two & three only",
     "One only", "Two only", "Three only"
   )))
+
 participant_id_table <-
   participant_id_table_data %>%
   select(status, inclusive_status) %>%
