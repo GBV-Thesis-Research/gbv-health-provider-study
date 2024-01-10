@@ -76,7 +76,6 @@ clean_data <- clean_data %>%
 #' This code modified data based on key values for each variable in confidence vars.
 #' All items are positively worded, so we moved scale down by 1, with highest confidence
 #' score being 4, and low confidence being 0.
-#' (Cory said 3 = correct answer? Ask if this was a mistake / run the numbers to check)
 
 #' Get column names matching 'confidence'
 conf_vars <- names(clean_data)[str_detect(names(data), "confidence")]
