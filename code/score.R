@@ -27,7 +27,6 @@ clean_data <- readRDS(path_to_clean_rds)
 answers <- clean_data %>%
   select(participant_id_3, matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
 
-
 key_only <- key %>%
   select(matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
 
