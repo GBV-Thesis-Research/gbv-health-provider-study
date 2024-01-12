@@ -64,6 +64,8 @@ Scores in six domains: 1) knowledge, 2) attitudes, 3) system support, 4) confide
 ## Study procedures
 The pre/post assessment was a survey administered pre-intensive 5-day training (baseline), post-intensive training (midline), and at the conclusion of the 14-months of ‘learning labs’ (endline) with which researchers can assess change in healthcare provider knowledge, attitudes, empathy, confidence, system support beliefs, and practices related to GBV. The survey captured basic demographic data (sex, age, profession, etc.) about the respondents in addition to their responses to GBV content questions. Survey data was collected via paper forms and entered into RedCap data management software for use by the research team.
 
+Written consent was obtained from all participants in the study. The INS Human Research Ethics Committee in Timor-Leste approved this project (ID: 417). The University of Washington Institutional Review Board granted this evaluation a non-research determination (ID: STUDY00018231). 
+
 ## Statistical analysis
 
 
