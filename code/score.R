@@ -162,8 +162,11 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
     knowledge_appropriate_score, knowledge_helpful_score, system_support_score
   ) %>%
   mutate(
-  knowledge_overall = (rowSums(cbind(knowledge_general_score, knowledge_warning_score, knowledge_appropriate_score, 
-                                     knowledge_helpful_score, na.rm = TRUE))))
+    knowledge_overall = (rowSums(cbind(knowledge_general_score, knowledge_warning_score, knowledge_appropriate_score,
+      knowledge_helpful_score,
+      na.rm = TRUE
+    )))
+  )
 
 # Calculate scores by summing up variables for each row and bind participant IDs and timepoint
 scores <- clean_data %>%
