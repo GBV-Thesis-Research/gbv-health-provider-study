@@ -36,6 +36,9 @@ attendance_data <- read_excel(path_to_attendance_data) %>%
   mutate(
     attendance_score = (sum(c_across(cols)))
   ) %>%
+  mutate(
+    attendance_score_FUAT = (sum(c_across(starts_with("FUAT"))))
+  ) %>%
   ungroup() %>%
   arrange(participant_id_3)
 
