@@ -38,17 +38,52 @@ source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 # Analysis plan
 
 ## Background
+Gender-based violence (GBV) has significant negative effects on the health and wellbeing of those affected and is pervasive in Southeast Asia. Women who are victims of violence utilize healthcare more often than women who are not victims of violence. Health providers are uniquely positioned to intervene and offer support to women affected by GBV. As such, GBV interventions should consider the role of the health system. Timor-Leste has responded to the high burden of GBV in the country by enacting laws that include health providers as important actors against GBV. This systems-wide approach places emphasis on the role of the health system in responding to GBV. 
+
+While Timor-Leste has identified the health system as essential in responding to GBV, few health providers have received training on GBV. A Lancet paper highlighted the importance of building clinicians knowledge and skill in responding to GBV, as well as strengthening their attitudes toward GBV. A 2021 meta-analysis of GBV training programs for health providers found that training may improve GBV knowledge, attitudes, identification, and self-confidence in responding to GBV 12-months post-training when compared to no training or training as usual. However, three quarters of the studies included in this analysis were U.S.-based, with very few studies from low or middle-income countries. While trainings may improve GBV-related knowledge and behaviors amongst health providers, there is evidence to suggest that single trainings are less effective in improving and maintaining knowledge than trainings with follow-up sessions for reinforcement of content. These studies highlight the effectiveness of training health providers in GBV, but a gap remains in understanding how GBV trainings for health providers can be implemented in low and middle-income countries and what impact they may produce in settings with varying cultures and context. This line of research is important to continue because it provides critical information for developing and implementing effective interventions for a health system response to GBV, particularly in low and middle-income countries and in settings where GBV is more culturally embedded.
 
 ## Aims
+Aim 1:  To determine if there is significant differences in health provider knowledge, attitudes, empathy, system support, confidence, and practices in responding to GBV before and after participation in the 'Responding to GBV' curriculum in the intervention municipalities in Timor-Leste, using baseline (pre-training) and 14-month post-learning lab data.
+
+Sub-aim 1.1: To evaluate changes in health provider knowledge, attitudes, empathy, system support, confidence, and practices in responding to GBV after participation in the  'Responding to GBV' intensive training compared to the 14-months of follow-up learning labs after the training in the intervention municipalities in Timor-Leste, using percent change from baseline to post-intensive training, and post-intensive to endline.
+
+Aim 2:  To identify provider-level characteristics associated with change in GBV knowledge, attitudes, empathy, system support, confidence, and practice scores, including age, sex, occupation, years of professional experience, and attendance at learning labs.
 
 ## Study details
+Design: Pre/post intervention comparison.
+
+Population: Healthcare providers in Liquica and Ermera municipalities, Timor-Leste. 
+
+Sites: 10 community health centers (CHCs) total, 6 in Liquica and 4 in Ermera municipality. Health post staff were eligible to attend at their local CHC, with a maximum of 63 health posts in the municipalities. 
+
+Sample size: Timepoints 1-3 had 216, 208, and 252 respondents who consented to research respectively. Across all three timepoints, we were able to match 78 participants.
 
 ## Outcome
+Scores in six domains: 1) knowledge, 2) attitudes, 3) system support, 4) confidence, 5) empathy, and 6) practices.
 
 ## Study procedures
+The pre/post assessment was a survey administered pre-intensive 5-day training (baseline), post-intensive training (midline), and at the conclusion of the 14-months of ‘learning labs’ (endline) with which researchers can assess change in healthcare provider knowledge, attitudes, empathy, confidence, system support beliefs, and practices related to GBV. The survey captured basic demographic data (sex, age, profession, etc.) about the respondents in addition to their responses to GBV content questions. Survey data was collected via paper forms and entered into RedCap data management software for use by the research team.
+
+Written consent was obtained from all participants in the study. The INS Human Research Ethics Committee in Timor-Leste approved this project (ID: 417). The University of Washington Institutional Review Board granted this evaluation a non-research determination (ID: STUDY00018231). 
 
 ## Statistical analysis
+To compare the effectiveness of the five-day intensive training and the monthly learning labs in improving health provider competencies to respond to GBV in the selected municipalities of Timor-Leste, the same evaluation tool was used at baseline (prior to training), following the 5- day intensive training, and again at the 14-month endline of the monthly learning labs. 
 
+An adaptation of the WHO curriculum evaluation tool was used to assess knowledge, attitudes, confidence, and system support. This evaluation measure consisted of 89 questions, organized into four domains related to the GBV training curriculum: knowledge, attitudes, confidence, and system support. The survey and its related domains can be viewed in the supplemental materials.
+
+The knowledge domain included 43 questions, each assessed with responses of yes, no, or I don’t know, for a maximum possible score of 43. Questions were scored as 1 for correct (“yes”) responses and 0 for incorrect (“no” or “I don’t know”) responses. Higher scores were indicative of greater GBV-related knowledge.
+
+The attitudes domain included 29 questions measured on 4 and 5-point Likert scales for a maximum possible score of 102. Questions were formulated in both positive and negative terms. For questions using the 5-point Likert scale, responses were scored on a scale where positively worded items (where “strongly agree” was the preferred answer) were scored as follows: strongly disagree = 0; disagree = 1; neither agree nor disagree = 2; agree = 3; strongly agree = 4. Conversely, negatively worded items (where “strongly disagree” was the desired response) had their scores reversed to account for the preferred response, with strongly disagree obtaining the highest score of 4. For questions using the 4-point Likert scale, the desirable response for all questions was “no, it is never acceptable.” In this case, responses were scored as follows: yes, it is acceptable = 0; sometimes it is acceptable or I don’t know = 1; no, it is never acceptable = 2. Higher scores were indicative of more desirable health provider attitudes toward GBV and the health provider role in responding to GBV.
+
+The confidence domain included 10 questions measured on a 5-point Likert scale for a maximum possible score of 40. Responses were scored as follows: not at all prepared = 0; slightly prepared = 1; somewhat prepared = 2; sufficiently prepared = 3; and quite well prepared = 4. Higher scores were indicative of greater confidence in identifying and caring for women subjected to violence.
+
+The system support domain included 6 questions, each assessed with responses of yes, no, or I don’t know, for a maximum possible score of 6. Questions were scored as 1 for correct (“yes”) responses and 0 for incorrect (“no” or “I don’t know”) responses. Higher scores were indicative of a perception of greater resources and support for health providers to respond to GBV within their facility.
+
+The empathy domain, derived from the Toronto Empathy Questionnaire (TEQ), included 16 questions measured on a 5-point Likert scale for a total possible score of 64. Responses were scored on a scale where positively worded items (where “always” was the preferred answer) were scored as follows: never = 0; rarely = 1; sometimes = 2; often = 3; always = 4. Conversely, negatively worded items (where “never” was the desired response) had the scores reversed to account for the preferred response, with “never” obtaining the highest score of 4. Higher scores were indicative of greater self-reported empathic behavior.
+
+Composite variables for each domain will be created by summing the scores of each survey item within their respective domain. 
+
+The survey asked two additional questions on provider practices which will be analyzed and reported separately due to it not being applicable to all respondents. The first question asked participants if they had identified a female patient who was the victim of domestic violence within the past month. If yes, it asked how many patients. The second question used skip logic and was only applicable to those who answered “yes” to the first question. It asked respondents which actions they had taken after identifying a woman subjected to domestic violence. Questions were scored as 1 for correct (“yes”) responses and 0 for incorrect (“no” or “I don’t know”) responses. Higher scores were indicative of more appropriate actions taken to support women identified as victims of GBV.
 
 # Results
 
