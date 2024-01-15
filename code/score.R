@@ -76,7 +76,6 @@ clean_data <- clean_data %>%
 #' This code modified data based on key values for each variable in confidence vars.
 #' All items are positively worded, so we moved scale down by 1, with highest confidence
 #' score being 4, and low confidence being 0.
-#' (Cory said 3 = correct answer? Ask if this was a mistake / run the numbers to check)
 
 #' Get column names matching 'confidence'
 conf_vars <- names(clean_data)[str_detect(names(data), "confidence")]
@@ -151,11 +150,11 @@ knowledge_sys_support_scores_raw <- cbind(participant_ids, knowledge_sys_support
 
 knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
   mutate(
-    knowledge_general_score = (rowSums(select(., all_of(matches("knowledge_7"))), na.rm = TRUE) / 19) * 100,
-    knowledge_warning_score = (rowSums(select(., all_of(matches("knowledge_8"))), na.rm = TRUE) / 9) * 100,
-    knowledge_appropriate_score = (rowSums(select(., all_of(matches("knowledge_9"))), na.rm = TRUE) / 5) * 100,
-    knowledge_helpful_score = (rowSums(select(., all_of(matches("knowledge_10"))), na.rm = TRUE) / 10) * 100,
-    system_support_score = (rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE) / 6) * 100,
+    knowledge_general_score = (rowSums(select(., all_of(matches("knowledge_7"))), na.rm = TRUE)),
+    knowledge_warning_score = (rowSums(select(., all_of(matches("knowledge_8"))), na.rm = TRUE)),
+    knowledge_appropriate_score = (rowSums(select(., all_of(matches("knowledge_9"))), na.rm = TRUE)),
+    knowledge_helpful_score = (rowSums(select(., all_of(matches("knowledge_10"))), na.rm = TRUE)),
+    system_support_score = (rowSums(select(., all_of(matches("system_support"))), na.rm = TRUE)),
   ) %>%
   select(
     participant_id_3, time_point, standardized_facility, region, knowledge_general_score, knowledge_warning_score,
@@ -165,13 +164,13 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
 # Calculate scores by summing up variables for each row and bind participant IDs and timepoint
 scores <- clean_data %>%
   mutate(
-    attitude_general_score = (rowSums(select(., all_of(matches("attitudes_11"))), na.rm = TRUE) / 40) * 100,
-    attitude_acceptability_score = (rowSums(select(., all_of(matches("attitudes_12"))), na.rm = TRUE) / 14) * 100,
-    attitude_genderroles_score = (rowSums(select(., all_of(matches("attitudes_13"))), na.rm = TRUE) / 24) * 100,
-    attitude_profroles_score = (rowSums(select(., all_of(matches("attitudes_14"))), na.rm = TRUE) / 24) * 100,
-    empathy_score = (rowSums(select(., all_of(empathy_vars)), na.rm = TRUE) / 64) * 100,
-    confidence_score = (rowSums(select(., all_of(conf_vars)), na.rm = TRUE) / 40) * 100,
-    practice_score = (rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE) / 9) * 100,
+    attitude_general_score = (rowSums(select(., all_of(matches("attitudes_11"))), na.rm = TRUE)),
+    attitude_acceptability_score = (rowSums(select(., all_of(matches("attitudes_12"))), na.rm = TRUE)),
+    attitude_genderroles_score = (rowSums(select(., all_of(matches("attitudes_13"))), na.rm = TRUE)),
+    attitude_profroles_score = (rowSums(select(., all_of(matches("attitudes_14"))), na.rm = TRUE)),
+    empathy_score = (rowSums(select(., all_of(empathy_vars)), na.rm = TRUE)),
+    confidence_score = (rowSums(select(., all_of(conf_vars)), na.rm = TRUE)),
+    practice_score = (rowSums(select(., all_of(pract19_clean_vars)), na.rm = FALSE)),
   ) %>%
   select(
     participant_id_3, status, inclusive_status, standardized_facility, region, time_point, attitude_general_score, attitude_acceptability_score,
