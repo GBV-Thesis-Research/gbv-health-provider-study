@@ -17,5 +17,14 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
-analysis_df_fp <- paste(gbv_project_wd, "/data/clean/analysis_data.RDS", sep = "")
-df <- readRDS(analysis_df_fp)
+analysis_df_fp_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
+df_wide <- readRDS(analysis_df_fp_wide)
+
+analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
+df_long <- readRDS(analysis_df_fp_long)
+
+comparison_tbl_1 <-
+  df_long %>%
+  filter(time_point %in% c(1, 3)) %>%
+  select(time_point, knowledge_overall) %>%
+  tbl_summary(by=time_point)

@@ -33,7 +33,7 @@ demographic_data <- readRDS(path_to_clean_demographic_data)
 
 # CREATE NEW DATA FRAME FOR ANALYSIS  ------------------------------------------
 # Pull in domain scores for matched individuals and convert to wide format
-analysis <- merged_scores %>%
+analysis_wide <- merged_scores %>%
   filter(status == "All three") %>%
   select(
     participant_id_3, time_point, knowledge_overall, attitude_overall, system_support_score,
@@ -49,14 +49,27 @@ analysis <- merged_scores %>%
   ))
 
 # Join attendance data - need to add FUAT specific attendance score once all PRs are merged to main
-analysis <- left_join(analysis, attendance_data %>% select(participant_id_3, attendance_score),
+analysis_wide <- left_join(analysis_wide, attendance_data %>% select(participant_id_3, attendance_score),
   by = c("participant_id_3")
 )
 
 # Join demographics
-analysis <- left_join(analysis, demographic_data, by = c("participant_id_3"))
+analysis_wide <- left_join(analysis_wide, demographic_data, by = c("participant_id_3"))
 
+analysis_long <-
+  merged_scores %>%
+  filter(status == "All three") %>%
+  select(
+    participant_id_3, time_point, knowledge_overall, attitude_overall, system_support_score,
+    confidence_score, empathy_score, practice_score
+  )
+
+analysis_long <-
+  left_join(analysis_long, demographic_data)
 
 # Write analyses data to folder
-path_to_clean_analysis_data <- paste(gbv_project_wd, "/data/clean/analysis_data.RDS", sep = "")
-saveRDS(analysis, file = path_to_clean_analysis_data)
+path_to_clean_analysis_data_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
+saveRDS(analysis_wide, file = path_to_clean_analysis_data_wide)
+
+path_to_clean_analysis_data_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
+saveRDS(analysis_long, file = path_to_clean_analysis_data_long)
