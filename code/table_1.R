@@ -18,24 +18,20 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 
 source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
 source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
+source(paste(gbv_project_wd, "/code/demographic_data_cleaning.R", sep = ""))
 
 #### Lint current file ####
 style_file(paste(gbv_project_wd, "/code/table_1.R", sep = ""))
 
 # Load cleaned data
-path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
+path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/demographic_data_clean.RDS", sep = "")
 clean_data <- readRDS(path_to_clean_rds)
 
 # Create table
-labels <- list(
-  variables = list(
-    sex_factored = "Sex",
-    age_groups = "Age (years)",
-    position_groups = "Position",
-    position_years_clean = "Years of practice"
-  )
-)
-filtered_data <- clean_data %>% filter(time_point == 1, status == "All three")
+filtered_data <-
+  clean_data %>%
+  filter(status == "All three") %>%
+  mutate(position_groups = droplevels(position_groups))
 
 demographic_table <- filtered_data %>%
   select(c("sex_factored", "age_groups", "position_groups", "position_years_clean", "municipality")) %>%
@@ -44,7 +40,7 @@ demographic_table <- filtered_data %>%
     age_groups ~ "Age (years)",
     position_groups ~ "Position",
     position_years_clean ~ "Years of practice"
-  )) %>%
+  ), type = list(position_years_clean ~ "continuous")) %>%
   add_overall() %>%
   add_n()
 

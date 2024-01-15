@@ -18,6 +18,7 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
+source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
 style_file(paste(gbv_project_wd, "/code/score.R", sep = ""))
 
 source(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
