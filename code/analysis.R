@@ -26,5 +26,11 @@ df_long <- readRDS(analysis_df_fp_long)
 comparison_tbl_1 <-
   df_long %>%
   filter(time_point %in% c(1, 3)) %>%
-  select(time_point, knowledge_overall) %>%
-  tbl_summary(by=time_point)
+  select(time_point, knowledge_overall, attitude_overall, system_support_score, 
+         confidence_score, empathy_score, practice_score) %>%
+  tbl_summary(by=time_point, type = list(system_support_score ~ "continuous", 
+                                         practice_score ~ "continuous")) %>% 
+  add_n() %>% 
+  add_p()
+
+example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score, data = df_wide)
