@@ -159,6 +159,12 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
   select(
     participant_id_3, time_point, standardized_facility, region, knowledge_general_score, knowledge_warning_score,
     knowledge_appropriate_score, knowledge_helpful_score, system_support_score
+  ) %>%
+  mutate(
+    knowledge_overall = (rowSums(cbind(knowledge_general_score, knowledge_warning_score, knowledge_appropriate_score,
+      knowledge_helpful_score,
+      na.rm = TRUE
+    )))
   )
 
 # Calculate scores by summing up variables for each row and bind participant IDs and timepoint
@@ -176,6 +182,12 @@ scores <- clean_data %>%
     participant_id_3, status, inclusive_status, standardized_facility, region, time_point, attitude_general_score, attitude_acceptability_score,
     attitude_genderroles_score, attitude_profroles_score, empathy_score,
     confidence_score, practice_score
+  )
+
+# Create overall domain scores for knowledge and attitudes
+scores <- scores %>%
+  mutate(
+    attitude_overall = (rowSums(select(., all_of(matches("attitude"))))),
   )
 
 # Merge all scores into one data frame
