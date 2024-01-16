@@ -38,13 +38,19 @@ import_redcap_data <- function(token_str) {
   )$data
 }
 
-raw_data_rds_path <- paste(gbv_project_wd, "/data/raw/gbv_data_raw_", last_friday, ".RDS", sep = "")
-raw_data_csv_path <- paste(gbv_project_wd, "/data/raw/gbv_data_raw_", last_friday, ".csv", sep = "")
+final_raw_file_name <- paste(gbv_project_wd, "/data/raw/final_gbv_data_raw.RDS", sep = "")
 
-if (!file.exists(raw_data_csv_path)) {
-  raw_gbv_survey_data <- import_redcap_data(token_str = API_KEY)
-  write.csv(raw_gbv_survey_data, file = raw_data_csv_path)
-  saveRDS(raw_gbv_survey_data, file = raw_data_rds_path)
+if (!file.exists(final_raw_file_name)) {
+  length_of_file_list <- length(list.files(path = final_rds_data_path, pattern = ".RDS"))
+  if (length_of_file_list != 0) {
+    index_last_item <- length(list.files(path = final_rds_data_path, pattern = ".RDS"))
+    file_name <- list.files(path = final_rds_data_path, pattern = ".RDS")[index_last_item]
+    raw_gbv_survey_data <- readRDS(file = paste(final_rds_data_path, file_name, sep = ""))
+    saveRDS(raw_gbv_survey_data, file = final_raw_file_name)
+  } else {
+    raw_gbv_survey_data <- import_redcap_data(token_str = API_KEY)
+    saveRDS(raw_gbv_survey_data, file = final_raw_file_name)
+  }
 } else {
-  raw_gbv_survey_data <- read.csv(raw_data_csv_path)
+  raw_gbv_survey_data <- readRDS(file = final_raw_file_name)
 }

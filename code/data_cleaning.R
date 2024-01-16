@@ -41,13 +41,6 @@ data <- raw_gbv_survey_data %>%
   filter(municipality != "Dili") %>%
   filter(participant_id != "KEY")
 
-# Standardize municipality names
-data <- data %>%
-  mutate(municipality = if_else(municipality %in% c("LIQUICA", "Liquisa", "LIQUISA", "Liqujca"),
-    "Liquica",
-    municipality
-  ))
-
 # Filter out identical records which were accidentally imported into RedCap twice
 # by the HAMNASA data collection team
 # Drops from 929 to 416 (removes 513 rows)
@@ -63,18 +56,33 @@ data <- data %>%
   select(-all_of(columns_to_not_select)) %>%
   distinct()
 
-# Fix dates that are empty
-data <- data %>%
-  mutate(date = case_when(
-    date == "" & facility %in% c("hatulia", "Hatulia") & time_point == 2 ~ "2021-09-24",
-    date == "" & facility == "Maubara" & time_point == 1 ~ "2021-10-11",
-    date == "" & facility == "Maubara" & time_point == 2 ~ "2021-10-15",
-    TRUE ~ date
-  ))
-
 # Standardize municipality
 data <- data %>%
   mutate(municipality = str_to_title(municipality))
+
+# Standardize municipality names
+data <- data %>%
+  mutate(municipality = if_else(
+    municipality %in% c("LIQUICA", "Liquisa", "LIQUISA", "Liqujca", "Liquiça", "Liuica", "Liquic"),
+    "Liquica", municipality
+  )) %>%
+  mutate(municipality = if_else(
+    municipality %in% c("Er,Era", "Ermerra", "Ermer", "Ermra"),
+    "Ermera", municipality
+  ))
+
+
+
+# Fix dates that are empty
+data <- data %>%
+  mutate(date = as.Date(date, format = "%Y-%m-%d")) %>%
+  mutate(date = case_when(
+    is.na(date) & facility %in% c("hatulia", "Hatulia") & time_point == 2 ~ as.Date("2021-09-24"),
+    is.na(date) & facility == "Maubara" & time_point == 1 ~ as.Date("2021-10-11"),
+    is.na(date) & facility == "Maubara" & time_point == 2 ~ as.Date("2021-10-15"),
+    TRUE ~ date
+  ))
+
 
 # Clean up demographic data
 data <- data %>%
@@ -125,7 +133,7 @@ data$date_as_date_format <- ifelse(is.na(data$date), NA,
 data <- data %>%
   mutate(
     year_diff = ifelse(nchar(position_years) == 4,
-      as.numeric(year(date_as_date_format) - position_years),
+      as.numeric(year(date_as_date_format) - as.numeric(position_years)),
       NA
     ),
     position_years_clean = ifelse(!is.na(year_diff), year_diff, position_years)
