@@ -39,6 +39,7 @@ import_redcap_data <- function(token_str) {
 }
 
 final_raw_file_name <- paste(gbv_project_wd, "/data/raw/final_gbv_data_raw.RDS", sep = "")
+final_rds_data_path <- paste(gbv_project_wd, "/data/raw/", sep = "")
 
 if (!file.exists(final_raw_file_name)) {
   length_of_file_list <- length(list.files(path = final_rds_data_path, pattern = ".RDS"))
