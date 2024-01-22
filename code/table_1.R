@@ -44,6 +44,8 @@ demographic_table <- filtered_data %>%
   add_overall() %>%
   add_n()
 
+demographic_table
+
 # Create table 1 - for comparison to <2 timepoints
 # create new variable for <2 timepoints
 clean_data <- clean_data %>%
@@ -52,20 +54,21 @@ clean_data <- clean_data %>%
     TRUE ~ "<three"
   ))
 
-filtered_data <-
+filtered_data_comparison <-
   clean_data %>%
-  filter(status == "All three") %>%
   mutate(position_groups = droplevels(position_groups))
 
-demographic_table <- filtered_data %>%
-  select(c("sex_factored", "age_groups", "position_groups", "position_years_clean", "municipality")) %>%
-  tbl_summary(by = municipality, label = list(
+demographic_table_comparison <- filtered_data_comparison %>%
+  select(c("sex_factored", "age_groups", "position_groups", "position_years_clean", "municipality", "timepoints")) %>%
+  tbl_summary(by = timepoints, label = list(
+    municipality ~ "Municipality",
     sex_factored ~ "Sex",
     age_groups ~ "Age (years)",
     position_groups ~ "Position",
     position_years_clean ~ "Years of practice"
   ), type = list(position_years_clean ~ "continuous")) %>%
   add_overall() %>%
+  add_p() %>%
   add_n()
 
-demographic_table
+demographic_table_comparison
