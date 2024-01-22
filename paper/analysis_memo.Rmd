@@ -2,7 +2,7 @@
 title: "Gender Based Violence Analysis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
-   bookdown::pdf_document2:
+   bookdown::word_document2:
       fig_caption: yes
       toc: true
       toc_depth: 2
