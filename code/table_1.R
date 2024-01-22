@@ -51,13 +51,6 @@ demographic_table <- filtered_data %>%
 demographic_table
 
 # Create table 1 - for comparison to <2 timepoints
-# create new variable for <2 timepoints
-clean_data <- clean_data %>%
-  mutate(timepoints = case_when(
-    status == "All three" ~ "three",
-    TRUE ~ "<three"
-  ))
-
 filtered_data_comparison <-
   clean_data %>%
   mutate(position_groups = droplevels(position_groups))
@@ -65,9 +58,9 @@ filtered_data_comparison <-
 demographic_table_comparison <- filtered_data_comparison %>%
   select(c(
     "sex_factored", "age_groups", "position_groups", "position_years_clean",
-    "municipality", "timepoints", "previous_training_factored"
+    "municipality", "status_binary", "previous_training_factored"
   )) %>%
-  tbl_summary(by = timepoints, label = list(
+  tbl_summary(by = status_binary, label = list(
     municipality ~ "Municipality",
     sex_factored ~ "Sex",
     age_groups ~ "Age (years)",
