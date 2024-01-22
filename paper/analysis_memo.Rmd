@@ -138,9 +138,16 @@ midwife <- filtered_data %>%
   filter(position_groups == "Midwife") %>%
   select(ratio) * 100
 midwife <- midwife %>% round()
+
+previous_training <- filtered_data %>%
+  count(previous_training_factored) %>%
+  mutate(ratio = n / sum(n)) %>%
+  filter(previous_training_factored == "Yes") %>%
+  select(ratio) * 100
+previous_training <- previous_training %>% round()
 ```
 
-Matched data was obtained for 78 individuals, representing a total of 234 surveys out of the 676 conducted across the three timepoints. Demographic characteristics and work history of participants at the baseline are presented in Table 1. The overall sample was `r female$ratio`% female and `r male$ratio`% male. `r age$ratio`% of the sample fell within the 25-34 age group. The most prevalent occupational role was medical doctor, accounting for `r doctor$ratio`%, followed by nurses at `r nurse$ratio`%, and midwives at `r midwife$ratio`%. On average, participants had been practicing in their clinical roles for approximately `r signif(mean(filtered_data$position_years_clean), 2)` years. Only % of participants (4 individuals) had received any previous GBV training.
+Matched data was obtained for 78 individuals, representing a total of 234 surveys out of the 676 conducted across the three timepoints. Demographic characteristics and work history of participants at the baseline are presented in Table 1. The overall sample was `r female$ratio`% female and `r male$ratio`% male. `r age$ratio`% of the sample fell within the 25-34 age group. The most prevalent occupational role was medical doctor, accounting for `r doctor$ratio`%, followed by nurses at `r nurse$ratio`%, and midwives at `r midwife$ratio`%. On average, participants had been practicing in their clinical roles for approximately `r signif(mean(filtered_data$position_years_clean), 2)` years. Only `r previous_training$ratio`% of participants had received any previous GBV training.
 
 ## Demographic information
 
