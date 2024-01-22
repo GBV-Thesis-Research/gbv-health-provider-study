@@ -27,7 +27,31 @@ style_file(paste(gbv_project_wd, "/code/table_1.R", sep = ""))
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/demographic_data_clean.RDS", sep = "")
 clean_data <- readRDS(path_to_clean_rds)
 
-# Create table
+# Create table 1 - for publication
+filtered_data <-
+  clean_data %>%
+  filter(status == "All three") %>%
+  mutate(position_groups = droplevels(position_groups))
+
+demographic_table <- filtered_data %>%
+  select(c("sex_factored", "age_groups", "position_groups", "position_years_clean", "municipality")) %>%
+  tbl_summary(by = municipality, label = list(
+    sex_factored ~ "Sex",
+    age_groups ~ "Age (years)",
+    position_groups ~ "Position",
+    position_years_clean ~ "Years of practice"
+  ), type = list(position_years_clean ~ "continuous")) %>%
+  add_overall() %>%
+  add_n()
+
+# Create table 1 - for comparison to <2 timepoints
+# create new variable for <2 timepoints
+clean_data <- clean_data %>%
+  mutate(timepoints = case_when(
+    status == "All three" ~ "three",
+    TRUE ~ "<three"
+  ))
+
 filtered_data <-
   clean_data %>%
   filter(status == "All three") %>%
