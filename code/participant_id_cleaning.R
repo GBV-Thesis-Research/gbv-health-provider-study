@@ -83,7 +83,11 @@ data <- data %>%
       participant_id_3 == 9 ~ "Ermera",
       TRUE ~ standardized_facility
     )
-  )
+  ) %>%
+  mutate(status_binary = case_when(
+    status == "All three" ~ "three",
+    TRUE ~ "<three"
+  ))
 
 data_with_three_time_points <- data %>%
   filter(status == "All three") %>%

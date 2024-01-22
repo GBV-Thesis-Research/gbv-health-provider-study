@@ -25,7 +25,7 @@ gbv_data_clean <- readRDS(file = paste(gbv_project_wd, "/data/clean/gbv_data_cle
 demographic_columns <- c(
   "participant_id_3", "standardized_facility", "time_point",
   "region", "sex_factored", "status", "inclusive_status", "age_groups", "position_groups",
-  "position_years_clean", "position_groups", "municipality"
+  "position_years_clean", "position_groups", "municipality", "previous_training_factored", "status_binary"
 )
 
 # Forward and back fill all the data by pid to remove NA values, pivot wide
@@ -38,14 +38,16 @@ wide_df <- gbv_data_clean %>%
   fill(position_groups, .direction = "downup") %>%
   fill(position_years_clean, .direction = "downup") %>%
   fill(municipality, .direction = "downup") %>%
+  fill(previous_training_factored, .direction = "downup") %>%
   ungroup() %>%
   select(
     "participant_id_3", "time_point", "standardized_facility", "region", "sex_factored", "age_groups",
-    "status", "position_groups", "position_years_clean", "municipality"
+    "status", "position_groups", "position_years_clean", "municipality", "previous_training_factored",
+    "status_binary"
   ) %>%
   pivot_wider(id_cols = participant_id_3, names_from = time_point, values_from = c(
     standardized_facility, region, sex_factored, age_groups, status, position_groups,
-    position_years_clean, municipality
+    position_years_clean, municipality, previous_training_factored, status_binary
   ))
 
 # Select the first non NA value for each set of values across timepoints
@@ -64,9 +66,11 @@ final_demographic_data <-
   mutate(position_groups = droplevels(coalesce(position_groups_1, position_groups_2, position_groups_3))) %>%
   mutate(position_years_clean = as.numeric(coalesce(position_years_clean_1, position_years_clean_2, position_years_clean_3))) %>%
   mutate(municipality = coalesce(municipality_1, municipality_2, municipality_3)) %>%
+  mutate(previous_training_factored = coalesce(previous_training_factored_1, previous_training_factored_2, previous_training_factored_2)) %>%
+  mutate(status_binary = coalesce(status_binary_1, status_binary_2, status_binary_3)) %>%
   select(
     "participant_id_3", "standardized_facility", "region", "sex_factored", "age_groups",
-    "status", "position_groups", "position_years_clean", "municipality"
+    "status", "position_groups", "position_years_clean", "municipality", "previous_training_factored", "status_binary"
   )
 demographic_data_file_path <- paste(gbv_project_wd, "/data/clean/demographic_data_clean.RDS", sep = "")
 write_rds(final_demographic_data, demographic_data_file_path)
