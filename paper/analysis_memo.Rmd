@@ -2,7 +2,7 @@
 title: "Gender Based Violence Analysis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
-   bookdown::word_document2:
+   bookdown::pdf_document2:
       fig_caption: yes
       toc: true
       toc_depth: 2
@@ -101,16 +101,46 @@ female <- filtered_data %>%
   count(sex_factored) %>%
   mutate(ratio = n / sum(n)) %>%
   filter(sex_factored == "Female") %>%
-  select(ratio)
+  select(ratio) * 100
+female <- female %>% round()
 
 male <- filtered_data %>%
   count(sex_factored) %>%
   mutate(ratio = n / sum(n)) %>%
   filter(sex_factored == "Male") %>%
-  select(ratio)
+  select(ratio) * 100
+male <- male %>% round()
+
+age <- filtered_data %>%
+  count(age_groups) %>%
+  mutate(ratio = n / sum(n)) %>%
+  filter(age_groups == "25-34 years old") %>%
+  select(ratio) * 100
+age <- age %>% round()
+
+doctor <- filtered_data %>%
+  count(position_groups) %>%
+  mutate(ratio = n / sum(n)) %>%
+  filter(position_groups == "Medical doctor") %>%
+  select(ratio) * 100
+doctor <- doctor %>% round()
+
+nurse <- filtered_data %>%
+  count(position_groups) %>%
+  mutate(ratio = n / sum(n)) %>%
+  filter(position_groups == "Nurse") %>%
+  select(ratio) * 100
+nurse <- nurse %>% round()
+
+midwife <- filtered_data %>%
+  count(position_groups) %>%
+  mutate(ratio = n / sum(n)) %>%
+  filter(position_groups == "Midwife") %>%
+  select(ratio) * 100
+midwife <- midwife %>% round()
 ```
 
-Matched data was obtained for 78 individuals, representing a total of 234 surveys out of the 676 conducted across the three timepoints. Demographic characteristics and work history of participants at the baseline are presented in Table 1. The overall sample was `r female` female and `r male` male. _% of the sample fell within the 25-34 age group. The most prevalent occupational role was medical doctor, accounting for _%, followed by nurses at __%, and midwives at _%. On average, participants had been practicing in their clinical roles for approximately _ years. The majority of participants saw fewer than 39 patients per week, with _% attending to less than 20 patients weekly and another _% managing between 20-39 patients per week. In contrast, _% of participants attended to 60 or more patients per week. Only _% of participants (4 individuals) had received any previous GBV training.
+Matched data was obtained for 78 individuals, representing a total of 234 surveys out of the 676 conducted across the three timepoints. Demographic characteristics and work history of participants at the baseline are presented in Table 1. The overall sample was `r female$ratio`% female and `r male$ratio`% male. `r age$ratio`% of the sample fell within the 25-34 age group. The most prevalent occupational role was medical doctor, accounting for `r doctor$ratio`%, followed by nurses at `r nurse$ratio`%, and midwives at `r midwife$ratio`%. On average, participants had been practicing in their clinical roles for approximately `r signif(mean(filtered_data$position_years_clean), 2)` years. The majority of participants saw fewer than 39 patients per week, with *% attending to less than 20 patients weekly and another* % managing between 20-39 patients per week. In contrast, *% of participants attended to 60 or more patients per week. Only* % of participants (4 individuals) had received any previous GBV training.
 
 ## Demographic information
 
