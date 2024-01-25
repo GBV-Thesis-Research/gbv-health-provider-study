@@ -28,9 +28,19 @@ comparison_tbl_1 <-
   filter(time_point %in% c(1, 3)) %>%
   select(time_point, knowledge_overall, attitude_overall, system_support_score, 
          confidence_score, empathy_score, practice_score) %>%
-  tbl_summary(by=time_point, type = list(system_support_score ~ "continuous", 
-                                         practice_score ~ "continuous")) %>% 
-  add_n() %>% 
+  tbl_summary(by=time_point, 
+              type = list(system_support_score ~ "continuous", 
+                          practice_score ~ "continuous"), 
+              label = list(
+                knowledge_overall ~ "Knowledge", 
+                attitude_overall ~ "Attitude",
+                system_support_score ~ "System Support",
+                confidence_score ~ "Confidence",
+                empathy_score ~ "Empathy",
+                practice_score ~ "Practice"),
+              modify_header(label ~ "**Domain**")) %>%
   add_p()
+
+comparison_tbl_1
 
 example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score, data = df_wide)
