@@ -33,4 +33,13 @@ comparison_tbl_1 <-
   add_n() %>% 
   add_p()
 
+# Plot scores across timepoints 
+scores_plot <- df_long %>%
+  ggplot(aes(x = time_point, y = knowledge_overall)) +
+  stat_summary(fun = median, geom = "point", color = "blue") +
+  # geom_point() + facet_grid() +  # Add points, or other geoms as needed
+  labs(title = "Knowledge Over Time",
+       x = "Time Point",
+       y = "Median Knowledge Overall")
+
 example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score, data = df_wide)
