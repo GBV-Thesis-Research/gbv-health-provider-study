@@ -42,6 +42,7 @@ comparison_tbl_1 <-
   modify_header(label = "**Domain**", 
                 stat_1 = "**Baseline**", 
                 stat_2 = "**Endline**") %>%
-  add_p()
+  add_p() %>%
+  add_n()
 
 example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score, data = df_wide)
