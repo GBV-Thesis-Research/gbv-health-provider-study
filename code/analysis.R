@@ -23,8 +23,7 @@ df_wide <- readRDS(analysis_df_fp_wide)
 analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
 df_long <- readRDS(analysis_df_fp_long)
 
-
-
+# Create table comparing baseline and endline scores
 comparison_tbl_1 <-
   df_long %>%
   filter(time_point %in% c(1, 3)) %>%
