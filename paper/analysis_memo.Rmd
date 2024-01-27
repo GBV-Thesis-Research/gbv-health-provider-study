@@ -32,7 +32,7 @@ knitr::opts_chunk$set(fig.align = 'center',
 
 ## SOURCE FIGURES AND TABLES
 source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
-
+source(paste(disc_project_wd, "/code/analysis.R", sep = ""))
 ```
 
 # Analysis plan
@@ -103,5 +103,15 @@ demographic_table
 Matched data was obtained for 78 individuals, representing a total of 234 surveys out of the 676 conducted across the three timepoints. There were no significant demographic differences between individuals with less than three timepoints and all three timepoints, leading us to believe the smaller longitudinal sample remained representative of the intervention population. Demographic characteristics and work history of participants at the baseline are presented in Table 1. The overall sample had `r inline_text(demographic_table, variable = sex_factored, level = "Female", column= "stat_0")` female and `r inline_text(demographic_table, variable = sex_factored, level = "Male", column= "stat_0")` male participants. `r inline_text(demographic_table, variable = age_groups, level = "25-34 years old", column= "stat_0")` of the sample fell within the 25-34 age group. The most prevalent occupational role was medical doctor, accounting for `r inline_text(demographic_table, variable = position_groups, level = "Medical doctor", column= "stat_0")`, followed by nurses at `r inline_text(demographic_table, variable = position_groups, level = "Nurse", column= "stat_0")`, and midwives at `r inline_text(demographic_table, variable = position_groups, level = "Midwife", column= "stat_0")`. On average, participants had been practicing in their clinical roles for approximately `r inline_text(demographic_table, variable = position_years_clean, column= "stat_0")` years. Only `r inline_text(demographic_table, variable = previous_training_factored, column= "stat_0")` of participants had received any previous GBV training.
 
 ## Scores
+
+```{r}
+comparison_tbl_1 <- comparison_tbl_1 %>%
+  modify_caption("**Table 2. Median participant scores at baseline and endline, by domain**")
+comparison_tbl_1
+```
+
+Significant improvement in participant scores were observed from baseline (timepoint 1) to endline (timepoint 3) in each domain, as illustrated in table 2 (p <.001). From baseline to endline, median GBV knowledge improved from `r inline_text(comparison_tbl_1, variable = knowledge_overall, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = knowledge_overall, column= "stat_2")`, out of 43 possible points. The attitudes toward GBV domain improved from `r inline_text(comparison_tbl_1, variable = attitude_overall, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = attitude_overall, column= "stat_2")`, out of 102 possible points. Confidence scores that represented provider confidence in identifying and treating women subjected to GBV improved from `r inline_text(comparison_tbl_1, variable = confidence_score, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = confidence_score, column= "stat_2")`, out of 40 possible points. Empathy scores, representing provider's empathic behavior, improved from `r inline_text(comparison_tbl_1, variable = empathy_score, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = empathy_score, column= "stat_2")`, out of 64 possible points. System support scores rose from `r inline_text(comparison_tbl_1, variable = system_support_score, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = system_support_score, column= "stat_2")`, out of 6 possible points. While comparatively the practice domain had a small number of respondents (n = `r inline_text(comparison_tbl_1, variable = practice_score, column= "n")`) due to the skip logic employed in the practice questions, the results were still significant. Practice scores, measuring appropriate actions taken by providers to support women identified as victims of GBV, improved from `r inline_text(comparison_tbl_1, variable = practice_score, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = practice_score, column= "stat_2")`.
+
+While significant improvements were seen from intervention baseline to endline, scores between timepoint 2 (post 5-day intensive GBV training) and timepoint 3 (endline, following 14-months of monthly learning labs) plateaued (figure 1).
 
 ## Regression results
