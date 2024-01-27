@@ -23,6 +23,8 @@ df_wide <- readRDS(analysis_df_fp_wide)
 analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
 df_long <- readRDS(analysis_df_fp_long)
 
+
+
 comparison_tbl_1 <-
   df_long %>%
   filter(time_point %in% c(1, 3)) %>%
@@ -37,10 +39,10 @@ comparison_tbl_1 <-
                 system_support_score ~ "System Support",
                 confidence_score ~ "Confidence",
                 empathy_score ~ "Empathy",
-                practice_score ~ "Practice"),
-              modify_header(label ~ "**Domain**")) %>%
+                practice_score ~ "Practice")) %>%
+  modify_header(label = "**Domain**", 
+                stat_1 = "**Baseline**", 
+                stat_2 = "**Endline**") %>%
   add_p()
-
-comparison_tbl_1
 
 example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score, data = df_wide)
