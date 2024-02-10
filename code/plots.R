@@ -1,6 +1,6 @@
 ##################################################
 ## Project: GBV Health provider study
-## Script purpose: Plots
+## Script purpose: Exploratory plots for GBV analysis
 ## Date: 1-13-24
 ## Author: Jessica Dyer
 ##################################################
@@ -16,6 +16,9 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 } else {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
+
+source(paste(gbv_project_wd, "/code/analysis.R", sep = ""))
+style_file(paste(gbv_project_wd, "/code/analysis.R", sep = ""))
 
 analysis_df_fp_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
 df_wide <- readRDS(analysis_df_fp_wide)

@@ -17,6 +17,9 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
+source(paste(gbv_project_wd, "/code/analysis_prep.R", sep = ""))
+style_file(paste(gbv_project_wd, "/code/analysis_prep.R", sep = ""))
+
 analysis_df_fp_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
 df_wide <- readRDS(analysis_df_fp_wide)
 
