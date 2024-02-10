@@ -30,15 +30,19 @@ df_long <- readRDS(analysis_df_fp_long)
 comparison_tbl_1 <-
   df_long %>%
   filter(time_point %in% c(1, 3)) %>%
-  select(time_point, knowledge_overall, attitude_overall, system_support_score, 
-         confidence_score, empathy_score, practice_score) %>%
-  tbl_summary(by=time_point, type = list(system_support_score ~ "continuous", 
-                                         practice_score ~ "continuous")) %>% 
-  add_n() %>% 
+  select(
+    time_point, knowledge_overall, attitude_overall, system_support_score,
+    confidence_score, empathy_score, practice_score
+  ) %>%
+  tbl_summary(by = time_point, type = list(
+    system_support_score ~ "continuous",
+    practice_score ~ "continuous"
+  )) %>%
+  add_n() %>%
   add_p()
 
 ## Regression
-#load rigr
+# load rigr
 library(rigr)
 
 # Check distributions - do I need to do this for each domain at each timepoint?
@@ -83,24 +87,24 @@ att_reg <- lm(attitude_overall_3 ~ attitude_overall_2, data = df_wide)
 summ(att_reg)
 confint(att_reg)
 
-conf_reg <- lm(confidence_score_3 ~ confidence_score_2 +confidence_score_1, data = df_wide)
+conf_reg <- lm(confidence_score_3 ~ confidence_score_2 + confidence_score_1, data = df_wide)
 summ(conf_reg)
 confint(conf_reg)
 
-emp_reg <- lm(empathy_score_3 ~ empathy_score_2 +empathy_score_1, data = df_wide)
+emp_reg <- lm(empathy_score_3 ~ empathy_score_2 + empathy_score_1, data = df_wide)
 summ(emp_reg)
 confint(emp_reg)
 
-sys_reg <- lm(system_support_score_3 ~ system_support_score_2 +  system_support_score_1, data = df_wide)
+sys_reg <- lm(system_support_score_3 ~ system_support_score_2 + system_support_score_1, data = df_wide)
 summ(sys_reg)
 confint(sys_reg)
 
 # linear regression, adjusting for characteristics
-example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_fuat + 
-                          age_groups + position_groups + knowledge_overall_1, data = df_wide)
+example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_fuat +
+  age_groups + position_groups + knowledge_overall_1, data = df_wide)
 summ(example_regession)
 
-example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_fuat + 
-                          age_groups + position_groups + knowledge_overall_1 + 
-                          knowledge_overall_2, data = df_wide)
+example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_fuat +
+  age_groups + position_groups + knowledge_overall_1 +
+  knowledge_overall_2, data = df_wide)
 summ(example_regession)
