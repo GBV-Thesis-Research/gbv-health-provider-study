@@ -10,6 +10,9 @@ current_wd <- getwd()
 library(scales)
 library(RColorBrewer)
 library(ggrepel)
+library(grid)
+library(tile)
+library(simcf)
 
 # Lint current file
 if (endsWith(current_wd, "gbv-health-provider-study")) {
@@ -165,12 +168,45 @@ scoreplot_log <- dfplot_long %>%
                 labels = c("Before training", "After training", "14-month follow-up")) +
   labs(x = "Days",
        y = NULL,
-       title = "Median test scores before, after, and at 14-month follow-up \nfrom a five-day gender-based violence training for clinicians")
+       title = "Median test scores before, after, and at 14-month follow-up \nfrom 
+       a five-day gender-based violence training for clinicians")
 scoreplot_log
 
 width <- 5 
 height <- width / 1.618 
 
-ggsave("/Users/susanglenn/Desktop/School/csss_569/memo/score_plot.pdf", plot = scoreplot_log, width = width, height = height, units = "in")
+ggsave("/Users/susanglenn/Desktop/School/csss_569/memo/score_plot.pdf", plot = scoreplot_log, 
+       width = width, height = height, units = "in")
 
-# 
+# Create histograms for distributions
+# Set up a side-by-side layout
+par(mfrow = c(2, 3))
+
+# Create knowledge histogram
+know_hist <- hist(df_wide$knowledge_overall_3, main = "Knowledge Scores", xlab = NULL, 
+                  prob = TRUE, col = NULL, border = "dark grey", ylim = c(0,0.09))
+know_hist <- lines(density(df_wide$knowledge_overall_3), col = "black", lwd=1.5)
+
+# Create attitude histogram
+att_hist <- hist(df_wide$attitude_overall_3, main = "Attitude Scores", xlab = NULL, 
+                 ylab = NULL, prob = TRUE, col = NULL, border = "dark grey", 
+                 breaks = seq(30, 100, by = 10), ylim = c(0,0.035))
+att_hist <- lines(density(df_wide$attitude_overall_3), col = "black", lwd=1.5)
+
+# Create empathy histogram
+emp_hist <- hist(df_wide$empathy_score_3, main = "Empathy Scores", xlab = NULL, 
+                 ylab = NULL, prob = TRUE, col = NULL, border = "dark grey", ylim = c(0,0.08))
+emp_hist <- lines(density(df_wide$empathy_score_3), col = "black", lwd=1.5)
+
+# Create confidence histogram
+conf_hist <- hist(df_wide$confidence_score_3, main = "Confidence Scores", xlab = NULL, 
+                  prob = TRUE, col = NULL, border = "dark grey", breaks = seq(10, 35, by = 5))
+conf_hist <- lines(density(df_wide$confidence_score_3), col = "black", lwd=1.5)
+
+# Create system support histogram
+syssup_hist <- hist(df_wide$system_support_score_3, main = "System Support Scores", 
+                    xlab = NULL, ylab = NULL, prob = TRUE, col = NULL, border = "dark grey", breaks = seq(1, 6, by = 1))
+syssup_hist <- lines(density(df_wide$system_support_score_3), col = "black", lwd=1.5)
+
+# Add title to plot
+mtext("Score distributions, by domain", side = 3, line = 20, outer = T)
