@@ -30,29 +30,29 @@ analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS
 df_long <- readRDS(analysis_df_fp_long)
 
 # Make scores proportional for graphine purposes 
-knowledge1 <- (mean(subset(df_long, time_point == 1)$knowledge_overall, na.rm = TRUE)/43*100)
-knowledge2 <- (mean(subset(df_long, time_point == 2)$knowledge_overall, na.rm = TRUE)/43*100)
-knowledge3 <- (mean(subset(df_long, time_point == 3)$knowledge_overall, na.rm = TRUE)/43*100)
+knowledge1 <- (median(subset(df_long, time_point == 1)$knowledge_overall, na.rm = TRUE)/43*100)
+knowledge2 <- (median(subset(df_long, time_point == 2)$knowledge_overall, na.rm = TRUE)/43*100)
+knowledge3 <- (median(subset(df_long, time_point == 3)$knowledge_overall, na.rm = TRUE)/43*100)
 
-attitude1 <- (mean(subset(df_long, time_point == 1)$attitude_overall, na.rm = TRUE)/102*100)
-attitude2 <- (mean(subset(df_long, time_point == 2)$attitude_overall, na.rm = TRUE)/102*100)
-attitude3 <- (mean(subset(df_long, time_point == 3)$attitude_overall, na.rm = TRUE)/102*100)
+attitude1 <- (median(subset(df_long, time_point == 1)$attitude_overall, na.rm = TRUE)/102*100)
+attitude2 <- (median(subset(df_long, time_point == 2)$attitude_overall, na.rm = TRUE)/102*100)
+attitude3 <- (median(subset(df_long, time_point == 3)$attitude_overall, na.rm = TRUE)/102*100)
 
-syssupport1 <- (mean(subset(df_long, time_point == 1)$system_support_score, na.rm = TRUE)/6*100)
-syssupport2 <- (mean(subset(df_long, time_point == 2)$system_support_score, na.rm = TRUE)/6*100)
-syssupport3 <- (mean(subset(df_long, time_point == 3)$system_support_score, na.rm = TRUE)/6*100)
+syssupport1 <- (median(subset(df_long, time_point == 1)$system_support_score, na.rm = TRUE)/6*100)
+syssupport2 <- (median(subset(df_long, time_point == 2)$system_support_score, na.rm = TRUE)/6*100)
+syssupport3 <- (median(subset(df_long, time_point == 3)$system_support_score, na.rm = TRUE)/6*100)
 
-conf1 <- (mean(subset(df_long, time_point == 1)$confidence_score, na.rm = TRUE)/40*100)
-conf2 <- (mean(subset(df_long, time_point == 2)$confidence_score, na.rm = TRUE)/40*100)
-conf3 <- (mean(subset(df_long, time_point == 3)$confidence_score, na.rm = TRUE)/40*100)
+conf1 <- (median(subset(df_long, time_point == 1)$confidence_score, na.rm = TRUE)/40*100)
+conf2 <- (median(subset(df_long, time_point == 2)$confidence_score, na.rm = TRUE)/40*100)
+conf3 <- (median(subset(df_long, time_point == 3)$confidence_score, na.rm = TRUE)/40*100)
 
-empathy1 <- (mean(subset(df_long, time_point == 1)$empathy_score, na.rm = TRUE)/64*100)
-empathy2 <- (mean(subset(df_long, time_point == 2)$empathy_score, na.rm = TRUE)/64*100)
-empathy3 <- (mean(subset(df_long, time_point == 3)$empathy_score, na.rm = TRUE)/64*100)
+empathy1 <- (median(subset(df_long, time_point == 1)$empathy_score, na.rm = TRUE)/64*100)
+empathy2 <- (median(subset(df_long, time_point == 2)$empathy_score, na.rm = TRUE)/64*100)
+empathy3 <- (median(subset(df_long, time_point == 3)$empathy_score, na.rm = TRUE)/64*100)
 
-practice1 <- (mean(subset(df_long, time_point == 1)$practice_score, na.rm = TRUE)/9*100)
-practice2 <- (mean(subset(df_long, time_point == 2)$practice_score, na.rm = TRUE)/9*100)
-practice3 <- (mean(subset(df_long, time_point == 3)$practice_score, na.rm = TRUE)/9*100)
+practice1 <- (median(subset(df_long, time_point == 1)$practice_score, na.rm = TRUE)/9*100)
+practice2 <- (median(subset(df_long, time_point == 2)$practice_score, na.rm = TRUE)/9*100)
+practice3 <- (median(subset(df_long, time_point == 3)$practice_score, na.rm = TRUE)/9*100)
 
 # Create dataframe 
 dfplot <- data.frame(
@@ -155,7 +155,7 @@ scoreplot_log <- dfplot_long %>%
   scale_colour_brewer(palette = "Dark2") + 
   geom_text_repel(data = dfplot_long %>%
               filter(numeric_date > 470), aes(label = Domain), size = 2,
-              nudge_x = 0.05, hjust = 0) +
+              nudge_x = 0.2, hjust = 0.5) +
   theme(legend.position = "none") +
   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1),
                      labels = scales::percent,
@@ -165,7 +165,7 @@ scoreplot_log <- dfplot_long %>%
                 labels = c("Before training", "After training", "14-month follow-up")) +
   labs(x = "Days",
        y = NULL,
-       title = "Mean test scores before, after, and at 14-month follow-up \nfrom a five-day gender-based violence training for clinicians")
+       title = "Median test scores before, after, and at 14-month follow-up \nfrom a five-day gender-based violence training for clinicians")
 scoreplot_log
 
 width <- 5 
