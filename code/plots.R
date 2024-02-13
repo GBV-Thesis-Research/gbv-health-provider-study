@@ -10,9 +10,7 @@ current_wd <- getwd()
 library(scales)
 library(RColorBrewer)
 library(ggrepel)
-library(grid)
-library(tile)
-library(simcf)
+library(ggplot2)
 
 # Lint current file
 if (endsWith(current_wd, "gbv-health-provider-study")) {
