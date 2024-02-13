@@ -151,7 +151,7 @@ dfplot_long <- dfplot_long %>%
 scoreplot_log <- dfplot_long %>%
   ggplot(aes(x = numeric_date, y = Score, color = Domain)) +
   theme_cavis_hgrid + 
-  geom_line(size = 0.25) +
+  geom_line(linewidth = 0.25) +
   geom_point(shape = 21, size = 0.75, fill = "white", stroke = 0.5) + 
   scale_colour_brewer(palette = "Dark2") + 
   geom_text_repel(data = dfplot_long %>%
