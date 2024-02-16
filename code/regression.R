@@ -27,12 +27,6 @@ analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS
 df_long <- readRDS(analysis_df_fp_long)
 
 ## Regression
-# create variable for attendance at FUAT alone (not GBV intensive training)
-df_wide <- df_wide %>%
-  mutate(
-    attendance_fuat = attendance_score - 1
-  )
-
 # set reference groups
 df_wide$position_groups <- relevel(df_wide$position_groups, ref = "Medical doctor")
 df_wide$age_groups <- relevel(df_wide$age_groups, ref = "Less than 25 years old")
@@ -50,7 +44,7 @@ lm_age <- lm(knowledge_overall_3 ~ age_groups, data = df_wide)
 summ(lm_age)
 confint(lm_age)
 
-lm_attendance <- lm(knowledge_overall_3 ~ attendance_fuat, data = df_wide)
+lm_attendance <- lm(knowledge_overall_3 ~ attendance_score_FUAT, data = df_wide)
 summ(lm_attendance)
 confint(lm_attendance)
 
@@ -76,11 +70,11 @@ summ(sys_reg)
 confint(sys_reg)
 
 # linear regression, adjusting for characteristics
-example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_fuat +
+example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score_FUAT +
                           age_groups + position_groups + knowledge_overall_1, data = df_wide)
 summ(example_regession)
 
-example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_fuat +
+example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score_FUAT +
                           age_groups + position_groups + knowledge_overall_1 +
                           knowledge_overall_2, data = df_wide)
 summ(example_regession)
