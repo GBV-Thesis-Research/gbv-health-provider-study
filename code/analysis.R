@@ -61,7 +61,6 @@ df_wide$position_groups <- relevel(df_wide$position_groups, ref = "Medical docto
 df_wide$age_groups <- relevel(df_wide$age_groups, ref = "Less than 25 years old")
 
 # Conduct bivariate analysis for additive effects
-library(jtools)
 lm_sex <- lm(knowledge_overall_3 ~ sex_factored, data = df_wide)
 summ(lm_sex)
 confint(lm_sex)
