@@ -30,7 +30,8 @@ attendance_hist <- hist(df_wide$attendance_score_FUAT,
                         xlab = "Number of FUAT sessions attended", 
                         ylab = "Frequency")
 
-# Score drop vs. score increase - baseline to endline
+# Create dataframe to identify score drops from baseline to endline and 
+# midline to endline 
 score_drop <- df_wide %>%
   mutate(know_base_to_end = knowledge_overall_3 - knowledge_overall_1,
          att_base_to_end = attitude_overall_3 - attitude_overall_1,
@@ -45,4 +46,34 @@ score_drop <- df_wide %>%
          ) %>%
   select(know_base_to_end, att_base_to_end, emp_base_to_end, conf_base_to_end, 
          syssup_base_to_end, know_mid_to_end, att_mid_to_end, syssup_mid_to_end,
-         emp_mid_to_end, conf_mid_to_end)
+         emp_mid_to_end, conf_mid_to_end) %>%
+  mutate(know_base_to_end_factor = case_when(know_base_to_end < 0 ~ 1,
+                                             know_base_to_end == 0 ~ 2,
+                                             know_base_to_end > 0 ~ 3),
+         att_base_to_end_factor = case_when(att_base_to_end < 0 ~ 1,
+                                             att_base_to_end == 0 ~ 2,
+                                             att_base_to_end > 0 ~ 3),
+         emp_base_to_end_factor = case_when(emp_base_to_end < 0 ~ 1,
+                                            emp_base_to_end == 0 ~ 2,
+                                            emp_base_to_end > 0 ~ 3),
+         syssup_base_to_end_factor = case_when(syssup_base_to_end < 0 ~ 1,
+                                               syssup_base_to_end == 0 ~ 2,
+                                               syssup_base_to_end > 0 ~ 3),         
+         conf_base_to_end_factor = case_when(conf_base_to_end < 0 ~ 1,
+                                             conf_base_to_end == 0 ~ 2,
+                                             conf_base_to_end > 0 ~ 3),
+         know_mid_to_end_factor = case_when(know_mid_to_end < 0 ~ 1,
+                                            know_mid_to_end == 0 ~ 2,
+                                            know_mid_to_end > 0 ~ 3),
+         att_mid_to_end_factor = case_when(att_mid_to_end < 0 ~ 1,
+                                           att_mid_to_end == 0 ~ 2,
+                                            att_mid_to_end > 0 ~ 3),
+         emp_mid_to_end_factor = case_when(emp_mid_to_end < 0 ~ 1,
+                                           emp_mid_to_end == 0 ~ 2,
+                                           emp_mid_to_end > 0 ~ 3),
+         syssup_mid_to_end_factor = case_when(syssup_mid_to_end < 0 ~ 1,
+                                              syssup_mid_to_end == 0 ~ 2,
+                                              syssup_mid_to_end > 0 ~ 3),
+         conf_mid_to_end_factor = case_when(conf_mid_to_end < 0 ~ 1,
+                                            conf_mid_to_end == 0 ~ 2,
+                                            conf_mid_to_end > 0 ~ 3))
