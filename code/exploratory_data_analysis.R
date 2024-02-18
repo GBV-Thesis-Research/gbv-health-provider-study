@@ -23,3 +23,6 @@ df_wide <- readRDS(analysis_df_fp_wide)
 
 analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
 df_long <- readRDS(analysis_df_fp_long)
+
+# Create attendance table
+attendance_hist <- hist(df_wide$attendance_score_FUAT)
