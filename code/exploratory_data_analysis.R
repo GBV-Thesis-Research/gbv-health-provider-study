@@ -78,20 +78,25 @@ score_drop <- df_wide %>%
                                             conf_mid_to_end == 0 ~ "No improvement",
                                             conf_mid_to_end > 0 ~ "Score increased"))
 
-score_drop_tbl <- score_drop %>%
-  select(ends_with("factor")) %>%
+base_to_end_score_tbl <- score_drop %>%
+  select(ends_with("base_to_end_factor")) %>%
   tbl_summary(label = list(
     know_base_to_end_factor ~ "Knowledge - Baseline to Endline",
     att_base_to_end_factor ~ "Attitude - Baseline to Endline",
     emp_base_to_end_factor ~ "Empathy - Baseline to Endline",
     syssup_base_to_end_factor ~ "System Support - Baseline to Endline",
-    conf_base_to_end_factor ~ "Confidence - Baseline to Endline",
+    conf_base_to_end_factor ~ "Confidence - Baseline to Endline"))
+base_to_end_score_tbl   
+
+mid_to_end_score_tbl <- score_drop %>%
+  select(ends_with("mid_to_end_factor")) %>%
+  tbl_summary(label = list(
     know_mid_to_end_factor ~ "Knowledge - Midline to Endline",
     att_mid_to_end_factor ~ "Attitude - Midline to Endline",
     emp_mid_to_end_factor ~ "Empathy - Midline to Endline",
     syssup_mid_to_end_factor ~ "System Support - Midline to Endline",
     conf_mid_to_end_factor ~ "Confidence - Midline to Endline"))
-score_drop_tbl   
+mid_to_end_score_tbl   
             
             
             
