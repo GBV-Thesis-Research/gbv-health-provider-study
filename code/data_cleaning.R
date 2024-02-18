@@ -125,6 +125,21 @@ data <- data %>%
   )) %>%
   select(-matches("fup"))
 
+# collapse age categories and make into factor variable
+data <- data %>%
+  mutate(age_binary = ifelse(
+    age_groups == "Less than 25 years old" | age_groups == "25-34 years old", 1, 2
+  ))
+
+data <- data %>%
+  mutate(age_binary = factor(age_binary,
+    levels = c(1, 2),
+    labels = c(
+      "34 years old or younger",
+      "35 years old or older"
+    )
+  ))
+
 # create an actual date column
 data$date_as_date_format <- ifelse(is.na(data$date), NA,
   format(as.Date(data$date, format = "%Y-%m-%d"), "%Y-%m-%d")
