@@ -26,8 +26,23 @@ df_long <- readRDS(analysis_df_fp_long)
 
 # Create attendance table
 attendance_hist <- hist(df_wide$attendance_score_FUAT, 
-                        main = "Histogram of FUAT Attendance Data", 
+                        main = "FUAT Attendance", 
                         xlab = "Number of FUAT sessions attended", 
                         ylab = "Frequency")
 
-# 
+# Score drop vs. score increase - baseline to endline
+score_drop <- df_wide %>%
+  mutate(know_base_to_end = knowledge_overall_3 - knowledge_overall_1,
+         att_base_to_end = attitude_overall_3 - attitude_overall_1,
+         emp_base_to_end = empathy_score_3 - empathy_score_1,
+         syssup_base_to_end = system_support_score_3 - system_support_score_1,
+         conf_base_to_end = confidence_score_3 - confidence_score_1,
+         know_mid_to_end = knowledge_overall_3 - knowledge_overall_2,
+         att_mid_to_end = attitude_overall_3 - knowledge_overall_2,
+         emp_mid_to_end = empathy_score_3 - empathy_score_2,
+         syssup_mid_to_end = system_support_score_3 - system_support_score_2,
+         conf_mid_to_end = confidence_score_3 - confidence_score_2
+         ) %>%
+  select(know_base_to_end, att_base_to_end, emp_base_to_end, conf_base_to_end, 
+         syssup_base_to_end, know_mid_to_end, att_mid_to_end, syssup_mid_to_end,
+         emp_mid_to_end, conf_mid_to_end)
