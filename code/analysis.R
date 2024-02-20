@@ -42,7 +42,6 @@ comparison_tbl_1 <-
     stat_2 = "**Timepoint 3**") %>%
   add_n() %>% 
   add_p()
-
  
 comparison_tbl_2 <-
   df_long %>%
@@ -57,7 +56,10 @@ comparison_tbl_2 <-
                            confidence_score ~ "Confidence",
                            empathy_score ~ "Empathy",
                            practice_score ~ "Practice")) %>%
-  modify_header(label ~ "**Domain**") %>%
+  modify_header(
+    label = "**Domain**",
+    stat_1 = "**Timepoint 2**",
+    stat_2 = "**Timepoint 3**") %>%
   add_n() %>% 
   add_p()
 
