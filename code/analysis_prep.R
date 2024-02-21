@@ -49,7 +49,7 @@ analysis_wide <- merged_scores %>%
   ))
 
 # Join attendance data - need to add FUAT specific attendance score once all PRs are merged to main
-analysis_wide <- left_join(analysis_wide, attendance_data %>% select(participant_id_3, attendance_score),
+analysis_wide <- left_join(analysis_wide, attendance_data %>% select(participant_id_3, attendance_score_FUAT),
   by = c("participant_id_3")
 )
 
