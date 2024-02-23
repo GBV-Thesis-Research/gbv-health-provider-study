@@ -24,6 +24,8 @@ df_wide <- readRDS(analysis_df_fp_wide)
 analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
 df_long <- readRDS(analysis_df_fp_long)
 
+source(paste(gbv_project_wd, "/code/plots.R", sep = ""))
+
 # Create attendance table
 attendance_hist <- hist(df_wide$attendance_score_FUAT, 
                         main = "FUAT Attendance", 
@@ -109,9 +111,20 @@ box_data <- analysis_long %>%
          practice_score = (practice_score/9)*100
   )
 
-box_data <- pivot_longer(analysis_long, 
+box_data <- pivot_longer(box_data, 
                          cols = c(knowledge_overall, attitude_overall, 
                                   system_support_score, confidence_score, 
                                   empathy_score,practice_score),
                          names_to = "domain",
                          values_to = "score")
+
+
+boxplot <- ggplot(box_data, aes(x = domain, y =score)) + 
+  geom_boxplot() + 
+  labs(
+    x = NULL,
+    y = "Score out of 100",
+    title = "Participant scores by domain over three timepoints ") + 
+  theme_cavis_hgrid
+  
+boxplot <- boxplot + facet_wrap(~time_point, scales = "free")
