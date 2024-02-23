@@ -131,3 +131,21 @@ boxplot_timepoint <- ggplot(box_data, aes(x = domain, y =score)) +
 boxplot_timepoint <- boxplot_timepoint + facet_wrap(~time_point, scales = "free")
 
 boxplot_timepoint <- boxplot_timepoint + theme_cavis_hgrid
+
+# Create boxplots by domain 
+box_data <- box_data %>%
+  mutate(time_point = factor(time_point))
+
+boxplot_domain <- ggplot(box_data, aes(x = time_point, y = score)) + 
+  geom_boxplot() + 
+  labs(
+    x = NULL,
+    y = "Score out of 100",
+    title = "Participant scores by domain over three timepoints ") + 
+  ylim(0, 100) +
+  theme_cavis_hgrid + 
+  facet_wrap(~domain, scales = "free", 
+             labeller = labeller(domain = c(
+               attitude_overall = "Attitude", confidence_score = "Confidence", 
+               empathy_score = "Empathy", knowledge_overall = "Knowledge", 
+               practice_score = "Practice", system_support_score = "System Support")))
