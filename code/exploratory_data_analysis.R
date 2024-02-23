@@ -118,20 +118,6 @@ box_data <- pivot_longer(box_data,
                          names_to = "domain",
                          values_to = "score")
 
-# Create boxplots by timepoint 
-boxplot_timepoint <- ggplot(box_data, aes(x = domain, y =score)) + 
-  geom_boxplot() + 
-  labs(
-    x = NULL,
-    y = "Score out of 100",
-    title = "Participant scores by domain over three timepoints ") + 
-  scale_x_discrete(labels = c("Attitudes", "Confidence", "Empathy", "Knowledge", 
-                              "Practices", "System Support")) 
-
-boxplot_timepoint <- boxplot_timepoint + facet_wrap(~time_point, scales = "free")
-
-boxplot_timepoint <- boxplot_timepoint + theme_cavis_hgrid
-
 # Create boxplots by domain 
 box_data <- box_data %>%
   mutate(time_point = factor(time_point))
