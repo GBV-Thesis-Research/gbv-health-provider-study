@@ -98,5 +98,13 @@ mid_to_end_score_tbl <- score_drop %>%
     conf_mid_to_end_factor ~ "Confidence - Midline to Endline"))
 mid_to_end_score_tbl   
             
-            
-            
+# box plots 
+# make scores proportional
+box_data <- analysis_long %>% 
+  mutate(knowledge_overall = (knowledge_overall/43)*100,
+         attitude_overall = (attitude_overall/102)*100,
+         system_support_score = (system_support_score/6)*100,
+         confidence_score = (confidence_score/40)*100,
+         empathy_score = (empathy_score/64)*100,
+         practice_score = (practice_score/9)*100
+  )
