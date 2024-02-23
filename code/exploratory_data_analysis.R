@@ -125,6 +125,9 @@ boxplot <- ggplot(box_data, aes(x = domain, y =score)) +
     x = NULL,
     y = "Score out of 100",
     title = "Participant scores by domain over three timepoints ") + 
-  theme_cavis_hgrid
-  
+  scale_x_discrete(labels = c("Attitudes", "Confidence", "Empathy", "Knowledge", 
+                              "Practices", "System Support")) 
+
 boxplot <- boxplot + facet_wrap(~time_point, scales = "free")
+
+boxplot <- boxplot + theme_cavis_hgrid
