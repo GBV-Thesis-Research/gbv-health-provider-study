@@ -135,8 +135,8 @@ data <- data %>%
   mutate(age_binary = factor(age_binary,
     levels = c(1, 2),
     labels = c(
-      "34 years old or younger",
-      "35 years old or older"
+      "<=34",
+      ">34"
     )
   ))
 
