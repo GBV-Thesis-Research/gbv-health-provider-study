@@ -108,3 +108,10 @@ box_data <- analysis_long %>%
          empathy_score = (empathy_score/64)*100,
          practice_score = (practice_score/9)*100
   )
+
+box_data <- pivot_longer(analysis_long, 
+                         cols = c(knowledge_overall, attitude_overall, 
+                                  system_support_score, confidence_score, 
+                                  empathy_score,practice_score),
+                         names_to = "domain",
+                         values_to = "score")
