@@ -106,6 +106,21 @@ analysis_wide <- analysis_wide %>%
       ifelse(syssup_change_midend > 0, 1, 0),
   )
 
+# Add variables for "high improvement"
+analysis_wide <- analysis_wide %>%
+  mutate(
+    know_improve_high =
+      ifelse(know_change_overall > median(know_change_overall), 1, 0),
+    att_improve_high =
+      ifelse(att_change_overall > median(att_change_overall), 1, 0),
+    conf_improve_high =
+      ifelse(conf_change_overall > median(conf_change_overall), 1, 0),
+    emp_improve_high =
+      ifelse(emp_change_overall > median(emp_change_overall), 1, 0),
+    syssup_improve_high =
+      ifelse(syssup_change_overall > median(syssup_change_overall), 1, 0),
+  )
+
 # Create long data frame
 
 analysis_long <-
