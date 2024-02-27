@@ -62,7 +62,7 @@ analysis_wide <- analysis_wide %>%
     know_change_overall =
       knowledge_overall_3 - knowledge_overall_1,
     know_change_midend =
-      knowledge_overall_3 - knowledge_overall_1,
+      knowledge_overall_3 - knowledge_overall_2,
     att_change_overall =
       attitude_overall_3 - attitude_overall_1,
     att_change_midend =
