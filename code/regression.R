@@ -99,3 +99,24 @@ exp(cbind(OR = coef(emp_logreg), confint(emp_logreg)))
 syssup_logreg <- glm(syssup_improve_overall ~ attendance_score_FUAT + sex_factored + 
                     + age_binary + position_groups, data = analysis_wide, family = binomial)
 exp(cbind(OR = coef(syssup_logreg), confint(syssup_logreg)))
+
+# logistic regression - midline to endline
+know_midend_logreg <- glm(know_improve_midend ~ attendance_score_FUAT + factor(sex_factored) + 
+                          + factor(age_binary) + factor(position_groups), data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(know_midend_logreg), confint(know_midend_logreg)))
+
+att_midend_logreg <- glm(att_improve_midend  ~ attendance_score_FUAT + sex_factored + 
+                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(att_midend_logreg), confint(att_midend_logreg)))
+
+conf_midend_logreg <- glm(conf_improve_midend ~ attendance_score_FUAT + sex_factored + 
+                     + age_binary + position_groups, data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(conf_midend_logreg), confint(conf_midend_logreg)))
+
+emp_midend_logreg <- glm(emp_improve_midend ~ attendance_score_FUAT + sex_factored + 
+                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(emp_midend_logreg), confint(emp_midend_logreg)))
+
+syssup_midend_logreg <- glm(syssup_improve_midend ~ attendance_score_FUAT + sex_factored + 
+                       + age_binary + position_groups, data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(syssup_midend_logreg), confint(syssup_midend_logreg)))
