@@ -58,52 +58,53 @@ analysis_wide <- left_join(analysis_wide, demographic_data, by = c("participant_
 
 # Add variable calculating change from baseline to endline and midline to endline
 analysis_wide <- analysis_wide %>%
-  mutate(know_change_overall = 
-           knowledge_overall_3 - knowledge_overall_1,
-         know_change_midend = 
-           knowledge_overall_3 - knowledge_overall_1,
-         att_change_overall = 
-           attitude_overall_3 - attitude_overall_1,
-         att_change_midend = 
-           attitude_overall_3 - attitude_overall_2,
-         conf_change_overall = 
-           confidence_score_3 - confidence_score_1,
-         conf_change_midend = 
-           confidence_score_3 - confidence_score_2,
-         emp_change_overall = 
-           empathy_score_3 - empathy_score_1,
-         emp_change_midend = 
-           empathy_score_3 - empathy_score_2,
-         syssup_change_overall = 
-           system_support_score_3 - system_support_score_1,
-         syssup_change_midend = 
-           system_support_score_3 - system_support_score_2
+  mutate(
+    know_change_overall =
+      knowledge_overall_3 - knowledge_overall_1,
+    know_change_midend =
+      knowledge_overall_3 - knowledge_overall_1,
+    att_change_overall =
+      attitude_overall_3 - attitude_overall_1,
+    att_change_midend =
+      attitude_overall_3 - attitude_overall_2,
+    conf_change_overall =
+      confidence_score_3 - confidence_score_1,
+    conf_change_midend =
+      confidence_score_3 - confidence_score_2,
+    emp_change_overall =
+      empathy_score_3 - empathy_score_1,
+    emp_change_midend =
+      empathy_score_3 - empathy_score_2,
+    syssup_change_overall =
+      system_support_score_3 - system_support_score_1,
+    syssup_change_midend =
+      system_support_score_3 - system_support_score_2
   )
 
 # Add binary variables for improved / did not improve
 analysis_wide <- analysis_wide %>%
-  mutate(know_improve_overall = 
-           ifelse(know_change_overall >0, 1, 0),
-         know_improve_midend = 
-           ifelse(know_change_midend >0, 1, 0),
-         att_improve_overall = 
-           ifelse(att_change_overall >0, 1, 0),
-         att_improve_midend = 
-           ifelse(att_change_midend >0, 1, 0),
-         conf_improve_overall = 
-           ifelse(conf_change_overall >0, 1, 0),
-         conf_improve_midend = 
-           ifelse(conf_change_midend >0, 1, 0),
-         emp_improve_overall = 
-           ifelse(emp_change_overall >0, 1, 0),
-         emp_improve_midend = 
-           ifelse(emp_change_midend >0, 1, 0),
-         syssup_improve_overall = 
-           ifelse(syssup_change_overall >0, 1, 0),
-         syssup_improve_midend = 
-           ifelse(syssup_change_midend >0, 1, 0),
+  mutate(
+    know_improve_overall =
+      ifelse(know_change_overall > 0, 1, 0),
+    know_improve_midend =
+      ifelse(know_change_midend > 0, 1, 0),
+    att_improve_overall =
+      ifelse(att_change_overall > 0, 1, 0),
+    att_improve_midend =
+      ifelse(att_change_midend > 0, 1, 0),
+    conf_improve_overall =
+      ifelse(conf_change_overall > 0, 1, 0),
+    conf_improve_midend =
+      ifelse(conf_change_midend > 0, 1, 0),
+    emp_improve_overall =
+      ifelse(emp_change_overall > 0, 1, 0),
+    emp_improve_midend =
+      ifelse(emp_change_midend > 0, 1, 0),
+    syssup_improve_overall =
+      ifelse(syssup_change_overall > 0, 1, 0),
+    syssup_improve_midend =
+      ifelse(syssup_change_midend > 0, 1, 0),
   )
-
 
 # Create long data frame
 

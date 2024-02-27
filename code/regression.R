@@ -78,3 +78,24 @@ example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score_FU
                           age_groups + position_groups + knowledge_overall_1 +
                           knowledge_overall_2, data = df_wide)
 summ(example_regession)
+
+# logistic regression - baseline to endline
+knowledge_logreg <- glm(know_improve_overall ~ attendance_score_FUAT + factor(sex_factored) + 
+                           + factor(age_binary) + factor(position_groups), data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(knowledge_logreg), confint(knowledge_logreg)))
+
+att_logreg <- glm(att_improve_overall ~ attendance_score_FUAT + sex_factored + 
+                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(att_logreg), confint(att_logreg)))
+
+conf_logreg <- glm(conf_improve_overall ~ attendance_score_FUAT + sex_factored + 
+                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(conf_logreg), confint(conf_logreg)))
+
+emp_logreg <- glm(emp_improve_overall ~ attendance_score_FUAT + sex_factored + 
+                     + age_binary + position_groups, data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(emp_logreg), confint(emp_logreg)))
+
+syssup_logreg <- glm(syssup_improve_overall ~ attendance_score_FUAT + sex_factored + 
+                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+exp(cbind(OR = coef(syssup_logreg), confint(syssup_logreg)))
