@@ -87,12 +87,12 @@ Significant improvement in participant scores were observed from baseline (timep
 
 While significant improvements were seen from intervention baseline to endline, scores between timepoint 2 (post 5-day intensive GBV training) and timepoint 3 (endline, following 14-months of monthly learning labs) plateaued.
 ```{r}
-insert line chart
+#insert line chart
 ```
 
 No significant differences in score occurred between timepoints 2 and 3. 
 ```{r}
-insert table for timepoints 2 and 3
+#insert table for timepoints 2 and 3
 ```
 
 Throwing out system support and practice because of scores that shouldn't have improved between timepoints 1 & 2?
