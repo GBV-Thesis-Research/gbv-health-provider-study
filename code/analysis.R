@@ -30,39 +30,57 @@ df_long <- readRDS(analysis_df_fp_long)
 comparison_tbl_1 <-
   df_long %>%
   filter(time_point %in% c(1, 3)) %>%
-  select(time_point, knowledge_overall, attitude_overall, system_support_score, 
-         confidence_score, empathy_score, practice_score) %>%
-  tbl_summary(by=time_point, type = list(system_support_score ~ "continuous", 
-                                         practice_score ~ "continuous"),
-              label = list(knowledge_overall ~ "Knowledge", 
-                           attitude_overall ~ "Attitude",
-                           system_support_score ~ "System Support",
-                           confidence_score ~ "Confidence",
-                           empathy_score ~ "Empathy",
-                           practice_score ~ "Practice")) %>% 
+  select(
+    time_point, knowledge_overall, attitude_overall, system_support_score,
+    confidence_score, empathy_score, practice_score
+  ) %>%
+  tbl_summary(
+    by = time_point, type = list(
+      system_support_score ~ "continuous",
+      practice_score ~ "continuous"
+    ),
+    label = list(
+      knowledge_overall ~ "Knowledge",
+      attitude_overall ~ "Attitude",
+      system_support_score ~ "System Support",
+      confidence_score ~ "Confidence",
+      empathy_score ~ "Empathy",
+      practice_score ~ "Practice"
+    )
+  ) %>%
   modify_header(
     label = "**Domain**",
     stat_1 = "**Timepoint 1**",
-    stat_2 = "**Timepoint 3**") %>%
-  add_n() %>% 
+    stat_2 = "**Timepoint 3**"
+  ) %>%
+  add_n() %>%
   add_p()
- 
+
 comparison_tbl_2 <-
   df_long %>%
   filter(time_point %in% c(2, 3)) %>%
-  select(time_point, knowledge_overall, attitude_overall, system_support_score, 
-         confidence_score, empathy_score, practice_score) %>%
-  tbl_summary(by=time_point, type = list(system_support_score ~ "continuous", 
-                                         practice_score ~ "continuous"),
-              label = list(knowledge_overall ~ "Knowledge", 
-                           attitude_overall ~ "Attitude",
-                           system_support_score ~ "System Support",
-                           confidence_score ~ "Confidence",
-                           empathy_score ~ "Empathy",
-                           practice_score ~ "Practice")) %>%
+  select(
+    time_point, knowledge_overall, attitude_overall, system_support_score,
+    confidence_score, empathy_score, practice_score
+  ) %>%
+  tbl_summary(
+    by = time_point, type = list(
+      system_support_score ~ "continuous",
+      practice_score ~ "continuous"
+    ),
+    label = list(
+      knowledge_overall ~ "Knowledge",
+      attitude_overall ~ "Attitude",
+      system_support_score ~ "System Support",
+      confidence_score ~ "Confidence",
+      empathy_score ~ "Empathy",
+      practice_score ~ "Practice"
+    )
+  ) %>%
   modify_header(
     label = "**Domain**",
     stat_1 = "**Timepoint 2**",
-    stat_2 = "**Timepoint 3**") %>%
-  add_n() %>% 
+    stat_2 = "**Timepoint 3**"
+  ) %>%
+  add_n() %>%
   add_p()

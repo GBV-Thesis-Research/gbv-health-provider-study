@@ -33,6 +33,7 @@ knitr::opts_chunk$set(fig.align = 'center',
 ## SOURCE FIGURES AND TABLES
 source(paste(disc_project_wd, "/code/table_1.R", sep = ""))
 source(paste(disc_project_wd, "/code/analysis.R", sep = ""))
+source(paste(disc_project_wd, "/code/plots.R", sep = ""))
 ```
 
 # Analysis plan
@@ -85,16 +86,17 @@ comparison_tbl_1
 
 Significant improvement in participant scores were observed from baseline (timepoint 1) to endline (timepoint 3) in each domain, as illustrated in table 2 (p <.001). From baseline to endline, median GBV knowledge improved from `r inline_text(comparison_tbl_1, variable = knowledge_overall, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = knowledge_overall, column= "stat_2")`, out of 43 possible points. The attitudes toward GBV domain improved from `r inline_text(comparison_tbl_1, variable = attitude_overall, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = attitude_overall, column= "stat_2")`, out of 102 possible points. Confidence scores that represented provider confidence in identifying and treating women subjected to GBV improved from `r inline_text(comparison_tbl_1, variable = confidence_score, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = confidence_score, column= "stat_2")`, out of 40 possible points. Empathy scores, representing provider's empathic behavior, improved from `r inline_text(comparison_tbl_1, variable = empathy_score, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = empathy_score, column= "stat_2")`, out of 64 possible points. System support scores rose from `r inline_text(comparison_tbl_1, variable = system_support_score, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = system_support_score, column= "stat_2")`, out of 6 possible points. While comparatively the practice domain had a small number of respondents (n = `r inline_text(comparison_tbl_1, variable = practice_score, column= "n")`) due to the skip logic employed in the practice questions, the results were still significant. Practice scores, measuring appropriate actions taken by providers to support women identified as victims of GBV, improved from `r inline_text(comparison_tbl_1, variable = practice_score, column= "stat_1")` to `r inline_text(comparison_tbl_1, variable = practice_score, column= "stat_2")`.
 
-While significant improvements were seen from intervention baseline to endline, scores between timepoint 2 (post 5-day intensive GBV training) and timepoint 3 (endline, following 14-months of monthly learning labs) plateaued.
+While significant improvements were seen from intervention baseline to endline, no significant differences were observed between timepoint 2 (post 5-day intensive GBV training) and timepoint 3 (endline, following 14-months of monthly learning labs).
 ```{r}
-#insert line chart
+scores_summary_table
 ```
 
-No significant differences in score occurred between timepoints 2 and 3. 
+Scores plateaud between timepoints 2 and 3. Notably, the domains of system support and practices should not have improved between timepoint 1 and timepoint 2. The practices domain asks respondents to report their practices in caring for women in the past month. Those answers should be the same between timepoints 1 and 2.  Similarly, the system support domain discusses perceived support (both within facilities and outside of facilities) for providers caring for victims of GBV. While it's not impossible for these scores to have improved (e.g. "I have names and contact information of people within this facility to whom I can refer the client who discloses violence for additional counselling or psychosocial support" could have improved), not all questions should have imporved (e.g."I have a private space in the facility where I can talk to the woman confidentially about her abuse"). As such, should we throw them out of the analysis?
 ```{r}
-#insert table for timepoints 2 and 3
+scoreplot_log
 ```
-
-Throwing out system support and practice because of scores that shouldn't have improved between timepoints 1 & 2?
-
 ## Regression results
+```{r}
+
+```
+
