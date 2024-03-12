@@ -64,34 +64,52 @@ lm_sex <- lm(knowledge_overall_3 ~ sex_factored, data = df_wide)
 sex_sum <- summ(lm_sex)
 sex_conf <- confint(lm_sex)
 
-lm_position <- lm(knowledge_overall_3 ~ position_groups, data = df_wide)
-summ(lm_position)
-confint(lm_position)
-
-lm_age <- lm(knowledge_overall_3 ~ age_binary, data = df_wide)
-summ(lm_age)
-confint(lm_age)
-
-lm_attendance <- lm(knowledge_overall_3 ~ factor(attendance_binned), data = df_wide)
-summ(lm_attendance)
-confint(lm_attendance)
-
 tbl_sex <- tbl_regression(
   lm_sex,
   exponentiate_ci = FALSE,
   add_estimate_to_reference_level = TRUE,
 )
 
-tbl_sex <- tbl_add_ci(tbl, conf_intervals)
+lm_position <- lm(knowledge_overall_3 ~ position_groups, data = df_wide)
+summ(lm_position)
+confint(lm_position)
 
+tbl_position <- tbl_regression(
+  lm_position,
+  exponentiate_ci = FALSE,
+  add_estimate_to_reference_level = TRUE,
+)
 
-# Add confidence intervals to the table
-tbl <- tbl_add_ci(tbl, conf_intervals)
+lm_age <- lm(knowledge_overall_3 ~ age_binary, data = df_wide)
+summ(lm_age)
+confint(lm_age)
+
+tbl_age <- tbl_regression(
+  lm_age,
+  exponentiate_ci = FALSE,
+  add_estimate_to_reference_level = TRUE,
+)
+
+lm_attendance <- lm(knowledge_overall_3 ~ factor(attendance_binned), data = df_wide)
+summ(lm_attendance)
+confint(lm_attendance)
+
+tbl_attendance <- tbl_regression(
+  lm_attendance,
+  exponentiate_ci = FALSE,
+  add_estimate_to_reference_level = TRUE,
+)
 
 # linear regression, adjusting for baseline scores only
 knowledge_reg <- lm(knowledge_overall_3 ~ knowledge_overall_2, data = df_wide)
 summ(knowledge_reg)
 confint(knowledge_reg)
+
+tbl_know <- tbl_regression(
+  knowledge_reg,
+  exponentiate_ci = FALSE,
+  add_estimate_to_reference_level = TRUE,
+)
 
 att_reg <- lm(attitude_overall_3 ~ attitude_overall_2, data = df_wide)
 summ(att_reg)
@@ -109,36 +127,99 @@ sys_reg <- lm(system_support_score_3 ~ system_support_score_2 + system_support_s
 summ(sys_reg)
 confint(sys_reg)
 
+combined_tbl_bivariate <- tbl_merge(list(tbl_sex, tbl_position, tbl_age, tbl_attendance), 
+                                    tab_spanner = c("Sex Bivariate Analysis", 
+                                                    "Position Bivariate Analysis",
+                                                    "Age Bivariate Analysis",
+                                                    "Attendance Bivariate Analysis"))
+
 # linear regression, adjusting for characteristics
 example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_binned +
                           age_binary + position_groups + knowledge_overall_1, data = df_wide)
 summ(example_regession)
 
-example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_binned +
+tbl_know_linear <- tbl_regression(
+  example_regession,
+  exponentiate_ci = FALSE,
+  add_estimate_to_reference_level = TRUE,
+)
+
+
+example_regession_all_timepoints <- lm(knowledge_overall_3 ~ sex_factored + attendance_binned +
                           age_binary + position_groups + knowledge_overall_1 +
                           knowledge_overall_2, data = df_wide)
 summ(example_regession)
+
+tbl_know_linear_2 <- tbl_regression(
+  example_regession_all_timepoints,
+  exponentiate_ci = FALSE,
+  add_estimate_to_reference_level = TRUE,
+)
+
+combined_tbl_linear <- tbl_merge(list(tbl_know_linear, tbl_know_linear_2),
+                                    tab_spanner = c("Linear Regression, Adjusting for baseline", 
+                                                    "Linear Regression, Adjusting for baseline and midline"))
 
 # logistic regression - baseline to endline
 knowledge_logreg <- glm(know_improve_overall ~ factor(attendance_binned) + factor(sex_factored) + 
                            + factor(age_binary) + factor(position_groups), data = df_wide, family = binomial)
 exp(cbind(OR = coef(knowledge_logreg), confint(knowledge_logreg)))
 
+tbl_know_logreg_base2end <- knowledge_logreg %>%
+  tbl_regression(
+    exponentiate = TRUE) %>%
+    add_global_p() %>%
+    bold_p(t = 0.05) %>%
+    bold_labels() %>%
+    italicize_levels()
+
 att_logreg <- glm(att_improve_overall ~ factor(attendance_binned) + sex_factored + 
                     + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(att_logreg), confint(att_logreg)))
+
+tbl_att_logreg_base2end <- att_logreg %>%
+  tbl_regression(
+    exponentiate = TRUE) %>%
+  add_global_p() %>%
+  bold_p(t = 0.05) %>%
+  bold_labels() %>%
+  italicize_levels()
 
 conf_logreg <- glm(conf_improve_overall ~ factor(attendance_binned)  + sex_factored + 
                     + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(conf_logreg), confint(conf_logreg)))
 
+tbl_conf_logreg_base2end <- conf_logreg %>%
+  tbl_regression(
+    exponentiate = TRUE) %>%
+  add_global_p() %>%
+  bold_p(t = 0.05) %>%
+  bold_labels() %>%
+  italicize_levels()
+
 emp_logreg <- glm(emp_improve_overall ~ factor(attendance_binned)  + sex_factored + 
                      + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(emp_logreg), confint(emp_logreg)))
 
+tbl_emp_logreg_base2end <- emp_logreg %>%
+  tbl_regression(
+    exponentiate = TRUE) %>%
+  add_global_p() %>%
+  bold_p(t = 0.05) %>%
+  bold_labels() %>%
+  italicize_levels()
+
 syssup_logreg <- glm(syssup_improve_overall ~ factor(attendance_binned)  + sex_factored + 
                     + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(syssup_logreg), confint(syssup_logreg)))
+
+tbl_syssup_logreg_base2end <- syssup_logreg %>%
+  tbl_regression(
+    exponentiate = TRUE) %>%
+  add_global_p() %>%
+  bold_p(t = 0.05) %>%
+  bold_labels() %>%
+  italicize_levels()
 
 # logistic regression - midline to endline
 know_midend_logreg <- glm(know_improve_midend ~ factor(attendance_binned)  + factor(sex_factored) + 
