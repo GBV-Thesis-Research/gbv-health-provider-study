@@ -158,9 +158,9 @@ scoreplot_log <- dfplot_long %>%
               filter(numeric_date > 470), aes(label = Domain), size = 2,
               nudge_x = 0.2, hjust = 0.5) +
   theme(legend.position = "none") +
-  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1),
+  scale_y_continuous(breaks = c(.50, .60, .70, .80, .90, 1),
                      labels = scales::percent,
-                     limits = c(0, 1)) +
+                     limits = c(.50, 1)) +
   coord_cartesian(xlim = c(1, 1100)) +
   scale_x_log10(breaks = c(1, 5, 488),
                 labels = c("Before training", "After training", "14-month follow-up")) +
