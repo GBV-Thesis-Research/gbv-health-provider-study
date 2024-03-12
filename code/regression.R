@@ -56,8 +56,8 @@ df_wide <- df_wide %>%
 
 ## Regression
 # set reference groups
-df_wide$position_groups <- relevel(df_wide$position_groups, ref = "Medical doctor")
-df_wide$age_groups <- relevel(df_wide$age_groups, ref = "Less than 25 years old")
+df_wide$position_groups <- factor(df_wide$position_groups, ordered = FALSE)
+df_wide$position_groups <- relevel(df_wide$position_groups, ref = "Midwife/Nurse")
 
 # Conduct bivariate analysis for additive effects
 lm_sex <- lm(knowledge_overall_3 ~ sex_factored, data = df_wide)
@@ -68,11 +68,11 @@ lm_position <- lm(knowledge_overall_3 ~ position_groups, data = df_wide)
 summ(lm_position)
 confint(lm_position)
 
-lm_age <- lm(knowledge_overall_3 ~ age_groups, data = df_wide)
+lm_age <- lm(knowledge_overall_3 ~ age_binary, data = df_wide)
 summ(lm_age)
 confint(lm_age)
 
-lm_attendance <- lm(knowledge_overall_3 ~ attendance_score_FUAT, data = df_wide)
+lm_attendance <- lm(knowledge_overall_3 ~ attendance_binned, data = df_wide)
 summ(lm_attendance)
 confint(lm_attendance)
 
