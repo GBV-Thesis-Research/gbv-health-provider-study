@@ -26,6 +26,34 @@ df_wide <- readRDS(analysis_df_fp_wide)
 analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
 df_long <- readRDS(analysis_df_fp_long)
 
+## Adjusting attendance and professional variables to check regression results - can move code
+## once we check that this works
+
+# Adjust attendance to bins of 0 FUATs, 1 FUAT, 2 FUAT and 3+ FUATs
+df_wide <- df_wide %>%
+  mutate(
+    attendance_binned = case_when(
+      is.na(attendance_score_FUAT) ~ NA,
+      attendance_score_FUAT == 0 ~ 0,
+      attendance_score_FUAT == 1 ~ 1,
+      attendance_score_FUAT == 2 ~ 2,
+      attendance_score_FUAT %in% 3:8 ~ 3
+      )
+  )
+
+df_wide <- df_wide %>%
+  mutate(attendance_binned = as.factor(attendance_binned))
+
+# Collapsing midwives and nurses
+df_wide <- df_wide %>%
+  mutate(
+    position_groups = case_when(
+      position_groups == "Midwife" ~ "Midwife/Nurse",
+      position_groups == "Nurse" ~ "Midwife/Nurse",
+      TRUE ~ position_groups
+      )
+  )
+
 ## Regression
 # set reference groups
 df_wide$position_groups <- relevel(df_wide$position_groups, ref = "Medical doctor")
