@@ -61,8 +61,8 @@ df_wide$position_groups <- relevel(df_wide$position_groups, ref = "Medical docto
 
 # Conduct bivariate analysis for additive effects
 lm_sex <- lm(knowledge_overall_3 ~ sex_factored, data = df_wide)
-summ(lm_sex)
-confint(lm_sex)
+sex_sum <- summ(lm_sex)
+sex_conf <- confint(lm_sex)
 
 lm_position <- lm(knowledge_overall_3 ~ position_groups, data = df_wide)
 summ(lm_position)
@@ -72,9 +72,21 @@ lm_age <- lm(knowledge_overall_3 ~ age_binary, data = df_wide)
 summ(lm_age)
 confint(lm_age)
 
-lm_attendance <- lm(knowledge_overall_3 ~ attendance_binned, data = df_wide)
+lm_attendance <- lm(knowledge_overall_3 ~ factor(attendance_binned), data = df_wide)
 summ(lm_attendance)
 confint(lm_attendance)
+
+tbl_sex <- tbl_regression(
+  lm_sex,
+  exponentiate_ci = FALSE,
+  add_estimate_to_reference_level = TRUE,
+)
+
+tbl_sex <- tbl_add_ci(tbl, conf_intervals)
+
+
+# Add confidence intervals to the table
+tbl <- tbl_add_ci(tbl, conf_intervals)
 
 # linear regression, adjusting for baseline scores only
 knowledge_reg <- lm(knowledge_overall_3 ~ knowledge_overall_2, data = df_wide)
