@@ -57,7 +57,7 @@ df_wide <- df_wide %>%
 ## Regression
 # set reference groups
 df_wide$position_groups <- factor(df_wide$position_groups, ordered = FALSE)
-df_wide$position_groups <- relevel(df_wide$position_groups, ref = "Midwife/Nurse")
+df_wide$position_groups <- relevel(df_wide$position_groups, ref = "Medical doctor")
 
 # Conduct bivariate analysis for additive effects
 lm_sex <- lm(knowledge_overall_3 ~ sex_factored, data = df_wide)
@@ -98,74 +98,74 @@ summ(sys_reg)
 confint(sys_reg)
 
 # linear regression, adjusting for characteristics
-example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score_FUAT +
-                          age_groups + position_groups + knowledge_overall_1, data = df_wide)
+example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_binned +
+                          age_binary + position_groups + knowledge_overall_1, data = df_wide)
 summ(example_regession)
 
-example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_score_FUAT +
-                          age_groups + position_groups + knowledge_overall_1 +
+example_regession <- lm(knowledge_overall_3 ~ sex_factored + attendance_binned +
+                          age_binary + position_groups + knowledge_overall_1 +
                           knowledge_overall_2, data = df_wide)
 summ(example_regession)
 
 # logistic regression - baseline to endline
-knowledge_logreg <- glm(know_improve_overall ~ attendance_score_FUAT + factor(sex_factored) + 
-                           + factor(age_binary) + factor(position_groups), data = analysis_wide, family = binomial)
+knowledge_logreg <- glm(know_improve_overall ~ factor(attendance_binned) + factor(sex_factored) + 
+                           + factor(age_binary) + factor(position_groups), data = df_wide, family = binomial)
 exp(cbind(OR = coef(knowledge_logreg), confint(knowledge_logreg)))
 
-att_logreg <- glm(att_improve_overall ~ attendance_score_FUAT + sex_factored + 
-                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+att_logreg <- glm(att_improve_overall ~ factor(attendance_binned) + sex_factored + 
+                    + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(att_logreg), confint(att_logreg)))
 
-conf_logreg <- glm(conf_improve_overall ~ attendance_score_FUAT + sex_factored + 
-                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+conf_logreg <- glm(conf_improve_overall ~ factor(attendance_binned)  + sex_factored + 
+                    + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(conf_logreg), confint(conf_logreg)))
 
-emp_logreg <- glm(emp_improve_overall ~ attendance_score_FUAT + sex_factored + 
-                     + age_binary + position_groups, data = analysis_wide, family = binomial)
+emp_logreg <- glm(emp_improve_overall ~ factor(attendance_binned)  + sex_factored + 
+                     + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(emp_logreg), confint(emp_logreg)))
 
-syssup_logreg <- glm(syssup_improve_overall ~ attendance_score_FUAT + sex_factored + 
-                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+syssup_logreg <- glm(syssup_improve_overall ~ factor(attendance_binned)  + sex_factored + 
+                    + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(syssup_logreg), confint(syssup_logreg)))
 
 # logistic regression - midline to endline
-know_midend_logreg <- glm(know_improve_midend ~ attendance_score_FUAT + factor(sex_factored) + 
-                          + factor(age_binary) + factor(position_groups), data = analysis_wide, family = binomial)
+know_midend_logreg <- glm(know_improve_midend ~ factor(attendance_binned)  + factor(sex_factored) + 
+                          + factor(age_binary) + factor(position_groups), data = df_wide, family = binomial)
 exp(cbind(OR = coef(know_midend_logreg), confint(know_midend_logreg)))
 
-att_midend_logreg <- glm(att_improve_midend  ~ attendance_score_FUAT + sex_factored + 
-                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+att_midend_logreg <- glm(att_improve_midend  ~ factor(attendance_binned)  + sex_factored + 
+                    + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(att_midend_logreg), confint(att_midend_logreg)))
 
-conf_midend_logreg <- glm(conf_improve_midend ~ attendance_score_FUAT + sex_factored + 
-                     + age_binary + position_groups, data = analysis_wide, family = binomial)
+conf_midend_logreg <- glm(conf_improve_midend ~ factor(attendance_binned)  + sex_factored + 
+                     + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(conf_midend_logreg), confint(conf_midend_logreg)))
 
-emp_midend_logreg <- glm(emp_improve_midend ~ attendance_score_FUAT + sex_factored + 
-                    + age_binary + position_groups, data = analysis_wide, family = binomial)
+emp_midend_logreg <- glm(emp_improve_midend ~ factor(attendance_binned)  + sex_factored + 
+                    + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(emp_midend_logreg), confint(emp_midend_logreg)))
 
-syssup_midend_logreg <- glm(syssup_improve_midend ~ attendance_score_FUAT + sex_factored + 
-                       + age_binary + position_groups, data = analysis_wide, family = binomial)
+syssup_midend_logreg <- glm(syssup_improve_midend ~ factor(attendance_binned)  + sex_factored + 
+                       + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(syssup_midend_logreg), confint(syssup_midend_logreg)))
 
 # logistic regression - high improvement
-know_high_logreg <- glm(know_improve_high ~ attendance_score_FUAT + factor(sex_factored) + 
-                            + factor(age_binary) + factor(position_groups), data = analysis_wide, family = binomial)
+know_high_logreg <- glm(know_improve_high ~ factor(attendance_binned) + factor(sex_factored) + 
+                            + factor(age_binary) + factor(position_groups), data = df_wide, family = binomial)
 exp(cbind(OR = coef(know_high_logreg), confint(know_high_logreg)))
 
-att_high_logreg <- glm(att_improve_high ~ attendance_score_FUAT + sex_factored + 
-                           + age_binary + position_groups, data = analysis_wide, family = binomial)
+att_high_logreg <- glm(att_improve_high ~ factor(attendance_binned)  + sex_factored + 
+                           + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(att_high_logreg), confint(att_high_logreg)))
 
-conf_high_logreg <- glm(conf_improve_high ~ attendance_score_FUAT + sex_factored + 
-                            + age_binary + position_groups, data = analysis_wide, family = binomial)
+conf_high_logreg <- glm(conf_improve_high ~ factor(attendance_binned)  + sex_factored + 
+                            + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(conf_high_logreg), confint(conf_high_logreg)))
 
-emp_high_logreg <- glm(emp_improve_high ~ attendance_score_FUAT + sex_factored + 
-                           + age_binary + position_groups, data = analysis_wide, family = binomial)
+emp_high_logreg <- glm(emp_improve_high ~ factor(attendance_binned)  + sex_factored + 
+                           + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(emp_high_logreg), confint(emp_high_logreg)))
 
-syssup_high_logreg <- glm(syssup_improve_high ~ attendance_score_FUAT + sex_factored + 
-                              + age_binary + position_groups, data = analysis_wide, family = binomial)
+syssup_high_logreg <- glm(syssup_improve_high ~ factor(attendance_binned) + sex_factored + 
+                              + age_binary + position_groups, data = df_wide, family = binomial)
 exp(cbind(OR = coef(syssup_high_logreg), confint(syssup_high_logreg)))
