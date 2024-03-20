@@ -17,6 +17,9 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
+# Source
+source(paste(gbv_project_wd, "/code/score.R", sep = ""))
+
 # Load data 
 analysis_df_fp_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
 df_wide <- readRDS(analysis_df_fp_wide)
@@ -98,5 +101,23 @@ mid_to_end_score_tbl <- score_drop %>%
     conf_mid_to_end_factor ~ "Confidence - Midline to Endline"))
 mid_to_end_score_tbl   
             
-            
-            
+# Explore most missed questions             
+missed1 <- knowledge_sys_support_scores_raw %>% 
+  filter(participant_id_3 %in% c(1:76, 133, 188, 318)) %>%
+  filter(time_point==1) %>%
+  select(starts_with("know")) %>%
+  summarise_all(~ mean(. == 0) * 100)
+
+missed2 <- knowledge_sys_support_scores_raw %>% 
+  filter(participant_id_3 %in% c(1:76, 133, 188, 318)) %>%
+  filter(time_point==2) %>%
+  select(starts_with("know")) %>%
+  summarise_all(~ mean(. == 0) * 100)
+
+missed3 <- knowledge_sys_support_scores_raw %>% 
+  filter(participant_id_3 %in% c(1:76, 133, 188, 318)) %>%
+  filter(time_point==3) %>%
+  select(starts_with("know")) %>%
+  summarise_all(~ mean(. == 0) * 100)
+
+missed_combined <- rbind(missed1, missed2, missed3)
