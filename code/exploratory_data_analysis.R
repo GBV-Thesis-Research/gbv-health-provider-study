@@ -24,6 +24,8 @@ df_wide <- readRDS(analysis_df_fp_wide)
 analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
 df_long <- readRDS(analysis_df_fp_long)
 
+source(paste(gbv_project_wd, "/code/plots.R", sep = ""))
+
 # Create attendance table
 attendance_hist <- hist(df_wide$attendance_score_FUAT, 
                         main = "FUAT Attendance", 
@@ -98,5 +100,38 @@ mid_to_end_score_tbl <- score_drop %>%
     conf_mid_to_end_factor ~ "Confidence - Midline to Endline"))
 mid_to_end_score_tbl   
             
-            
-            
+# box plots 
+# make scores proportional
+box_data <- analysis_long %>% 
+  mutate(knowledge_overall = (knowledge_overall/43)*100,
+         attitude_overall = (attitude_overall/102)*100,
+         system_support_score = (system_support_score/6)*100,
+         confidence_score = (confidence_score/40)*100,
+         empathy_score = (empathy_score/64)*100,
+         practice_score = (practice_score/9)*100
+  )
+
+box_data <- pivot_longer(box_data, 
+                         cols = c(knowledge_overall, attitude_overall, 
+                                  system_support_score, confidence_score, 
+                                  empathy_score,practice_score),
+                         names_to = "domain",
+                         values_to = "score")
+
+# Create boxplots by domain 
+box_data <- box_data %>%
+  mutate(time_point = factor(time_point))
+
+boxplot_domain <- ggplot(box_data, aes(x = time_point, y = score)) + 
+  geom_boxplot() + 
+  labs(
+    x = NULL,
+    y = "Score out of 100",
+    title = "Participant scores by domain over three timepoints ") + 
+  ylim(0, 100) +
+  theme_cavis_hgrid + 
+  facet_wrap(~domain, scales = "free", 
+             labeller = labeller(domain = c(
+               attitude_overall = "Attitude", confidence_score = "Confidence", 
+               empathy_score = "Empathy", knowledge_overall = "Knowledge", 
+               practice_score = "Practice", system_support_score = "System Support")))
