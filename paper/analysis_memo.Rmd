@@ -79,6 +79,12 @@ demographic_table
 Matched data was obtained for 78 individuals, representing a total of 234 surveys out of the 676 conducted across the three timepoints. There were no significant demographic differences between individuals with less than three timepoints and all three timepoints, leading us to believe the smaller longitudinal sample remained representative of the intervention population. Demographic characteristics and work history of participants at the baseline are presented in Table 1. The overall sample had `r inline_text(demographic_table, variable = sex_factored, level = "Female", column= "stat_0")` female and `r inline_text(demographic_table, variable = sex_factored, level = "Male", column= "stat_0")` male participants. `r inline_text(demographic_table, variable = age_binary, level = "<=34", column= "stat_0")` of the sample was 34 years old or younger. The most prevalent occupational role was medical doctor, accounting for `r inline_text(demographic_table, variable = position_groups, level = "Medical doctor", column= "stat_0")`, followed by nurses at `r inline_text(demographic_table, variable = position_groups, level = "Nurse", column= "stat_0")`, and midwives at `r inline_text(demographic_table, variable = position_groups, level = "Midwife", column= "stat_0")`. On average, participants had been practicing in their clinical roles for approximately `r inline_text(demographic_table, variable = position_years_clean, column= "stat_0")` years. Only `r inline_text(demographic_table, variable = previous_training_factored, column= "stat_0")` of participants had received any previous GBV training.
 
 ## Attendance
+```{r}
+attendance_hist <- hist(df_wide$attendance_score_FUAT, 
+                        main = "FUAT Attendance", 
+                        xlab = "Number of FUAT sessions attended", 
+                        ylab = "Frequency")
+```
 
 ## Scores
 ```{r}
@@ -100,6 +106,7 @@ Scores plateaud between timepoints 2 and 3. Notably, the domains of system suppo
 ```{r}
 scoreplot_log
 ```
+
 ## Regression results
 ```{r}
 
