@@ -93,7 +93,7 @@ While significant improvements were seen from intervention baseline to endline, 
 ```{r}
 comparison_tbl_2 <- comparison_tbl_2 %>%
   modify_caption("**Table 3. Median participant scores at midline and endline, by domain**")
-comparison_tbl_1
+comparison_tbl_2
 ```
 
 Scores plateaud between timepoints 2 and 3. Notably, the domains of system support and practices should not have improved between timepoint 1 and timepoint 2. The practices domain asks respondents to report their practices in caring for women in the past month. Those answers should be the same between timepoints 1 and 2.  Similarly, the system support domain discusses perceived support (both within facilities and outside of facilities) for providers caring for victims of GBV. While it's not impossible for these scores to have improved (e.g. "I have names and contact information of people within this facility to whom I can refer the client who discloses violence for additional counselling or psychosocial support" could have improved), not all questions should have imporved (e.g."I have a private space in the facility where I can talk to the woman confidentially about her abuse"). As such, should we throw them out of the analysis?
