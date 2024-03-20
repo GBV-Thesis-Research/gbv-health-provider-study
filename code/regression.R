@@ -210,12 +210,10 @@ tbl_emp_logreg_base2end <- emp_logreg %>%
   italicize_levels()
 
 syssup_logreg <- glm(syssup_improve_overall ~ factor(attendance_binned)  + sex_factored + 
-                    + age_binary + position_groups, data = df_wide, family = binomial)
-exp(cbind(OR = coef(syssup_logreg), confint(syssup_logreg)))
+                    + age_binary + factor(position_groups), data = df_wide, family = binomial)
 
 tbl_syssup_logreg_base2end <- syssup_logreg %>%
-  tbl_regression(
-    exponentiate = TRUE) %>%
+  tbl_regression() %>%
   add_global_p() %>%
   bold_p(t = 0.05) %>%
   bold_labels() %>%
