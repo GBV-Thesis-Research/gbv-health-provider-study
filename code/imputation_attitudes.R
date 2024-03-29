@@ -21,6 +21,8 @@ source(paste(gbv_project_wd, "/code/imputation_prep.R", sep = ""))
 path_to_clean_analysis_data_long_imp <- paste(gbv_project_wd, "/data/clean/analysis_data_long_imputation.RDS", sep = "")
 imp_data <- readRDS(path_to_clean_analysis_data_long_imp)
 
+# identify missing variables 
+
 # Create attitudes dataset for each timepoint, dropping unnecessary data
 att_1 <- imp_data %>%
   filter(time_point == 1) %>%
@@ -33,3 +35,5 @@ att_2 <- imp_data %>%
 att_3 <- imp_data %>%
   filter(time_point == 3) %>%
   select(-3, -5:-9,-12,-14,-20:-62, -92:-123)
+
+# 

@@ -61,6 +61,10 @@ analysis_long_imp <- analysis_long_imp %>%
   mutate(across(starts_with("knowledge"), 
                 ~ if_else(. == 99, NA_integer_, .)))
 
+# identify how many NAs
+na_summary <- colSums(is.na(analysis_long_imp))
+variables_with_na <- names(na_summary[na_summary > 0])
+
 # Write imputation data to folder
 path_to_clean_analysis_data_long_imp <- paste(gbv_project_wd, "/data/clean/analysis_data_long_imputation.RDS", sep = "")
 saveRDS(analysis_long_imp, file = path_to_clean_analysis_data_long_imp)
