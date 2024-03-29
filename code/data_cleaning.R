@@ -127,17 +127,16 @@ data <- data %>%
 
 # collapse age categories and make into factor variable
 data <- data %>%
-  mutate(age_binary = ifelse(
-    age_groups == "Less than 25 years old" | age_groups == "25-34 years old", 1, 2
+  mutate(age_collapsed = case_when(
+    age_groups %in% c("Less than 25 years old", "25-34 years old") ~ 1,
+    age_groups == "35-44 years old" ~ 2,
+    age_groups %in% c("45-54 years old", "55 years or older") ~ 3
   ))
 
 data <- data %>%
-  mutate(age_binary = factor(age_binary,
-    levels = c(1, 2),
-    labels = c(
-      "<=34",
-      ">34"
-    )
+  mutate(age_collapsed = factor(age_collapsed,
+                                levels = c("1", "2", "3"),
+                                labels = c("<=34", "35-44", ">=45")
   ))
 
 # create an actual date column
