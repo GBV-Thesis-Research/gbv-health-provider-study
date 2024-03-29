@@ -38,7 +38,7 @@ analysis_long <- merged_scores %>%
   select(
     participant_id_3, time_point, knowledge_overall, attitude_overall, system_support_score,
     confidence_score, empathy_score, practice_score
-  ) 
+  )
 
 # Join attendance data - need to add FUAT specific attendance score once all PRs are merged to main
 analysis_long <- left_join(analysis_long, attendance_data %>% select(participant_id_3, attendance_score_FUAT),
@@ -56,6 +56,11 @@ columns_to_join <- gbv_data_clean %>%
 # Perform the left join
 analysis_long_imp <- left_join(analysis_long_imp, select(gbv_data_clean, all_of(columns_to_join)), by = c("participant_id_3", "time_point"))
 
+# 99s to NA 
+analysis_long_imp <- analysis_long_imp %>%
+  mutate(across(starts_with("knowledge"), 
+                ~ if_else(. == 99, NA_integer_, .)))
+
 # Write imputation data to folder
 path_to_clean_analysis_data_long_imp <- paste(gbv_project_wd, "/data/clean/analysis_data_long_imputation.RDS", sep = "")
-saveRDS(analysis_long, file = path_to_clean_analysis_data_long_imp)
+saveRDS(analysis_long_imp, file = path_to_clean_analysis_data_long_imp)

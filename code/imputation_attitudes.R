@@ -17,16 +17,19 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
   print("Got a WD that's not handled in the If-else ladder yet")
 }
 
-source(paste(gbv_project_wd, "/code/analysis_prep.R", sep = ""))
-style_file(paste(gbv_project_wd, "/code/analysis_prep.R", sep = ""))
+source(paste(gbv_project_wd, "/code/imputation_prep.R", sep = ""))
+path_to_clean_analysis_data_long_imp <- paste(gbv_project_wd, "/data/clean/analysis_data_long_imputation.RDS", sep = "")
+imp_data <- readRDS(path_to_clean_analysis_data_long_imp)
 
-analysis_df_fp_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
-df_wide <- readRDS(analysis_df_fp_wide)
+# Create attitudes dataset for each timepoint, dropping unnecessary data
+att_1 <- imp_data %>%
+  filter(time_point == 1) %>%
+  select(-3, -5:-9,-12,-14,-20:-62, -92:-123)
 
-analysis_df_fp_long <- paste(gbv_project_wd, "/data/clean/analysis_data_long.RDS", sep = "")
-df_long <- readRDS(analysis_df_fp_long)
+att_2 <- imp_data %>%
+  filter(time_point == 2) %>%
+  select(-3, -5:-9,-12,-14,-20:-62, -92:-123)
 
-# drop unnecessary variables
-analysis_wide <- analysis_wide[, -c(30:50)]
-
-#
+att_3 <- imp_data %>%
+  filter(time_point == 3) %>%
+  select(-3, -5:-9,-12,-14,-20:-62, -92:-123)
