@@ -23,9 +23,9 @@ imp_data <- readRDS(path_to_clean_analysis_data_long_imp)
 
 # Create attitudes dataset, drop unnecessary data, and pivot wide
 att <- imp_data %>%
-  select(-3, -5:-9,-11,-12,-14,-20:-62, -92:-123) %>%
+  select(-3, -5:-8,-10,-11,-14,-20:-62, -92:-123) %>%
   pivot_wider(id_cols = participant_id_3, names_from = time_point, values_from = -participant_id_3) %>%
-  select(-3, -4, -9, -10, -12, -13, -15,-16,-18,-19,-21,-22, -24, -25, -26:-28)
+  select(-2:-3, -8, -11:-12, -14:-15, -17:-18, -20:-21, -23:-27)
 
 # Identify missing data
 na_summary <- colSums(is.na(att))
