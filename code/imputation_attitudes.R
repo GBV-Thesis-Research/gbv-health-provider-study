@@ -25,7 +25,7 @@ imp_data <- readRDS(path_to_clean_analysis_data_long_imp)
 att <- imp_data %>%
   select(-3, -5:-8,-10,-11,-14,-20:-62, -92:-123) %>%
   pivot_wider(id_cols = participant_id_3, names_from = time_point, values_from = -participant_id_3) %>%
-  select(-2:-3, -8, -11:-12, -14:-15, -17:-18, -20:-21, -23:-27)
+  select(-2:-3, -9:-10, -11:-12, -14:-15, -17:-18, -20:-21, -23:-27)
 
 # Identify missing data
 na_summary <- colSums(is.na(att))
