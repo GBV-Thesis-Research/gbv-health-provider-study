@@ -57,13 +57,7 @@ attitudes_13b_3 + attitudes_13c_3 + attitudes_13d_3 + attitudes_13e_3 + attitude
 attitudes_14a_3 + attitudes_14b_3 + attitudes_14c_3 + attitudes_14d_3 + attitudes_14e_3 +
 attitudes_14f_3)" 
 
-meth["age_grp"] <- "~I(attitudes_11a_3 + attitudes_11b_3 + attitudes_11c_3 +
-attitudes_11d_3 + attitudes_11e_3 + attitudes_11f_3 + attitudes_11g_3 + attitudes_11h_3 + 
-attitudes_11i_3 + attitudes_11j_3 + attitudes_12a_3 + attitudes_12b_3 + attitudes_12c_3 + 
-attitudes_12d_3 + attitudes_12e_3 + attitudes_12f_3 + attitudes_12g_3 + attitudes_13a_3 + 
-attitudes_13b_3 + attitudes_13c_3 + attitudes_13d_3 + attitudes_13e_3 + attitudes_13f_3 + 
-attitudes_14a_3 + attitudes_14b_3 + attitudes_14c_3 + attitudes_14d_3 + attitudes_14e_3 +
-attitudes_14f_3)" 
+meth["age_collapsed_1"] <- "~I(age_1)" 
 
 # Include passive variables in prediction matrix
 pred <- make.predictorMatrix(att)
@@ -75,7 +69,7 @@ pred[c("attitude_overall_1"), c("attitudes_11a_1", "attitudes_11b_1", "attitudes
        "attitudes_12g_1", "attitudes_13a_1", "attitudes_13b_1", "attitudes_13c_1", 
        "attitudes_13d_1", "attitudes_13e_1", "attitudes_13f_1", "attitudes_14a_1",
        "attitudes_14b_1", "attitudes_14c_1", "attitudes_14d_1", "attitudes_14e_1",
-       "attitudes_14f_1")] <- 0
+       "attitudes_14f_1")] <- 1
 
 pred[c("attitude_overall_1"), c("attitudes_11a_2", "attitudes_11b_2", "attitudes_11c_2", "attitudes_11d_2",
        "attitudes_11e_2", "attitudes_11f_2", "attitudes_11g_2", "attitudes_11h_2", 
@@ -84,7 +78,7 @@ pred[c("attitude_overall_1"), c("attitudes_11a_2", "attitudes_11b_2", "attitudes
        "attitudes_12g_2", "attitudes_13a_2", "attitudes_13b_2", "attitudes_13c_2", 
        "attitudes_13d_2", "attitudes_13e_2", "attitudes_13f_2", "attitudes_14a_2",
        "attitudes_14b_2", "attitudes_14c_2", "attitudes_14d_2", "attitudes_14e_2",
-       "attitudes_14f_2")] <- 0
+       "attitudes_14f_2")] <- 1
 
 pred[c("attitude_overall_3"), c("attitudes_11a_3", "attitudes_11b_3", "attitudes_11c_3", "attitudes_11d_3",
        "attitudes_11e_3", "attitudes_11f_3", "attitudes_11g_3", "attitudes_11h_3", 
@@ -93,7 +87,10 @@ pred[c("attitude_overall_3"), c("attitudes_11a_3", "attitudes_11b_3", "attitudes
        "attitudes_12g_3", "attitudes_13a_3", "attitudes_13b_3", "attitudes_13c_3", 
        "attitudes_13d_3", "attitudes_13e_3", "attitudes_13f_3", "attitudes_14a_3",
        "attitudes_14b_3", "attitudes_14c_3", "attitudes_14d_3", "attitudes_14e_3",
-       "attitudes_14f_3")] <- 0
+       "attitudes_14f_3")] <- 1
+
+pred[c("age_collapsed_1"), c("age_1")] <- 1
+
 
 pred
 
