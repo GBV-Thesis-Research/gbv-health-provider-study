@@ -132,7 +132,7 @@ analysis_long <-
   )
 
 analysis_long <-
-  left_join(analysis_long, demographic_data)
+  left_join(outomce_data_long, attendance_data)
 
 # Write analyses data to folder
 path_to_clean_analysis_data_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
