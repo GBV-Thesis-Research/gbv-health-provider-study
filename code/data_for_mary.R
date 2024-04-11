@@ -30,3 +30,6 @@ path_to_attendance_for_mary <- paste(gbv_project_wd, "/data/clean/attendance_dat
 saveRDS(attendance_for_mary, file = path_to_attendance_for_mary)
 
 write_dta(attendance_for_mary, "/Users/susanglenn/Repositories/gbv-health-provider-study/extra_data/attendance_for_mary.dta")
+
+# outcomes + questions data
+
