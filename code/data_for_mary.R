@@ -17,6 +17,10 @@ source(paste(gbv_project_wd, "/code/attendance_data_cleaning.R", sep = ""))
 path_to_clean_attendance <- paste(gbv_project_wd, "/data/clean/attendance_data_clean.RDS", sep = "")
 attendance_data <- readRDS(path_to_clean_attendance)
 
+source(paste(gbv_project_wd, "/code/analysis_prep.R", sep = ""))
+path_to_clean_analysis_data_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
+wide_df <- readRDS(path_to_clean_analysis_data_wide)
+
 # Delete all but FUAT sessions 
 attendance_for_mary <- attendance_data %>%
   select("participant_id_3", "attendance_score_FUAT")

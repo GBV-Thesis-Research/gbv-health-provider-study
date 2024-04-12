@@ -153,12 +153,12 @@ data <- data %>%
     position_years_clean = ifelse(!is.na(year_diff), year_diff, position_years)
   )
 
-# change missing responses for knowledge questions from "NA" to 99
-data <- data %>%
-  mutate(across(
-    .cols = contains("knowledge"),
-    .fns = ~ replace_na(., 99)
-  ))
+# # change missing responses for knowledge questions from "NA" to 99
+# data <- data %>%
+#   mutate(across(
+#     .cols = contains("knowledge"),
+#     .fns = ~ replace_na(., 99)
+#   ))
 
 #' The code below addresses a skip logic issue between questions 18 and 19.
 #' In the survey, respondents who answered "no" or "NA" to question 18 were not
