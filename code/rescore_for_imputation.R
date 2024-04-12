@@ -19,15 +19,13 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 }
 
 source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
-style_file(paste(gbv_project_wd, "/code/score.R", sep = ""))
 
 source(paste(gbv_project_wd, "/code/participant_id_cleaning.R", sep = ""))
 path_to_clean_rds <- paste(gbv_project_wd, "/data/clean/gbv_data_clean.RDS", sep = "")
-clean_data <- readRDS(path_to_clean_rds)
+cleaned_data <- readRDS(path_to_clean_rds)
 
-answers <- clean_data %>%
+answers <- cleaned_data %>%
   select(participant_id_3, matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
-
 
 key_only <- key %>%
   select(matches("knowledge|attitudes|system_support|confidence|empathy|practices"))
@@ -38,13 +36,13 @@ recode_likert_according_to_key <- function(variable_names_to_recode) {
   #' based on a provided key. The key indicates whether a positive answer is represented by 1 or 5
   #' for each question in the "attitude vars" set. The function standardizes the scores to ensure higher
   #' values consistently indicate more positive attitudes towards GBV.
-  clean_data <- clean_data %>%
+  cleaned_data <- cleaned_data %>%
     mutate(across(all_of(variable_names_to_recode), ~ case_when(
       key_only[[cur_column()]] == 5 ~ . - 1,
       key_only[[cur_column()]] == 1 ~ abs(. + 3 - 8),
       TRUE ~ .
     )))
-  return(clean_data)
+  return(cleaned_data)
 }
 
 # Get column names matching 'attitudes'
@@ -61,11 +59,11 @@ att_vars <- att_vars[!str_detect(att_vars, "attitudes_12")]
 # Based on the key, readjust values based on desired answer (1 or 5), but
 # subtracting 1 when the desired answer is 5. When the desired answer is 1, add 3
 # to the value and then subtract 8 so that desired behavior gets the higher score.
-clean_data <- recode_likert_according_to_key(att_vars)
+cleaned_data <- recode_likert_according_to_key(att_vars)
 
 # Subtract 1 from each answer for att12_vars, then reassigns the value 3 ("I don't know")
 # to 1 ("sometimes it is acceptable") for each column in att12_vars.
-clean_data <- clean_data %>%
+cleaned_data <- cleaned_data %>%
   mutate(
     across(all_of(att12_vars), ~ . - 1),
     across(all_of(att12_vars), ~ ifelse(. == 3, 1, .))
@@ -79,10 +77,10 @@ clean_data <- clean_data %>%
 #' score being 4, and low confidence being 0.
 
 #' Get column names matching 'confidence'
-conf_vars <- names(clean_data)[str_detect(names(data), "confidence")]
+conf_vars <- names(cleaned_data)[str_detect(names(data), "confidence")]
 
 # Subtracts 1 from each 'confidence' score
-clean_data <- clean_data %>%
+cleaned_data <- cleaned_data %>%
   mutate(across(all_of(conf_vars), ~ . - 1))
 
 # EMPATHY -------------------------------------------------------------------
@@ -95,15 +93,15 @@ clean_data <- clean_data %>%
 
 # Get column names matching 'empathy'
 empathy_vars <- names(data)[str_detect(names(data), "empathy")]
-clean_data <- recode_likert_according_to_key(empathy_vars)
+cleaned_data <- recode_likert_according_to_key(empathy_vars)
 
 # PRACTICES --------------------------------------------------------------------
 
 # Get column names matching practices_clean_19
-pract19_clean_vars <- names(clean_data)[str_detect(names(clean_data), "practices_clean_19")]
+pract19_clean_vars <- names(cleaned_data)[str_detect(names(cleaned_data), "practices_clean_19")]
 
 # Recode practices as 0/1 (no/yes)
-clean_data <- clean_data %>%
+cleaned_data <- cleaned_data %>%
   mutate(
     across(all_of(pract19_clean_vars), ~ ifelse(. == 2, 0, .))
   )
@@ -114,18 +112,18 @@ clean_data <- clean_data %>%
 
 # Create knowledge sub-domains (4): general knowledge, warning signs, appropriate ways
 # to ask about GBV, and helpful responses to support a woman subjected to GBV
-know_vars_general <- names(clean_data)[str_detect(names(data), "knowledge_7")]
-know_vars_warning <- names(clean_data)[str_detect(names(data), "knowledge_8")]
-know_vars_appropriate <- names(clean_data)[str_detect(names(data), "knowledge_9")]
-know_vars_helpful <- names(clean_data)[str_detect(names(data), "knowledge_10")]
+know_vars_general <- names(cleaned_data)[str_detect(names(data), "knowledge_7")]
+know_vars_warning <- names(cleaned_data)[str_detect(names(data), "knowledge_8")]
+know_vars_appropriate <- names(cleaned_data)[str_detect(names(data), "knowledge_9")]
+know_vars_helpful <- names(cleaned_data)[str_detect(names(data), "knowledge_10")]
 
 # Create attitudes sub-domains (4): general attitudes towards GBV and the health provider role,
 # acceptability for a man to hit his partner, attitudes towards gender roles,
 # attitudes towards professional roles
-att_vars_general <- names(clean_data)[str_detect(names(data), "attitudes_11")]
-att_vars_acceptability <- names(clean_data)[str_detect(names(data), "attitudes_12")]
-att_vars_genderroles <- names(clean_data)[str_detect(names(data), "attitudes_13")]
-att_vars_profroles <- names(clean_data)[str_detect(names(data), "attitudes_14")]
+att_vars_general <- names(cleaned_data)[str_detect(names(data), "attitudes_11")]
+att_vars_acceptability <- names(cleaned_data)[str_detect(names(data), "attitudes_12")]
+att_vars_genderroles <- names(cleaned_data)[str_detect(names(data), "attitudes_13")]
+att_vars_profroles <- names(cleaned_data)[str_detect(names(data), "attitudes_14")]
 
 # SUM SCORES FOR EACH DOMAIN--------------------------------------------------
 # Using the key, score knowledge and system support variables
@@ -133,7 +131,7 @@ att_vars_profroles <- names(clean_data)[str_detect(names(data), "attitudes_14")]
 knowledge_sys_support_key <- key %>%
   select(matches("knowledge|system_support"))
 
-knowledge_sys_support_answers <- clean_data %>%
+knowledge_sys_support_answers <- cleaned_data %>%
   select(participant_id_3, time_point, standardized_facility, region, matches("knowledge|system_support"))
 
 key_vector <- as.vector(unlist(t(knowledge_sys_support_key)))
@@ -169,7 +167,7 @@ knowledge_sys_support_scores <- knowledge_sys_support_scores_raw %>%
   )
 
 # Calculate scores by summing up variables for each row and bind participant IDs and timepoint
-scores <- clean_data %>%
+scores <- cleaned_data %>%
   mutate(
     attitude_general_score = (rowSums(select(., all_of(matches("attitudes_11"))), na.rm = FALSE)),
     attitude_acceptability_score = (rowSums(select(., all_of(matches("attitudes_12"))), na.rm = FALSE)),
@@ -192,32 +190,10 @@ scores <- scores %>%
   )
 
 # Merge all scores into one data frame
-merged_scores <- left_join(knowledge_sys_support_scores, scores, by = c(
+scores_for_imputation <- left_join(knowledge_sys_support_scores, scores, by = c(
   "participant_id_3", "time_point", "standardized_facility", "region"
 ))
 
-# CREATE NEW VARIABLES BASED ON MEL PLAN ---------------------------------------
-# Create new pre-score variable for outcome 4, including the knowledge, attitude,
-# and empathy domains
-merged_scores <- merged_scores %>%
-  mutate(outcome4_score = ifelse(status == "All three",
-    ((knowledge_general_score + knowledge_warning_score +
-      knowledge_appropriate_score + knowledge_helpful_score +
-      attitude_general_score + attitude_acceptability_score +
-      attitude_genderroles_score + attitude_profroles_score +
-      empathy_score) / 900) * 100,
-    NA
-  ))
-
-# Create new pre-score variable for outcome 4, including the confidence, system support,
-# and professional role domains <- have to ask Xylia  about the professional role one here
-# as its in attitude domain, not its own domain
-merged_scores <- merged_scores %>%
-  mutate(outcome5_score = ifelse(status == "All three",
-    ((confidence_score + system_support_score) / 200) * 100,
-    NA
-  ))
-
 # Write score data to folder
-path_to_clean_rds_scores <- paste(gbv_project_wd, "/data/clean/gbv_data_scores.RDS", sep = "")
-saveRDS(merged_scores, file = path_to_clean_rds_scores)
+path_to_scores_for_imputation <- paste(gbv_project_wd, "/data/clean/scores_for_imputation.RDS", sep = "")
+saveRDS(scores_for_imputation, file = path_to_scores_for_imputation)
