@@ -82,7 +82,7 @@ clean_data <- clean_data %>%
 conf_vars <- names(clean_data)[str_detect(names(data), "confidence")]
 
 # Subtracts 1 from each 'confidence' score
-clean_data <- clean_data %>%
+cleaned_data <- clean_data %>%
   mutate(across(all_of(conf_vars), ~ . - 1))
 
 # EMPATHY -------------------------------------------------------------------
@@ -95,7 +95,7 @@ clean_data <- clean_data %>%
 
 # Get column names matching 'empathy'
 empathy_vars <- names(data)[str_detect(names(data), "empathy")]
-clean_data <- recode_likert_according_to_key(empathy_vars)
+cleaned_data <- recode_likert_according_to_key(empathy_vars)
 
 # PRACTICES --------------------------------------------------------------------
 
