@@ -24,7 +24,7 @@ gbv_data_clean <- readRDS(file = paste(gbv_project_wd, "/data/clean/gbv_data_cle
 
 demographic_columns <- c(
   "participant_id_3", "standardized_facility", "time_point",
-  "region", "sex_factored", "status", "inclusive_status", "age_binary", "position_groups",
+  "region", "sex_factored", "status", "inclusive_status", "age_collapsed", "age_groups", "position_groups",
   "position_years_clean", "position_groups", "municipality", "previous_training_factored", "status_binary"
 )
 
@@ -33,7 +33,8 @@ wide_df <- gbv_data_clean %>%
   select(all_of(demographic_columns)) %>%
   group_by(participant_id_3) %>%
   fill(sex_factored, .direction = "downup") %>%
-  fill(age_binary, .direction = "downup") %>%
+  fill(age_collapsed, .direction = "downup") %>%
+  fill(age_groups, .direction = "downup") %>%
   fill(standardized_facility, .direction = "downup") %>%
   fill(position_groups, .direction = "downup") %>%
   fill(position_years_clean, .direction = "downup") %>%
@@ -41,12 +42,12 @@ wide_df <- gbv_data_clean %>%
   fill(previous_training_factored, .direction = "downup") %>%
   ungroup() %>%
   select(
-    "participant_id_3", "time_point", "standardized_facility", "region", "sex_factored", "age_binary",
+    "participant_id_3", "time_point", "standardized_facility", "region", "sex_factored", "age_collapsed", "age_groups",
     "status", "position_groups", "position_years_clean", "municipality", "previous_training_factored",
     "status_binary"
   ) %>%
   pivot_wider(id_cols = participant_id_3, names_from = time_point, values_from = c(
-    standardized_facility, region, sex_factored, age_binary, status, position_groups,
+    standardized_facility, region, sex_factored, age_collapsed, age_groups, status, position_groups,
     position_years_clean, municipality, previous_training_factored, status_binary
   ))
 
@@ -60,7 +61,8 @@ final_demographic_data <-
     TRUE ~ "Other"
   )) %>%
   mutate(standardized_facility = coalesce(standardized_facility_1, standardized_facility_2, standardized_facility_3)) %>%
-  mutate(age_binary = coalesce(age_binary_1, age_binary_2, age_binary_3)) %>%
+  mutate(age_collapsed = coalesce(age_collapsed_1, age_collapsed_2, age_collapsed_3)) %>%
+  mutate(age_groups = coalesce(age_groups_1, age_groups_2, age_groups_3)) %>%
   mutate(status = coalesce(status_1, status_2, status_3)) %>%
   mutate(region = coalesce(region_1, region_2, region_3)) %>%
   mutate(position_groups = droplevels(coalesce(position_groups_1, position_groups_2, position_groups_3))) %>%
@@ -69,7 +71,7 @@ final_demographic_data <-
   mutate(previous_training_factored = coalesce(previous_training_factored_1, previous_training_factored_2, previous_training_factored_2)) %>%
   mutate(status_binary = coalesce(status_binary_1, status_binary_2, status_binary_3)) %>%
   select(
-    "participant_id_3", "standardized_facility", "region", "sex_factored", "age_binary",
+    "participant_id_3", "standardized_facility", "region", "sex_factored", "age_groups", "age_collapsed",
     "status", "position_groups", "position_years_clean", "municipality", "previous_training_factored", "status_binary"
   )
 demographic_data_file_path <- paste(gbv_project_wd, "/data/clean/demographic_data_clean.RDS", sep = "")

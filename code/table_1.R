@@ -35,12 +35,12 @@ filtered_data <-
 
 demographic_table <- filtered_data %>%
   select(c(
-    "sex_factored", "age_binary", "position_groups", "position_years_clean",
+    "sex_factored", "age_collapsed", "position_groups", "position_years_clean",
     "municipality", "previous_training_factored"
   )) %>%
   tbl_summary(by = municipality, label = list(
     sex_factored ~ "Sex",
-    age_binary ~ "Age (years)",
+    age_collapsed ~ "Age (years)",
     position_groups ~ "Position",
     position_years_clean ~ "Years of practice",
     previous_training_factored ~ "Previous GBV Training"
@@ -57,13 +57,13 @@ filtered_data_comparison <-
 
 demographic_table_comparison <- filtered_data_comparison %>%
   select(c(
-    "sex_factored", "age_binary", "position_groups", "position_years_clean",
+    "sex_factored", "age_collapsed", "position_groups", "position_years_clean",
     "municipality", "status_binary", "previous_training_factored"
   )) %>%
   tbl_summary(by = status_binary, label = list(
     municipality ~ "Municipality",
     sex_factored ~ "Sex",
-    age_binary ~ "Age (years)",
+    age_collapsed ~ "Age (years)",
     position_groups ~ "Position",
     position_years_clean ~ "Years of practice",
     previous_training_factored ~ "Previous GBV Training"

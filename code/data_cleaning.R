@@ -135,8 +135,8 @@ data <- data %>%
 
 data <- data %>%
   mutate(age_collapsed = factor(age_collapsed,
-                                levels = c("1", "2", "3"),
-                                labels = c("<=34", "35-44", ">=45")
+    levels = c("1", "2", "3"),
+    labels = c("<=34", "35-44", ">=45")
   ))
 
 # create an actual date column
