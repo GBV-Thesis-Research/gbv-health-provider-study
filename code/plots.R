@@ -51,16 +51,12 @@ empathy1 <- (median(subset(df_long, time_point == 1)$empathy_score, na.rm = TRUE
 empathy2 <- (median(subset(df_long, time_point == 2)$empathy_score, na.rm = TRUE)/64*100)
 empathy3 <- (median(subset(df_long, time_point == 3)$empathy_score, na.rm = TRUE)/64*100)
 
-practice1 <- (median(subset(df_long, time_point == 1)$practice_score, na.rm = TRUE)/9*100)
-practice2 <- (median(subset(df_long, time_point == 2)$practice_score, na.rm = TRUE)/9*100)
-practice3 <- (median(subset(df_long, time_point == 3)$practice_score, na.rm = TRUE)/9*100)
-
 # Create dataframe 
 dfplot <- data.frame(
-  Domain = c("Knowledge", "Attitudes", "System Support", "Confidence", "Empathy", "Practice"),
-  `2021-06-14` = c(knowledge1, attitude1, syssupport1, conf1, empathy1, practice1),
-  `2021-06-18` = c(knowledge2, attitude2, syssupport2, conf2, empathy2, practice2),
-  `2022-10-14` = c(knowledge3, attitude3, syssupport3, conf3, empathy3, practice3)
+  Domain = c("Knowledge", "Attitudes", "System Support", "Confidence", "Empathy"),
+  `2021-06-14` = c(knowledge1, attitude1, syssupport1, conf1, empathy1),
+  `2021-06-18` = c(knowledge2, attitude2, syssupport2, conf2, empathy2),
+  `2022-10-14` = c(knowledge3, attitude3, syssupport3, conf3, empathy3)
 )
 
 # Create long data frame, converting dates to days and scores to percents
@@ -139,8 +135,8 @@ theme_cavis_hgrid <-
   theme(panel.grid.major.y = element_line(color = "gray75", linewidth = 0.1), 
         axis.line.x.bottom = element_blank(),
         plot.title = element_text(size = 8, face = "bold", hjust = 0.5),
-        axis.title.x.bottom = element_text(size = 6, face = "bold"),
-        axis.text.x.bottom = element_text(size = 6),
+        axis.title.x.bottom = element_text(size = 8, face = "bold"),
+        axis.text.x.bottom = element_text(size = 8),
         axis.text.y = element_text(size = 6)
         )
 
@@ -155,7 +151,7 @@ scoreplot_log <- dfplot_long %>%
   geom_point(shape = 21, size = 0.75, fill = "white", stroke = 0.5) + 
   scale_colour_brewer(palette = "Dark2") + 
   geom_text_repel(data = dfplot_long %>%
-              filter(numeric_date > 470), aes(label = Domain), size = 2,
+              filter(numeric_date > 470), aes(label = Domain), size = 3,
               nudge_x = 0.2, hjust = 0.5) +
   theme(legend.position = "none") +
   scale_y_continuous(breaks = c(.50, .60, .70, .80, .90, 1),
@@ -163,15 +159,19 @@ scoreplot_log <- dfplot_long %>%
                      limits = c(.50, 1)) +
   coord_cartesian(xlim = c(1, 1100)) +
   scale_x_log10(breaks = c(1, 5, 488),
-                labels = c("Before training", "After training", "14-month follow-up")) +
-  labs(x = "Days",
+                labels = c("Before training \n(baseline)", "After 5-day intensive \n(post-intensive)", "14-month follow-up \n(endline)")) +
+  labs(x = NULL,
        y = NULL,
-       title = "Median test scores before, after, and at 14-month follow-up \nfrom 
-       a five-day gender-based violence training for clinicians")
+       title = "Median test scores of a gender-based violence training for clinicians
+       \nat baseline, post-intensive, and endline")
 scoreplot_log
 
-width <- 5 
+width <- 8 
 height <- width / 1.618 
 
 ggsave("/Users/susanglenn/Desktop/School/csss_569/memo/score_plot.pdf", plot = scoreplot_log, 
+       width = width, height = height, units = "in")
+
+
+ggsave("/Users/susanglenn/Desktop/School/csss_569/memo/score_plot.png", plot = scoreplot_log, 
        width = width, height = height, units = "in")
