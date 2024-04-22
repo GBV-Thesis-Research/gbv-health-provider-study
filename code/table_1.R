@@ -19,6 +19,7 @@ if (endsWith(current_wd, "gbv-health-provider-study")) {
 source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
 source(paste(gbv_project_wd, "/code/data_cleaning.R", sep = ""))
 source(paste(gbv_project_wd, "/code/demographic_data_cleaning.R", sep = ""))
+source(paste(gbv_project_wd, "/code/attendance_data_cleaning.R", sep = ""))
 
 #### Lint current file ####
 style_file(paste(gbv_project_wd, "/code/table_1.R", sep = ""))
@@ -33,18 +34,24 @@ filtered_data <-
   filter(status == "All three") %>%
   mutate(position_groups = droplevels(position_groups))
 
+# Join attendance data to filtered data
+filtered_data <- left_join(attendance_data, filtered_data, by = c("participant_id_3")) %>%
+  select(-starts_with("FUAT"), -starts_with("GBV"), -"attendance_score")
+
+# Create table 1
 demographic_table <- filtered_data %>%
   select(c(
     "sex_factored", "age_collapsed", "position_groups", "position_years_clean",
-    "municipality", "previous_training_factored"
+    "municipality", "previous_training_factored", "attendance_score_FUAT"
   )) %>%
   tbl_summary(by = municipality, label = list(
     sex_factored ~ "Sex",
     age_collapsed ~ "Age (years)",
     position_groups ~ "Position",
     position_years_clean ~ "Years of practice",
-    previous_training_factored ~ "Previous GBV Training"
-  ), type = list(position_years_clean ~ "continuous")) %>%
+    previous_training_factored ~ "Previous GBV Training",
+    attendance_score_FUAT ~ "Attendance at Learning Labs (out of 8)"
+  ), type = list(position_years_clean ~ "continuous", attendance_score_FUAT ~ "continuous")) %>%
   add_overall() %>%
   add_n()
 
