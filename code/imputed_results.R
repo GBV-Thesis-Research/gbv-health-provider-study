@@ -21,7 +21,29 @@ source(paste(gbv_project_wd, "/code/dependencies.R", sep = ""))
 style_file(paste(gbv_project_wd, "/code/imputed_results.R", sep = ""))
 
 # Import dta files
-read_dta("/data/clean/attitude MI data.dta")
+knowledge <- read_dta("data/clean/knowledge MI data.dta")
+empathy <- read_dta("data/clean/empathy MI data.dta")
+system_support <- read_dta("data/clean/system support MI data.dta")
+confidence <-
 
-analysis_df_fp_wide <- paste(gbv_project_wd, "/data/clean/analysis_data_wide.RDS", sep = "")
-df_wide <- readRDS(analysis_df_fp_wide)
+# Import attitudes differently because its being weird 
+attitudes <- tryCatch(
+  read_dta(file.path(gbv_project_wd, "data", "clean", "attitude MI data.dta")),
+  error = function(e) {
+    print(paste("Error reading attitude MI data:", e$message))
+    NULL
+  }
+)
+
+# CREATE RESULTS TABLES --------------------------------------------------------
+library(mice)
+library(sandwich)
+library(lmtest)  
+
+model <- with(attitudes, lm(attitude_overall_3 ~ attitude_overall + attitude_overall_2 + sex_factored 
+                            + factor(agegrp) + factor(position_groups) + doseattendance))
+
+robust_se <- coeftest(model, vcov = vcovHC(model))
+coefficients <- coef(model)
+
+model
