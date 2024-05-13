@@ -80,3 +80,29 @@ comparison_tbl_2 <-
     stat_2 = "**Endline**"
   ) %>%
   add_p()
+
+comparison_tbl_3 <-
+  df_long %>%
+  filter(time_point %in% c(1, 2)) %>%
+  select(
+    time_point, knowledge_overall, attitude_overall, system_support_score,
+    confidence_score, empathy_score
+  ) %>%
+  tbl_summary(
+    by = time_point, type = list(
+      system_support_score ~ "continuous"
+    ),
+    label = list(
+      knowledge_overall ~ "Knowledge (43)",
+      attitude_overall ~ "Attitude (102)",
+      system_support_score ~ "System Support (6)",
+      confidence_score ~ "Confidence (40)",
+      empathy_score ~ "Empathy (64)"
+    )
+  ) %>%
+  modify_header(
+    label = "**Domain (total points)**",
+    stat_1 = "**Baseline**",
+    stat_2 = "**Post-intensive training**"
+  ) %>%
+  add_p()
