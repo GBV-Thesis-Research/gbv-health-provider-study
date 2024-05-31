@@ -51,10 +51,12 @@ demographic_table <- filtered_data %>%
     position_years_clean ~ "Years of practice",
     previous_training_factored ~ "Previous GBV Training",
     attendance_score_FUAT ~ "Attendance at Learning Labs (out of 8)"
-  ), type = list(position_years_clean ~ "continuous", attendance_score_FUAT ~ "continuous")) %>%
+  ), type = list(position_years_clean ~ "continuous", attendance_score_FUAT ~ "continuous"),
+    digits = c(sex_factored, age_collapsed, position_groups, 
+                            position_years_clean, previous_training_factored,
+                            attendance_score_FUAT) ~ 1) %>%
   add_overall() %>%
-  add_n()
-
+  add_n() 
 demographic_table
 
 # Create table 1 - for comparison to <2 timepoints
