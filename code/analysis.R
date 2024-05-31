@@ -46,8 +46,9 @@ comparison_tbl_1 <-
       system_support_score ~ "System Support (6)",
       confidence_score ~ "Confidence (40)",
       empathy_score ~ "Empathy (64)"
-    )
-  ) %>%
+    ),
+      digits = c(knowledge_overall, attitude_overall, system_support_score, 
+                 confidence_score, empathy_score) ~ 1) %>%
   modify_header(
     label = "**Domain (total points)**",
     stat_1 = "**Baseline**",
@@ -72,8 +73,9 @@ comparison_tbl_2 <-
       system_support_score ~ "System Support (6)",
       confidence_score ~ "Confidence (40)",
       empathy_score ~ "Empathy (64)"
-    )
-  ) %>%
+    ),
+    digits = c(knowledge_overall, attitude_overall, system_support_score, 
+               confidence_score, empathy_score) ~ 1) %>%
   modify_header(
     label = "**Domain (total points)**",
     stat_1 = "**Post-intensive training**",
@@ -98,8 +100,9 @@ comparison_tbl_3 <-
       system_support_score ~ "System Support (6)",
       confidence_score ~ "Confidence (40)",
       empathy_score ~ "Empathy (64)"
-    )
-  ) %>%
+    ),
+    digits = c(knowledge_overall, attitude_overall, system_support_score, 
+               confidence_score, empathy_score) ~ 1) %>%
   modify_header(
     label = "**Domain (total points)**",
     stat_1 = "**Baseline**",
